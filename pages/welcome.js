@@ -8,7 +8,7 @@ const WelcomeAnimation = () => {
 
   return (
     <div className="bg-image" style={{ backgroundImage: `url(${backgroundImage.src})` }} >
-      <div className={`welcome-screen content ${showContent ? 'fade-in' : 'fade-out'}`}>
+      <div className={`welcome-screen`}>
         <h1>Welcome to Mingle</h1>
         <p className="h6">This is a cool message to greet your users!</p>
         <div className="row mt-3">
