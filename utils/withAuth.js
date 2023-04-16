@@ -27,10 +27,11 @@ const withAuth = (WrappedComponent) => {
     componentDidMount() {
       const { dispatchSetUser, dispatchSetError,profileCompleted, dispatchCheckProfile } = this.props;
       auth.onAuthStateChanged((authUser) => {
-        dispatchCheckProfile()
+        
         if (!authUser) {
-          Router.push("welcome");
+          Router.push("/welcome");
         } else {
+          dispatchCheckProfile()
           dispatchSetUser({
             uid: authUser.uid,
             email: authUser.email,
