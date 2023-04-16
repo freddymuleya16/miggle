@@ -1,6 +1,7 @@
+import { useParams } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { login, signup } from "@/actions/authActions";
+import { login, resetPassword, signup } from "@/actions/authActions";
 import { useDispatch, useSelector } from "react-redux";
 //import { login } from '../actions/authActions';
 import Head from "next/head";
@@ -18,10 +19,8 @@ import {
 import { FaEye, FaEyeSlash, FaFacebook, FaGoogle } from "react-icons/fa";
 import backgroundImage from "../../public/img/login-bg.jpg";
 import AuthLayout from "@/components/Auth-Layout";
-import { toast } from "react-toastify";
-import { withoutAuth } from "@/utils/withAuth";
 
-function Signup() {
+function ResetPassword() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -30,57 +29,27 @@ function Signup() {
   const error = useSelector((state) => state.auth.error);
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
-
-  useEffect(() => {    
-    if (error) {
-      toast.error(error.message);
-    }
-  }, [error]);
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const [submitted, setSubmitted] = useState(false);
+  const { oobCode } = useParams();
 
   const handleSignup = (e) => {
     e.preventDefault();
-    const validationErrors = validateForm(email, password, confirmPassword);
+    const validationErrors = validateForm( password, confirmPassword);
     setErrors(validationErrors);
-    setSubmitted(true); // set submitted to true after form validation
   };
-  
+
   useEffect(() => {
-    if (submitted && errors === null) {
-      dispatch(signup(email, password));
+    if (errors === null) {
+      dispatch(resetPassword(email, oobCode));
     } else {
       console.log(errors);
     }
-  }, [submitted, errors]);
-  
+  }, [errors]);
 
   return (
     <AuthLayout>
-      <h2 className="text-dark">Sign up</h2>
+      <h2 className="text-dark">Reset Password</h2>
       <Form onSubmit={handleSignup}>
-        <Form.Group className="mb-3 text-left" controlId="formEmail">
-          <Form.Label className="text-dark">Email:</Form.Label>
-          <Form.Control
-            type="email"
-            error="fredd"
-            placeholder="Enter email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <span className="d-flex justify-content-end small text-danger">
-            {errors?.email}
-          </span>
-        </Form.Group>
-        <Form.Group className="mb-3 text-left" controlId="formPassword">
+                <Form.Group className="mb-3 text-left" controlId="formPassword">
           <Form.Label className="text-dark">Password:</Form.Label>
           <Form.Control
             type="password"
@@ -92,7 +61,7 @@ function Signup() {
             {errors?.password}
           </span>
         </Form.Group>
-        <Form.Group className="mb-3 text-left" controlId="formCPassword">
+        <Form.Group className="mb-3 text-left" controlId="formPassword">
           <Form.Label className="text-dark">Confirm Password:</Form.Label>
           <Form.Control
             type="password"
@@ -111,30 +80,17 @@ function Signup() {
           variant="info"
           disabled={isLoading}
         >
-          Sign up
+          Reset
         </Button>
-        <p className="card-text mt-2 text-dark">
-          Already have an account?{" "}
-          <Link className="text-info" href="/auth/login">
-            Login
-          </Link>
-        </p>
-      </Form>
+              </Form>
     </AuthLayout>
   );
 }
 
-function validateForm(email, password, confirmPassword) {
+function validateForm(password, confirmPassword) {
   const errors = {};
 
-  // Check for email
-  if (!email) {
-    errors.email = "Email is required";
-  } else if (!/\S+@\S+\.\S+/.test(email)) {
-    errors.email = "Email is invalid";
-  }
-
-  // Check for password
+    // Check for password
   if (!password) {
     errors.password = "Password is required";
   } else if (!/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/.test(password)) {
@@ -149,11 +105,9 @@ function validateForm(email, password, confirmPassword) {
     errors.confirmPassword = "Passwords do not match";
   }
 
-  if (Object.keys(errors).length === 0) {
-    return null;
-  }
-
   return errors;
 }
 
-export default withoutAuth(Signup);
+
+
+export default ResetPassword;

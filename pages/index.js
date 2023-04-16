@@ -8,15 +8,25 @@ import { useDispatch, useSelector } from 'react-redux'
 import { withAuth } from '../utils/withAuth'
 import FullscreenLoading from '@/components/FullscreenLoading'
 import { useEffect, useState } from 'react'
+import { toast } from 'react-toastify';
 
 const inter = Inter({ subsets: ['latin'] })
 
  function Home() {
   
   const dispatch = useDispatch();
-  const isLoading = useSelector(state => state.auth.isLoading);
-  const error = useSelector(state => state.auth.error);
+  const isLoading = useSelector(state => state.auth);
+  //const error = useSelector(state => state.auth.error);
   const [Loading,setLoading] = useState(true)
+  
+  const error = useSelector((state) => state);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error.message);
+    }
+  }, [error]);
+
 
   const handleSignout = (e) => {
     e.preventDefault();
@@ -33,6 +43,16 @@ const inter = Inter({ subsets: ['latin'] })
   if(Loading){
     return <FullscreenLoading/>
   }
+  const handleClick = () => {
+    toast.success('This is a success message!', {
+      position: toast.POSITION.TOP_RIGHT,
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+  };
   return (
     <>
       <Head>
@@ -43,6 +63,7 @@ const inter = Inter({ subsets: ['latin'] })
       </Head>
       <main className={styles.main}>
         <button onClick={handleSignout} className='btn btn-info' >Logout</button>
+        <button className='btn btn-info' onClick={handleClick}>Show Toast</button>
       </main>
     </>
   )

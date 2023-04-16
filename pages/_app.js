@@ -1,4 +1,4 @@
-import { Provider } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 import store  from '../store/store';
 
 
@@ -12,32 +12,15 @@ import "../public/assets/css/demo.css";
 //import "@fortawesome/fontawesome-free/css/all.min.css";
 import { useEffect } from 'react';
 import '../utils/firebase';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function MyApp({ Component, pageProps }) {
- 
-   const router = useRouter();
-   
-  // useEffect(() => {
-  //   const unsubscribe = auth.onAuthStateChanged((user) => {
-  //     console.log("User",user);
-  //     if (user) {
-  //       // Update store with user data
-  //       store.dispatch({ type: "AUTH_USER", payload: user });
-  //     } else {
-  //       // Redirect to login page
-  //       router.push("/auth/login");
-  //     }
-  //   });
-
-  //   // Cleanup function
-  //   return () => unsubscribe();
-  // }, [router, store]);
-
-
   return (
     <Provider store={store}>
       {/* <Navbar /> */}
+      <ToastContainer />
       <Component {...pageProps} />
     </Provider>
   )

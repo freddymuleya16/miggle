@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row } from "react-bootstrap";
 
-import backgroundImage from "../public/img/couple.jpg";
+import backgroundImage from "../public/img/login-bg.jpg";
 
-function Layout({ children }) {
+function AuthLayout({ children }) {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -32,10 +32,10 @@ function Layout({ children }) {
     >
       <Container className="h-100">
         <Row className="justify-content-center align-items-center h-100">
-          <div className="col-lg-4 col-md-6 col-sm-8 col-10 ml-auto">
+          <div className={!isMobile ? "col-lg-4 col-md-6 col-sm-8 col-10" : "col-12"}>
             <div
               className="login-box content fade-in"
-              style={isMobile ? { boxShadow: "none",padding:"20px 0px" } :  { padding:"20px 0px" }}
+              style={isMobile ? { boxShadow: "none" } : null}
             >
               {children}
             </div>
@@ -46,4 +46,4 @@ function Layout({ children }) {
   );
 }
 
-export default Layout;
+export default AuthLayout;
