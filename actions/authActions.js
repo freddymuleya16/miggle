@@ -137,9 +137,9 @@ export const checkUserProfileCompletion = () => async (dispatch) => {
   dispatch(setLoading(true));
 
   try {
-    const db = getFirestore();
+    const db_ = db;
     const uid = getAuth().currentUser.uid
-    const userRef = doc(db, "users", uid);
+    const userRef = doc(db_, "users", uid);
 
     const userDoc = await getDoc(userRef);
 
@@ -166,6 +166,7 @@ import {
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
+import { db } from "@/utils/firebase";
 
 export const uploadFormToFirebase =
   (
@@ -200,14 +201,14 @@ export const uploadFormToFirebase =
       );
 
       // Create a reference to Firebase Firestore
-      const db = getFirestore();
+      const db_ = db;
 
       console.log("adgrgrg", pictureRefs);
 
       // Add the form data to Firestore
       const currentUser = getAuth().currentUser;
 
-      await setDoc(doc(collection(db, "users"), currentUser.uid), {
+      await setDoc(doc(collection(db_, "users"), currentUser.uid), {
         gender,
         orientation,
         firstName,
