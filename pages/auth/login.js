@@ -7,7 +7,12 @@ import Link from "next/link";
 import { Form, Button } from "react-bootstrap";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
 import { withoutAuth } from "../../utils/withAuth";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  FacebookAuthProvider,
+} from "firebase/auth";
 import AuthLayout from "@/components/Auth-Layout";
 import { toast } from "react-toastify";
 
@@ -18,7 +23,7 @@ const Login = () => {
   const isLoading = useSelector((state) => state.auth.isLoading);
   const error = useSelector((state) => state.auth.error);
 
-  useEffect(() => {    
+  useEffect(() => {
     if (error) {
       toast.error(error.message);
     }
@@ -27,6 +32,34 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(login(email, password));
+  };
+
+  const handleFacebookSignin = () => {
+    const auth = getAuth();
+    const provider = new FacebookAuthProvider()
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        // The signed-in user info.
+        const user = result.user;
+
+        // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+        const credential = FacebookAuthProvider.credentialFromResult(result);
+        const accessToken = credential.accessToken;
+
+        // IdP data available using getAdditionalUserInfo(result)
+        // ...
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = FacebookAuthProvider.credentialFromError(error);
+
+        // ...
+      });
   };
 
   const handleGoogleSignIn = () => {
@@ -59,7 +92,7 @@ const Login = () => {
   return (
     <AuthLayout>
       <h2 className="text-dark">Log in</h2>
-      <Button className="btns-facebook">
+      <Button className="btns-facebook" onClick={handleFacebookSignin}>
         <FaFacebook className="align-top me-2 mr-1 mt-1" />
         Sign in with Facebook
       </Button>
