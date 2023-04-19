@@ -1,4 +1,4 @@
-import { login } from "@/actions/authActions";
+import { facebookSignIn, googleSignIn, login } from "@/actions/authActions";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 //import { login } from '../actions/authActions';
@@ -7,12 +7,6 @@ import Link from "next/link";
 import { Form, Button } from "react-bootstrap";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
 import { withoutAuth } from "../../utils/withAuth";
-import {
-  getAuth,
-  signInWithPopup,
-  GoogleAuthProvider,
-  FacebookAuthProvider,
-} from "firebase/auth";
 import AuthLayout from "@/components/Auth-Layout";
 import { toast } from "react-toastify";
 
@@ -35,58 +29,11 @@ const Login = () => {
   };
 
   const handleFacebookSignin = () => {
-    const auth = getAuth();
-    const provider = new FacebookAuthProvider()
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        // The signed-in user info.
-        const user = result.user;
-
-        // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-        const credential = FacebookAuthProvider.credentialFromResult(result);
-        const accessToken = credential.accessToken;
-
-        // IdP data available using getAdditionalUserInfo(result)
-        // ...
-      })
-      .catch((error) => {
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // The email of the user's account used.
-        const email = error.customData.email;
-        // The AuthCredential type that was used.
-        const credential = FacebookAuthProvider.credentialFromError(error);
-
-        // ...
-      });
+    dispatch(facebookSignIn())
   };
 
   const handleGoogleSignIn = () => {
-    const provider = new GoogleAuthProvider();
-
-    const auth = getAuth();
-
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
-        // The signed-in user info.
-        const user = result.user;
-        // IdP data available using getAdditionalUserInfo(result)
-        // ...
-      })
-      .catch((error) => {
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // The email of the user's account used.
-        const email = error.customData.email;
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        // ...
-      });
+   dispatch(googleSignIn())
   };
 
   return (

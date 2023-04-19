@@ -93,6 +93,8 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+    font-family: "Helvetica Neue",sans-serif;
+      font-weight: lighter;
 }
 
 a {
@@ -202,4 +204,8 @@ a {
 
 label,h1,p{
   color:black;
+}
+
+.active{
+  color: #36d7b7!important;
 }

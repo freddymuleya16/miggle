@@ -32,7 +32,11 @@ function AuthLayout({ children }) {
     >
       <Container className="h-100">
         <Row className="justify-content-center align-items-center h-100">
-          <div className={!isMobile ? "col-lg-4 col-md-6 col-sm-8 col-10" : "col-12"}>
+          <div
+            className={
+              !isMobile ? "col-lg-4 col-md-6 col-sm-8 col-10" : "col-12"
+            }
+          >
             <div
               className="login-box content fade-in"
               style={isMobile ? { boxShadow: "none" } : null}
@@ -40,7 +44,7 @@ function AuthLayout({ children }) {
               {children}
             </div>
           </div>
-        </Row>
+        </Row> 
       </Container>
     </div>
   );

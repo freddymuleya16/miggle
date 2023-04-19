@@ -11,6 +11,9 @@ import {
   sendPasswordResetEmail,
   confirmPasswordReset,
   sendEmailVerification,
+  FacebookAuthProvider,
+  signInWithPopup,
+  GoogleAuthProvider,
 } from "firebase/auth";
 
 import {
@@ -39,7 +42,7 @@ export const signup = (email, password) => async (dispatch) => {
         emailVerified: userCredential.user.emailVerified,
       })
     );
-    dispatch(sendVerificationEmail())
+    dispatch(sendVerificationEmail());
   } catch (error) {
     dispatch(setError(error));
   } finally {
@@ -93,7 +96,7 @@ export const login = (email, password) => async (dispatch) => {
         emailVerified: userCredential.user.emailVerified,
       })
     );
-    
+
     dispatch(checkUserProfileCompletion());
   } catch (error) {
     console.error(error);
@@ -138,7 +141,7 @@ export const checkUserProfileCompletion = () => async (dispatch) => {
 
   try {
     const db_ = db;
-    const uid = getAuth().currentUser.uid
+    const uid = getAuth().currentUser.uid;
     const userRef = doc(db_, "users", uid);
 
     const userDoc = await getDoc(userRef);
@@ -220,8 +223,8 @@ export const uploadFormToFirebase =
         createdAt: serverTimestamp(),
         profileCompleted: true,
       });
-      
-    dispatch(checkUserProfileCompletion());
+
+      dispatch(checkUserProfileCompletion());
     } catch (error) {
       console.log(error);
       dispatch(setError(error));
@@ -229,3 +232,66 @@ export const uploadFormToFirebase =
       dispatch(setLoading(false));
     }
   };
+
+export const facebookSignIn = () => async (dispatch) => {
+  dispatch(setLoading(true));
+  try {
+    const auth = getAuth();
+    const provider = new FacebookAuthProvider();
+    let result = await signInWithPopup(auth, provider);
+
+    // The signed-in user info.
+    const user = result.user;
+
+    // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+    const credential = FacebookAuthProvider.credentialFromResult(result);
+    const accessToken = credential.accessToken;
+
+    // IdP data available using getAdditionalUserInfo(result)
+  } catch (error) {
+    // Handle Errors here.
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // The email of the user's account used.
+    const email = error.customData.email;
+    // The AuthCredential type that was used.
+    const credential = FacebookAuthProvider.credentialFromError(error);
+    console.error(error);
+    dispatch(setError(error));
+  } finally {
+    dispatch(setLoading(false));
+  }
+};
+
+export const googleSignIn = () => async (dispatch) => {
+  dispatch(setLoading(true));
+  try {
+    const provider = new GoogleAuthProvider();
+
+    const auth = getAuth();
+
+    const result = await signInWithPopup(auth, provider);
+
+    console.log(result);
+    // This gives you a Google Access Token. You can use it to access the Google API.
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+    const token = credential.accessToken;
+    // The signed-in user info.
+    const user = result.user;
+    // IdP data available using getAdditionalUserInfo(result)
+    // ...
+  } catch (error) {
+    // Handle Errors here.
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // The email of the user's account used.
+    const email = error.customData.email;
+    // The AuthCredential type that was used.
+    const credential = GoogleAuthProvider.credentialFromError(error);
+    // ...
+    console.error(error);
+    dispatch(setError(error));
+  } finally {
+    dispatch(setLoading(false));
+  }
+};
