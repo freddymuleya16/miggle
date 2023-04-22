@@ -212,7 +212,7 @@ const MatchPage = ({ user }) => {
                   </Carousel>
                 <Card.Body>
                   
-                  <Card.Title>{`${match.firstName} ${match.lastName}`}</Card.Title>
+                  <Card.Title className="text-black">{`${match.firstName} ${match.lastName}`}</Card.Title>
                   <Card.Subtitle className="mb-2 text-muted">
                     {`${match.age} years old, ${calculateDistance(
                       match.location,
@@ -246,7 +246,7 @@ const MatchPage = ({ user }) => {
           {noMatches && (
             <Card>
               <Card.Body>
-                <h2 className="text-center">No more matches</h2>
+                <h2 className="text-center text-black">No more matches</h2>
               </Card.Body>
             </Card>
           )}

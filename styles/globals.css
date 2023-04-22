@@ -219,3 +219,7 @@ label,h1,p{
   left: 0;
   z-index: 9999;
 }
+
+.text-black{
+  color: #000000;
+}
