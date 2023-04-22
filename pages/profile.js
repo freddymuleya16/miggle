@@ -1,4 +1,4 @@
-import { uploadFormToFirebase } from "@/actions/authActions";
+import { logout, uploadFormToFirebase } from "@/actions/authActions";
 import Layout from "@/components/Layout";
 import OverLayLoading from "@/components/OverLayLoading";
 import { getUserLocation } from "@/utils/helpers";
@@ -17,7 +17,7 @@ const QuestionnaireForm = () => {
   const [age, setAge] = useState("");
   const [ageRange, setAgeRange] = useState("");
   const [distance, setDistance] = useState("");
-  const [aboutMe, setAboutMe] = useState("");  
+  const [aboutMe, setAboutMe] = useState("");
   const [pictures, setPictures] = useState([]);
   const dispatch = useDispatch();
   const isLoading = useSelector((state) => state.auth.isLoading);
@@ -26,6 +26,11 @@ const QuestionnaireForm = () => {
   const rooter = useRouter();
 
   const [location, setLocation] = useState(null);
+
+  const handleSignout = (e) => {
+    e.preventDefault();
+    dispatch(logout());
+  };
 
   useEffect(() => {
     return () => {
@@ -143,184 +148,191 @@ const QuestionnaireForm = () => {
 
   return (
     <Layout>
-      {isLoading &&<OverLayLoading/>}
+      {isLoading && <OverLayLoading />}
       <Col style={{ height: "90vh", overflowY: "auto" }}>
         <h1>
           Find your true <br />
           L❤️VE
         </h1>
-          <Form onSubmit={handleSubmit} className="text-left">
-            <Form.Group className="text-left">
-              <Row>
-                <Col>
-                  <Form.Label>I am a</Form.Label>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <Form.Check
-                    type="radio"
-                    label="Man"
-                    name="gender"
-                    id="man"
-                    checked={gender === "man"}
-                    onChange={() => setGender("man")}
-                  />
-                </Col>
-                <Col>
-                  <Form.Check
-                    type="radio"
-                    label="Woman"
-                    name="gender"
-                    id="woman"
-                    checked={gender === "woman"}
-                    onChange={() => setGender("woman")}
-                  />
-                </Col>
-              </Row>
-              {errors.gender && <p className="text-danger">{errors.gender}</p>}
-            </Form.Group>
-            <hr className="mt-5" />
-            <Form.Group className="text-left">
-              <Row>
-                <Col>
-                  <Form.Label>Looking for</Form.Label>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <Form.Check
-                    type="radio"
-                    label="Men"
-                    name="orientation"
-                    id="men"
-                    checked={orientation === "man"}
-                    onChange={() => setOrientation("man")}
-                  />
-                </Col>
-                <Col>
-                  <Form.Check
-                    type="radio"
-                    label="Women"
-                    name="orientation"
-                    id="women"
-                    checked={orientation === "woman"}
-                    onChange={() => setOrientation("woman")}
-                  />
-                </Col>
-              </Row>
-              {errors.orientation && (
-                <p className="text-danger">{errors.orientation}</p>
-              )}
-            </Form.Group>
-            <hr className="mt-5" />
-
-            <Form.Group controlId="formBasicFirstName">
-              <Form.Label>My first name is</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter first name"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-              />
-              {errors.firstName && (
-                <p className="text-danger">{errors.firstName}</p>
-              )}
-            </Form.Group>
-            <hr className="mt-5" />
-
-            <Form.Group controlId="formBasicLastName">
-              <Form.Label>My last name is</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter last name"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-              />
-              {errors.lastName && (
-                <p className="text-danger">{errors.lastName}</p>
-              )}
-            </Form.Group>
-            <hr className="mt-5" />
-
-            <Form.Group controlId="formBasicAge">
-              <Form.Label>My age</Form.Label>
-              <Form.Control
-                type="number"
-                placeholder="Enter age"
-                value={age}
-                onChange={(e) => setAge(e.target.value)}
-              />
-              {errors.age && <p className="text-danger">{errors.age}</p>}
-            </Form.Group>
-            <hr className="mt-5" />
-
-            <Form.Group controlId="formBasicAgeRange">
-              <Form.Label>My dating range</Form.Label>
-              <Form.Control
-                as="select"
-                value={ageRange}
-                onChange={(e) => setAgeRange(e.target.value)}
-              >
-                <option value="">Select age range</option>
-                <option value="18-25">18-25</option>
-                <option value="26-35">26-35</option>
-                <option value="36-45">36-45</option>
-
-                <option value="46-55">46-55</option>
-                <option value="56+">56+</option>
-              </Form.Control>
-              {errors.ageRange && (
-                <p className="text-danger">{errors.ageRange}</p>
-              )}
-            </Form.Group>
-            <hr className="mt-5" />
-
-            <Form.Group controlId="formBasicDistance">
-              <Form.Label>My prefered distance is</Form.Label>
-              <Form.Control
-                type="number"
-                placeholder="Enter distance"
-                value={distance}
-                onChange={(e) => setDistance(e.target.value)}
-              />
-            </Form.Group>
-            {errors.distance && (
-              <p className="text-danger">{errors.distance}</p>
+        <Form onSubmit={handleSubmit} className="text-left">
+          <Form.Group className="text-left">
+            <Row>
+              <Col>
+                <Form.Label>I am a</Form.Label>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Form.Check
+                  type="radio"
+                  label="Man"
+                  name="gender"
+                  id="man"
+                  checked={gender === "man"}
+                  onChange={() => setGender("man")}
+                />
+              </Col>
+              <Col>
+                <Form.Check
+                  type="radio"
+                  label="Woman"
+                  name="gender"
+                  id="woman"
+                  checked={gender === "woman"}
+                  onChange={() => setGender("woman")}
+                />
+              </Col>
+            </Row>
+            {errors.gender && <p className="text-danger">{errors.gender}</p>}
+          </Form.Group>
+          <hr className="mt-5" />
+          <Form.Group className="text-left">
+            <Row>
+              <Col>
+                <Form.Label>Looking for</Form.Label>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Form.Check
+                  type="radio"
+                  label="Men"
+                  name="orientation"
+                  id="men"
+                  checked={orientation === "man"}
+                  onChange={() => setOrientation("man")}
+                />
+              </Col>
+              <Col>
+                <Form.Check
+                  type="radio"
+                  label="Women"
+                  name="orientation"
+                  id="women"
+                  checked={orientation === "woman"}
+                  onChange={() => setOrientation("woman")}
+                />
+              </Col>
+            </Row>
+            {errors.orientation && (
+              <p className="text-danger">{errors.orientation}</p>
             )}
-            <hr className="mt-5" />
+          </Form.Group>
+          <hr className="mt-5" />
 
-            <Form.Group controlId="formBasicAbout">
-              <Form.Label>About Me</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={3}
-                placeholder="Tell us a little about yourself"
-                value={aboutMe}
-                onChange={(e) => setAboutMe(e.target.value)}
-              />
-            </Form.Group>
-            {errors.aboutMe && <p className="text-danger">{errors.aboutMe}</p>}
-            <hr className="mt-5" />
+          <Form.Group controlId="formBasicFirstName">
+            <Form.Label>My first name is</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter first name"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+            />
+            {errors.firstName && (
+              <p className="text-danger">{errors.firstName}</p>
+            )}
+          </Form.Group>
+          <hr className="mt-5" />
 
-            <Form.Group controlId="formBasicPictures">
-              <Form.Label>And here are my pictures</Form.Label>
-              <Form.Control
-                type="file"
-                accept="image/*"
-                multiple
-                onChange={(e) => setPictures(e.target.files)}
-              />
-              {errors.pictures && (
-                <p className="text-danger">{errors.pictures}</p>
-              )}
-            </Form.Group>
-            <hr className="mt-5" />
+          <Form.Group controlId="formBasicLastName">
+            <Form.Label>My last name is</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter last name"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+            />
+            {errors.lastName && (
+              <p className="text-danger">{errors.lastName}</p>
+            )}
+          </Form.Group>
+          <hr className="mt-5" />
 
-            <Button type="submit" className="btn btn-info">
-              Done
-            </Button>
-          </Form>
+          <Form.Group controlId="formBasicAge">
+            <Form.Label>My age</Form.Label>
+            <Form.Control
+              type="number"
+              placeholder="Enter age"
+              value={age}
+              onChange={(e) => setAge(e.target.value)}
+            />
+            {errors.age && <p className="text-danger">{errors.age}</p>}
+          </Form.Group>
+          <hr className="mt-5" />
+
+          <Form.Group controlId="formBasicAgeRange">
+            <Form.Label>My dating range</Form.Label>
+            <Form.Control
+              as="select"
+              value={ageRange}
+              onChange={(e) => setAgeRange(e.target.value)}
+            >
+              <option value="">Select age range</option>
+              <option value="18-25">18-25</option>
+              <option value="26-35">26-35</option>
+              <option value="36-45">36-45</option>
+
+              <option value="46-55">46-55</option>
+              <option value="56+">56+</option>
+            </Form.Control>
+            {errors.ageRange && (
+              <p className="text-danger">{errors.ageRange}</p>
+            )}
+          </Form.Group>
+          <hr className="mt-5" />
+
+          <Form.Group controlId="formBasicDistance">
+            <Form.Label>My prefered distance is</Form.Label>
+            <Form.Control
+              type="number"
+              placeholder="Enter distance"
+              value={distance}
+              onChange={(e) => setDistance(e.target.value)}
+            />
+          </Form.Group>
+          {errors.distance && <p className="text-danger">{errors.distance}</p>}
+          <hr className="mt-5" />
+
+          <Form.Group controlId="formBasicAbout">
+            <Form.Label>About Me</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={3}
+              placeholder="Tell us a little about yourself"
+              value={aboutMe}
+              onChange={(e) => setAboutMe(e.target.value)}
+            />
+          </Form.Group>
+          {errors.aboutMe && <p className="text-danger">{errors.aboutMe}</p>}
+          <hr className="mt-5" />
+
+          <Form.Group controlId="formBasicPictures">
+            <Form.Label>And here are my pictures</Form.Label>
+            <Form.Control
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={(e) => setPictures(e.target.files)}
+            />
+            {errors.pictures && (
+              <p className="text-danger">{errors.pictures}</p>
+            )}
+          </Form.Group>
+          <hr className="mt-5" />
+          <Row>
+            <Col className="d-flex justify-content-around">
+              <Button
+                className="btn btn-info mr-2 mb-2"
+                onClick={handleSignout}
+              >
+                Cancel
+              </Button>
+              <Button type="submit" className="btn btn-info mb-2">
+                Done
+              </Button>
+            </Col>
+          </Row>
+        </Form>
       </Col>
     </Layout>
   );
