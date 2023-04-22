@@ -20,6 +20,7 @@ import backgroundImage from "../../public/img/login-bg.jpg";
 import AuthLayout from "@/components/Auth-Layout";
 import { toast } from "react-toastify";
 import { withoutAuth } from "@/utils/withAuth";
+import OverLayLoading from "@/components/OverLayLoading";
 
 function Signup() {
   const [email, setEmail] = useState("");
@@ -58,13 +59,14 @@ function Signup() {
     if (submitted && errors === null) {
       dispatch(signup(email, password));
     } else {
-      console.log(errors);
+      //console.log(errors);
     }
   }, [submitted, errors]);
   
-
   return (
     <AuthLayout>
+      {isLoading && <OverLayLoading/>}
+
       <h2 className="text-dark">Sign up</h2>
       <Form onSubmit={handleSignup}>
         <Form.Group className="mb-3 text-left" controlId="formEmail">

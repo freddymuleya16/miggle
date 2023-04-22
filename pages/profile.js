@@ -1,6 +1,7 @@
 import { uploadFormToFirebase } from "@/actions/authActions";
 import Layout from "@/components/Layout";
 import OverLayLoading from "@/components/OverLayLoading";
+import { getUserLocation } from "@/utils/helpers";
 import { withAuth } from "@/utils/withAuth";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -16,15 +17,26 @@ const QuestionnaireForm = () => {
   const [age, setAge] = useState("");
   const [ageRange, setAgeRange] = useState("");
   const [distance, setDistance] = useState("");
+  const [aboutMe, setAboutMe] = useState("");  
   const [pictures, setPictures] = useState([]);
   const dispatch = useDispatch();
   const isLoading = useSelector((state) => state.auth.isLoading);
   const error = useSelector((state) => state.auth.error);
   const profileCompleted = useSelector((state) => state.auth.profileCompleted);
-  const rooter = useRouter()
+  const rooter = useRouter();
 
-  if(profileCompleted){
-    rooter.push('/')
+  const [location, setLocation] = useState(null);
+
+  useEffect(() => {
+    return () => {
+      getUserLocation().then((value) => {
+        setLocation(value);
+      });
+    };
+  }, []);
+
+  if (profileCompleted) {
+    rooter.push("/");
   }
   useEffect(() => {
     if (error) {
@@ -34,7 +46,7 @@ const QuestionnaireForm = () => {
 
   const [errors, setErrors] = useState({});
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     // validate form fields
@@ -89,27 +101,54 @@ const QuestionnaireForm = () => {
       errors.pictures = "Please upload at least one picture";
     }
 
+    if (!aboutMe) {
+      errors.aboutMe = "Please provide some information about yourself";
+    } else if (aboutMe.length < 10) {
+      errors.aboutMe = "About me should be at least 10 characters long";
+    } else if (aboutMe.length > 200) {
+      errors.aboutMe = "About me should not exceed 200 characters";
+    }
+
     if (Object.keys(errors).length > 0) {
       // set errors in state
       setErrors(errors);
       return;
     }
-console.log(pictures)
+    let value = await getUserLocation();
+    setLocation(value);
+
+    if (location == null) {
+      toast.error(
+        "Please allow location access. To do so, please check your browser settings and make sure that location access is enabled for this website."
+      );
+      return;
+    }
+
     // handle form submission
-    dispatch(uploadFormToFirebase(gender,orientation,firstName,lastName,age,ageRange,distance,pictures))
+    dispatch(
+      uploadFormToFirebase(
+        gender,
+        orientation,
+        firstName,
+        lastName,
+        age,
+        ageRange,
+        distance,
+        pictures,
+        location,
+        aboutMe
+      )
+    );
   };
 
   return (
     <Layout>
-      
-        <Col style={{ height: "90vh", overflowY: "auto" }}>
-          <h1>
-            Find your true <br />
-            L❤️VE
-          </h1>
-          {isLoading ? (
-        <OverLayLoading />
-      ) : (
+      {isLoading &&<OverLayLoading/>}
+      <Col style={{ height: "90vh", overflowY: "auto" }}>
+        <h1>
+          Find your true <br />
+          L❤️VE
+        </h1>
           <Form onSubmit={handleSubmit} className="text-left">
             <Form.Group className="text-left">
               <Row>
@@ -155,8 +194,8 @@ console.log(pictures)
                     label="Men"
                     name="orientation"
                     id="men"
-                    checked={orientation === "men"}
-                    onChange={() => setOrientation("men")}
+                    checked={orientation === "man"}
+                    onChange={() => setOrientation("man")}
                   />
                 </Col>
                 <Col>
@@ -165,8 +204,8 @@ console.log(pictures)
                     label="Women"
                     name="orientation"
                     id="women"
-                    checked={orientation === "women"}
-                    onChange={() => setOrientation("women")}
+                    checked={orientation === "woman"}
+                    onChange={() => setOrientation("woman")}
                   />
                 </Col>
               </Row>
@@ -251,6 +290,19 @@ console.log(pictures)
             )}
             <hr className="mt-5" />
 
+            <Form.Group controlId="formBasicAbout">
+              <Form.Label>About Me</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                placeholder="Tell us a little about yourself"
+                value={aboutMe}
+                onChange={(e) => setAboutMe(e.target.value)}
+              />
+            </Form.Group>
+            {errors.aboutMe && <p className="text-danger">{errors.aboutMe}</p>}
+            <hr className="mt-5" />
+
             <Form.Group controlId="formBasicPictures">
               <Form.Label>And here are my pictures</Form.Label>
               <Form.Control
@@ -268,9 +320,8 @@ console.log(pictures)
             <Button type="submit" className="btn btn-info">
               Done
             </Button>
-          </Form> )}
-        </Col>
-     
+          </Form>
+      </Col>
     </Layout>
   );
 };

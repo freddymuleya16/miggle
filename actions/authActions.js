@@ -150,7 +150,7 @@ export const checkUserProfileCompletion = () => async (dispatch) => {
       const { profileCompleted } = userDoc.data();
       dispatch(setProfileCompleted(profileCompleted));
     } else {
-      console.log("User document does not exist");
+      //console.log("User document does not exist");
       dispatch(setProfileCompleted(false));
     }
   } catch (error) {
@@ -180,7 +180,9 @@ export const uploadFormToFirebase =
     age,
     ageRange,
     distance,
-    pictures
+    pictures,
+    location,
+    aboutMe
   ) =>
   async (dispatch) => {
     dispatch(setLoading(true));
@@ -189,7 +191,7 @@ export const uploadFormToFirebase =
       const storage = getStorage();
       const storageRef = ref(storage, "pictures");
       pictures = [...pictures];
-      console.log("sasdasdas", pictures);
+      //console.log("sasdasdas", pictures);
       // Create a reference for each picture uploaded
       const pictureRefs = await Promise.all(
         pictures.map((picture) => {
@@ -206,12 +208,13 @@ export const uploadFormToFirebase =
       // Create a reference to Firebase Firestore
       const db_ = db;
 
-      console.log("adgrgrg", pictureRefs);
+      //console.log("adgrgrg", pictureRefs);
 
       // Add the form data to Firestore
       const currentUser = getAuth().currentUser;
 
       await setDoc(doc(collection(db_, "users"), currentUser.uid), {
+        email:currentUser.email,
         gender,
         orientation,
         firstName,
@@ -222,11 +225,16 @@ export const uploadFormToFirebase =
         pictures: pictureRefs,
         createdAt: serverTimestamp(),
         profileCompleted: true,
+        aboutMe,
+        location:{
+          latitude:location.latitude ,
+          longitude: location.longitude,
+        },
       });
 
       dispatch(checkUserProfileCompletion());
     } catch (error) {
-      console.log(error);
+      //console.log(error);
       dispatch(setError(error));
     } finally {
       dispatch(setLoading(false));
@@ -272,7 +280,7 @@ export const googleSignIn = () => async (dispatch) => {
 
     const result = await signInWithPopup(auth, provider);
 
-    console.log(result);
+    //console.log(result);
     // This gives you a Google Access Token. You can use it to access the Google API.
     const credential = GoogleAuthProvider.credentialFromResult(result);
     const token = credential.accessToken;

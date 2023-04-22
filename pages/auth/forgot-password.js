@@ -25,7 +25,7 @@ function ForgotPassword() {
     if (errors === null) {
       dispatch(forgotPassword(email));
     } else {
-      console.log(errors);
+      //console.log(errors);
     }
   }, [errors]);
 

@@ -4,7 +4,7 @@ import { Container } from "react-bootstrap";
 
 const PrivacyPolicy = () => {
   return (
-    <MainLayout>
+    <>
       <Container>
         <h1>Privacy Policy</h1>
         <p>
@@ -91,7 +91,7 @@ const PrivacyPolicy = () => {
           please contact us at privacy@mingle.com.
         </p>
       </Container>
-    </MainLayout>
+    </>
   );
 };
 

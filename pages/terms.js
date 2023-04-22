@@ -5,7 +5,7 @@ import { Container } from "react-bootstrap";
 
 const TermsAndConditions = () => {
   return (
-    <MainLayout>
+    <>
         <Container>
       <h1>Terms and Conditions</h1>
 
@@ -78,7 +78,7 @@ const TermsAndConditions = () => {
         please contact us at support@mingle.com.
       </p>
     </Container>
-    </MainLayout>
+    </>
     
   );
 };

@@ -4,7 +4,7 @@ import { Container, Row, Col, Form, Button } from "react-bootstrap";
 
 const ContactPage = () => {
   return (
-    <MainLayout>
+    <>
       <Container className="my-5">
         <Row>
           <Col md={{ span: 8, offset: 2 }}>
@@ -46,7 +46,7 @@ const ContactPage = () => {
           </Col>
         </Row>
       </Container>
-    </MainLayout>
+    </>
   );
 };
 

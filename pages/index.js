@@ -6,14 +6,14 @@ import FullscreenLoading from "@/components/FullscreenLoading";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import MainLayout from "@/components/MainLayout";
+import MatchPage from "./matches";
 
 const inter = Inter({ subsets: ["latin"] });
 
-function Home() {
+function Home(props) {
   const dispatch = useDispatch();
-  const isLoading = useSelector((state) => state.auth);
+  const isLoading = useSelector((state) => state.auth.isLoading);
   //const error = useSelector(state => state.auth.error);
-  const [Loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("#");
 
   const handleTabClick = (tab) => {
@@ -28,28 +28,13 @@ function Home() {
     }
   }, [error]);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 3000); // change duration to adjust how long the animation should last
-  }, []);
 
-  if (Loading) {
+  if (isLoading) {
     return <FullscreenLoading />;
   }
-  const handleClick = () => {
-    toast.success("This is a success message!", {
-      position: toast.POSITION.TOP_RIGHT,
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
-  };
   return (
-    <MainLayout handleTabClick={handleTabClick}>
-      {activeTab == "#" && <h1>Match</h1>}
+    <MainLayout handleTabClick={handleTabClick} user={props.user}>
+      {activeTab == "#" && <MatchPage user={props.user}/>}
       {activeTab == "notification" && <h1>Notification</h1>}
       {activeTab == "messages" && <h1>Messages</h1>}
     </MainLayout>

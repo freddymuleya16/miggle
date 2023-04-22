@@ -10,7 +10,6 @@ import "../public/assets/css/animate.min.css";
 //import "../public/assets/scss/light-bootstrap-dashboard-react.scss?v=2.0.0";
 import "../public/assets/css/demo.css";
 //import "@fortawesome/fontawesome-free/css/all.min.css";
-import { useEffect } from 'react';
 import '../utils/firebase';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

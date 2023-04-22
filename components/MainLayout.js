@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import backgroundImage from "../public/img/login-bg.jpg";
+import backgroundImage from "../public/img/couple-2.jpg";
 import MingleNavbar from "./Topbar";
 import BottomNav from "./BottomNav";
 import Sidebar from "./Sidebar";
@@ -44,19 +44,10 @@ function MainLayout(props) {
         className="bg-image"
         style={{ backgroundImage: `url(${backgroundImage.src})` }}
       >
-        <Topbar />
+        <Topbar user={props.user} />
         <Container fluid className="h-100">
           <Row className="align-content-around h-100">
-            {!isMobile && (
-              <Col
-                xs={12}
-                md={3}
-                className="align-self-center d-flex flex-column py-3"
-              >
-                <Sidebar />
-              </Col>
-            )}
-            <Col xs={12} md={9} className="p-3">
+            <Col xs={12} className="p-3">
               {props.children}
             </Col>
           </Row>

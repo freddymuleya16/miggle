@@ -15,7 +15,7 @@ const Settings = () => {
   };
 
   return (
-    <MainLayout>
+    <>
       <Container>
         <Row className="mt-3">
           <Col>
@@ -73,7 +73,7 @@ const Settings = () => {
           </Col>
         </Row>
       </Container>
-    </MainLayout>
+    </>
   );
 };
 

@@ -41,7 +41,7 @@ function ResetPassword() {
     if (errors === null) {
       dispatch(resetPassword(email, oobCode));
     } else {
-      console.log(errors);
+      //console.log(errors);
     }
   }, [errors]);
 

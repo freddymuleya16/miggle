@@ -4,7 +4,7 @@ import { Container, Row, Col } from "react-bootstrap";
 
 const About = () => {
   return (
-    <MainLayout>
+    <>
       <Container>
         <Row className="my-4">
           <Col>
@@ -46,7 +46,7 @@ const About = () => {
           </Col>
         </Row>
       </Container>
-    </MainLayout>
+    </>
   );
 };
 
