@@ -37,6 +37,7 @@ const Topbar = (props) => {
                   height={25}
                   alt=""
                   className="rounded-circle"
+                  style={{ objectFit: "cover"}}
                 />
               </>
             }

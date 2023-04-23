@@ -14,7 +14,7 @@ export const calculateDistance = (location1, location2) => {
       Math.sin(dLng / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   const distance = earthRadius * c;
-  return distance;
+  return distance.toFixed(0);
 };
 
 // Helper function to convert degrees to radians

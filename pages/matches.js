@@ -138,6 +138,7 @@ const MatchPage = ({ user }) => {
         ...user.swipingHistory,
       },
     };
+    user.swipingHistory = updatedData.swipingHistory;
     await updateDoc(userDoc, updatedData);
 
     // Check if the user swiped right and the match also swiped right
@@ -193,31 +194,37 @@ const MatchPage = ({ user }) => {
           >
             {match ? (
               <Card className="m-0 py-n2" style={{ borderRadius: "10px" }}>
-                <Carousel  pause='hover' prevLabel={null} nextLabel={null} indicators={false}>
-                    {match.pictures.map((picture,index) => {
-                    return ( <Carousel.Item key={index}>
+                <Carousel
+                  pause="hover"
+                  prevLabel={null}
+                  nextLabel={null}
+                  indicators={false}
+                >
+                  {match.pictures.map((picture, index) => {
+                    return (
+                      <Carousel.Item key={index}>
                         <Card.Img
-                        height={300}
-                        fill
+                          height={300}
                           variant="top"
                           className="d-block w-100"
                           src={picture}
                           style={{
                             borderTopLeftRadius: "10px",
                             borderTopRightRadius: "10px",
+                            objectFit: "cover",
                           }}
                         />
-                      </Carousel.Item>);
-                    })}
-                  </Carousel>
+                      </Carousel.Item>
+                    );
+                  })}
+                </Carousel>
                 <Card.Body>
-                  
                   <Card.Title className="text-black">{`${match.firstName} ${match.lastName}`}</Card.Title>
                   <Card.Subtitle className="mb-2 text-muted">
                     {`${match.age} years old, ${calculateDistance(
                       match.location,
                       user.location
-                    )} away`}
+                    )}km away`}
                   </Card.Subtitle>
                   <Card.Text>
                     {match.aboutMe ??
