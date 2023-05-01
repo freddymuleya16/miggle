@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import MainLayout from "@/components/MainLayout";
 import MatchPage from "./matches";
+import MessagingPage from "../components/chat/messaging";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -36,7 +37,7 @@ function Home(props) {
     <MainLayout handleTabClick={handleTabClick} user={props.user}>
       {activeTab == "#" && <MatchPage user={props.user}/>}
       {activeTab == "notification" && <h1>Notification</h1>}
-      {activeTab == "messages" && <h1>Messages</h1>}
+      {activeTab == "messages" && <MessagingPage user={props.user}/>}
     </MainLayout>
   );
 }

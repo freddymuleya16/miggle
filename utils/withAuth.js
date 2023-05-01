@@ -45,7 +45,10 @@ const withAuth = (WrappedComponent) => {
         }
 
         // Check if the currentUser is verified
-        if (!currentUser.emailVerified && !Router.pathname.includes('/verify-email')) {
+        if (
+          !currentUser.emailVerified &&
+          !Router.pathname.includes("/verify-email")
+        ) {
           Router.push("/auth/verify-email");
           return;
         }
@@ -55,11 +58,15 @@ const withAuth = (WrappedComponent) => {
         // Check if the currentUser's profile is completed
         const userRef = doc(firestore, "users", uid);
         getDoc(userRef).then((userDoc) => {
-          const userData = userDoc.data();
+          const userData = { ...userDoc.data(), id: userDoc.id };
 
-          if ((!userData || !userData.profileCompleted)&&!Router.pathname.includes('/profile')  && !Router.pathname.includes('/verify-email')) {
+          if (
+            (!userData || !userData.profileCompleted) &&
+            !Router.pathname.includes("/profile") &&
+            !Router.pathname.includes("/verify-email")
+          ) {
             Router.push("/profile");
-           ////console.log(Router.pathname)
+            ////console.log(Router.pathname)
             return;
           }
           this.setState({ user: userData, loading: false });
@@ -108,7 +115,10 @@ const withAuth3 = (WrappedComponent) => {
     const userDoc = getDoc(userRef);
     const userData = userDoc.data();
 
-    if ((!userData || !userData.profileCompleted)&&!Router.pathname.includes('/profile') ) {
+    if (
+      (!userData || !userData.profileCompleted) &&
+      !Router.pathname.includes("/profile")
+    ) {
       //Router.push("/profile");
       ////console.log(Router.pathname)
       return <FullscreenLoading />;
