@@ -15,11 +15,13 @@ import { FaHeart, FaHeartBroken } from "react-icons/fa";
 import OverLayLoading from "@/components/OverLayLoading";
 import { toast } from "react-toastify";
 import { getAuth } from "firebase/auth";
+import { useDispatch } from "react-redux";
+import { addNotification } from "@/actions/notificationActions";
 
 const MatchPage = ({ user }) => {
   const [potentialMatches, setPotentialMatches] = useState([]);
   const firestore = db;
-
+  const dispatch = useDispatch()
   const usersCollection = collection(firestore, "users");
   const [match, setMatch] = useState(null);
   const [noMatches, setNoMatches] = useState(false);
@@ -164,6 +166,8 @@ const MatchPage = ({ user }) => {
         // Display match success message
         const fullName = `${matchDocData.firstName} ${matchDocData.lastName}`;
         toast.success(`Matched with ${fullName}`);
+        dispatch(addNotification(matchId,'New Match',`You matched with ${user.firstName} ${user.lastName}`))
+        dispatch(addNotification(getAuth().currentUser.uid,'New Match',`You matched with ${fullName}`))
       }
     }
 

@@ -13,14 +13,14 @@ function BottomNav(props) {
     <Navbar fixed="bottom" bg="transparent" variant='dark'>
       <Nav className="mx-auto align-items-center" >
         <Nav.Link href="#messages" className='text-white' onClick={() => handleTabClick("messages")}>
-          <FaRegEnvelope size={24} />
+          <FaRegEnvelope size={activeTab=='#' ?24:48} />
         </Nav.Link>
         <Nav.Link href="#" className={activeTab=='#' ?'active':'text-white'} onClick={() => handleTabClick("#")}>
-          <FaHeart size={48} />
+          <FaHeart size={activeTab=='#' ?48:24} />
         </Nav.Link>
-        <Nav.Link href="#notifications" className='text-white' onClick={() => handleTabClick("notification")}>
+        {/* <Nav.Link href="#notifications" className='text-white' onClick={() => handleTabClick("notification")}>
           <FaBell size={24} />
-        </Nav.Link>
+        </Nav.Link> */}
       </Nav>
     </Navbar>
   );

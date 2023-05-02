@@ -224,3 +224,8 @@ label,h1,p{
 .text-black{
   color: #000000;
 }
+
+.navbar-expand .navbar-nav .dropdown-menu{
+  left: unset;
+  right:0;
+}

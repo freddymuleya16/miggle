@@ -5,6 +5,8 @@ import { Navbar, Container, Nav, NavDropdown } from "react-bootstrap";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
 import { logout } from "@/actions/authActions";
+import NotificationItem from "./NotificationItem";
+import { getAuth } from "firebase/auth";
 
 const Topbar = (props) => {
   const dispatch = useDispatch();
@@ -48,6 +50,7 @@ const Topbar = (props) => {
             <NavDropdown.Divider />
             <NavDropdown.Item href="#" onClick={handleSignout}>Logout</NavDropdown.Item>
           </NavDropdown>
+          {getAuth().currentUser &&  <NotificationItem/>}
         </Nav>
       </Navbar.Collapse>
     </Container>
