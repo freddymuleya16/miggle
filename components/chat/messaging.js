@@ -30,7 +30,7 @@ const MessagingPage = (props) => {
   // Define a state for the chat document reference
   const [chatRef, setChatRef] = useState(null);
 
-  const [current,setCurrent]=useState(null)
+  const [current, setCurrent] = useState(null);
 
   // Listen for changes in messages when a chat is opened
   useEffect(() => {
@@ -141,8 +141,8 @@ const MessagingPage = (props) => {
                 <Nav
                   activeKey="/home"
                   onSelect={async (selectedKey) => {
-                    let cur=matches.find(x=>x.id==selectedKey)
-                  setCurrent(` ${cur.firstName} ${cur.lastName}`)
+                    let cur = matches.find((x) => x.id == selectedKey);
+                    setCurrent(` ${cur.firstName} ${cur.lastName}`);
                     setChatRef(
                       await getChatDocument(props.user.id, selectedKey)
                     );
@@ -245,38 +245,50 @@ const MessagingPage = (props) => {
                 </Nav>
               </div>
             </div>
-            <hr/>
+            <hr />
             <Row className="p-2">
               <Col>
-              <h5 className="text-dark text-left mt-0 mb-2">{current}</h5>
-               
+                <h5 className="text-dark text-left mt-0 mb-2">{current}</h5>
+
                 <div
                   style={{ height: "300px", overflowY: "scroll", width: "" }}
                 >
                   {messages.map((message) => (
                     <div key={message.id}>
                       {message.sender === props.user.id ? (
-                        <div style={{ textAlign: "right" }}  className="text-dark">{message.text}</div>
+                        <div
+                          style={{ textAlign: "right" }}
+                          className="text-dark"
+                        >
+                          {message.text}
+                        </div>
                       ) : (
-                        <div style={{ textAlign: "left" }}  className="text-dark">{message.text}</div>
+                        <div
+                          style={{ textAlign: "left" }}
+                          className="text-dark"
+                        >
+                          {message.text}
+                        </div>
                       )}
                     </div>
                   ))}
                 </div>
-                <Form onSubmit={handleSubmit}>
-                  <Form.Group controlId="formMessage">
-                    <Form.Label>Message</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Type your message here..."
-                      value={message}
-                      onChange={(event) => setMessage(event.target.value)}
-                    />
-                  </Form.Group>
-                  <Button variant="primary" type="submit">
-                    Send
-                  </Button>
-                </Form>
+                {chatRef && (
+                  <Form onSubmit={handleSubmit}>
+                    <Form.Group controlId="formMessage">
+                      <Form.Label>Message</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Type your message here..."
+                        value={message}
+                        onChange={(event) => setMessage(event.target.value)}
+                      />
+                    </Form.Group>
+                    <Button variant="primary" type="submit">
+                      Send
+                    </Button>
+                  </Form>
+                )}
               </Col>
             </Row>
           </div>
