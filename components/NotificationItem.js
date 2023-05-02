@@ -45,7 +45,13 @@ export default function NotificationItem() {
         <>
           <FaBell className="me-1" />
           {notifications.filter((n) => !n.read).length > 0 && (
-            <Badge bg="danger">
+            <Badge
+              bg="danger"
+              style={{
+                fontSize: "8px",
+                marginLeft: "-5px",
+              }}
+            >
               {notifications.filter((n) => !n.read).length}
             </Badge>
           )}
@@ -53,7 +59,7 @@ export default function NotificationItem() {
       }
       ali
       align="end"
-      menuAlign ='end'
+      menuAlign="end"
       id="basic-nav-dropdown"
       className="py-1"
     >
