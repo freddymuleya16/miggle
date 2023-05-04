@@ -281,7 +281,7 @@ const MessagingPage = (props) => {
                         type="text"
                         placeholder="Type your message here..."
                         value={message}
-                        onChange={(event) => setMessage(event.target.value)}
+                         onChange={(event) => setMessage(event.target.value)}
                       />
                     </Form.Group>
                     <Button variant="primary" type="submit">
