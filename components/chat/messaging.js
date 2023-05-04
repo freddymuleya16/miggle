@@ -16,6 +16,7 @@ import {
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Form, Button, Nav } from "react-bootstrap";
+import ChatItem from "./messages";
 
 const MessagingPage = (props) => {
   // Define a state for the message
@@ -136,9 +137,12 @@ const MessagingPage = (props) => {
                 : { padding: "0px 0px", border: "2px solid #36d7b7" }
             }
           >
-            <div style={{ overflowX: "auto" }}>
+            <div
+              style={{ overflowX: "auto", borderBottom: "1px solid #dee2e6" }}
+            >
               <div style={{ width: "max-content" }}>
                 <Nav
+                  variant="tabs"
                   activeKey="/home"
                   onSelect={async (selectedKey) => {
                     let cur = matches.find((x) => x.id == selectedKey);
@@ -245,7 +249,6 @@ const MessagingPage = (props) => {
                 </Nav>
               </div>
             </div>
-            <hr />
             <Row className="p-2">
               <Col>
                 <h5 className="text-dark text-left mt-0 mb-2">{current}</h5>
@@ -258,16 +261,16 @@ const MessagingPage = (props) => {
                       {message.sender === props.user.id ? (
                         <div
                           style={{ textAlign: "right" }}
-                          className="text-dark"
+                          className="text-dark d-flex justify-content-end"
                         >
-                          {message.text}
+                          <ChatItem message={message} />
                         </div>
                       ) : (
                         <div
                           style={{ textAlign: "left" }}
                           className="text-dark"
                         >
-                          {message.text}
+                          <ChatItem message={message} />
                         </div>
                       )}
                     </div>
@@ -276,17 +279,19 @@ const MessagingPage = (props) => {
                 {chatRef && (
                   <Form onSubmit={handleSubmit}>
                     <Form.Group controlId="formMessage">
-                      <Form.Label>Message</Form.Label>
-                      <Form.Control
-                        type="text"
-                        placeholder="Type your message here..."
-                        value={message}
-                        onChange={(event) => setMessage(event.target.value)}
-                      />
+                      <Row className="d-flex justify-content-center m-0">
+                        <Form.Control
+                          className="d-flex  mr-2 w-75"
+                          type="text"
+                          placeholder="Type your message here..."
+                          value={message}
+                          onChange={(event) => setMessage(event.target.value)}
+                        />
+                        <Button variant="primary" type="submit">
+                          Send
+                        </Button>
+                      </Row>
                     </Form.Group>
-                    <Button variant="primary" type="submit">
-                      Send
-                    </Button>
                   </Form>
                 )}
               </Col>
