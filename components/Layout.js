@@ -23,7 +23,7 @@ function Layout({ children }) {
 
   return (
     <div
-      className="bg-image"
+      className="bg-image h-screen"
       style={
         isMobile
           ? { backgroundColor: "#fff" }

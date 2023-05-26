@@ -7,7 +7,7 @@ const WelcomeAnimation = () => {
   const router = useRouter();
 
   return (
-    <div className="bg-image" style={{ backgroundImage: `url(${backgroundImage.src})` }} >
+    <div className="bg-image h-screen" style={{ backgroundImage: `url(${backgroundImage.src})` }} >
       <div style={{ opacity: 0.5, background: "black" }}>
         <div className={`welcome-screen`}>
           <h1>Welcome to Mingle</h1>

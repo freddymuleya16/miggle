@@ -41,7 +41,7 @@ function MainLayout(props) {
       </Head>
 
       <div
-        className="bg-image"
+        className="bg-image h-screen "
         style={{ backgroundImage: `url(${backgroundImage.src})` }}
       >
         <Topbar user={props.user} />

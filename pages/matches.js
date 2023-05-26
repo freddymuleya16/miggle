@@ -9,6 +9,7 @@ import {
   getDoc,
   query,
   where,
+  serverTimestamp,
 } from "firebase/firestore";
 import { calculateDistance } from "@/utils/helpers";
 import { FaHeart, FaHeartBroken } from "react-icons/fa";
@@ -153,11 +154,11 @@ const MatchPage = ({ user }) => {
       ) {
         // Update both users' matches arrays
         const userMatches = user.matches
-          ? [...user.matches, matchId]
-          : [matchId];
+          ? [...user.matches, {matchId,matchDate:serverTimestamp()}]
+          : [{matchId,matchDate:serverTimestamp()}];
         const matchMatches = matchDocData.matches
-          ? [...matchDocData.matches, userId]
-          : [userId];
+          ? [...matchDocData.matches, userId,{matchDate:serverTimestamp()}]
+          : [{userIdmatchDate:serverTimestamp()}];
         const updatedUserData = { matches: userMatches };
         const updatedMatchData = { matches: matchMatches };
         await updateDoc(userDoc, updatedUserData);

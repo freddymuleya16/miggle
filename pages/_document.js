@@ -5,6 +5,8 @@ export default function Document() {
     <Html lang="en">
       <Head>
         <link href="/dist/output.css" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Kalam&display=swap" rel="stylesheet"/>
+
         <link
           rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"

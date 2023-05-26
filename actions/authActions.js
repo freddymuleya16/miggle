@@ -24,6 +24,9 @@ import {
   addDoc,
   setDoc,
   serverTimestamp,
+  query,
+  where,
+  getDocs,
 } from "firebase/firestore";
 
 export const signup = (email, password) => async (dispatch) => {
@@ -303,3 +306,17 @@ export const googleSignIn = () => async (dispatch) => {
     dispatch(setLoading(false));
   }
 };
+
+export async function getUser(uid) {
+  const q = query(collection(db, "users"), where("__name__", "==", uid));
+  const querySnapshot = await getDocs(q);
+
+  if (querySnapshot.empty) {
+    return null;
+  }
+
+  const doc = querySnapshot.docs[0];
+  const user = { id: doc.id, ...doc.data() };
+
+  return user;
+}
