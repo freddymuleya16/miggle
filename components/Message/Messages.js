@@ -50,18 +50,15 @@ function Messages({ receiverId, matchDate, updateCurrentMatch }) {
     useEffect(() => {
 
         getChatDocument(getAuth().currentUser.uid, receiverId).then((chatId) => {
-            console.log(chatId)
-            setChatRef(
+             setChatRef(
                 chatId
             );
         })
         getUser(receiverId).then((user) => {
-            console.log(user)
             setReceiver(user)
         })
         getUser(getAuth().currentUser.uid).then((user) => {
-            console.log(user)
-            setCurrentUser(user)
+             setCurrentUser(user)
         })
 
 
@@ -82,8 +79,7 @@ function Messages({ receiverId, matchDate, updateCurrentMatch }) {
                     // Loop through each document in the messages collection and add it to the messages array
                     querySnapshot.forEach((doc) => {
                         messages.push({ ...doc.data(), id: doc.id });
-                    });
-                    console.log(messages)
+                    }); 
                     setMessages([...messages]);
                 }
             );
@@ -143,8 +139,7 @@ function Messages({ receiverId, matchDate, updateCurrentMatch }) {
         try {
             const messagesRef = collection(db, `chats/${chatId}/messages`);
             await addDoc(messagesRef, message);
-            console.log("Message added successfully!");
-        } catch (error) {
+            } catch (error) {
             console.error("Error adding message: ", error);
         }
     };
@@ -273,7 +268,7 @@ function Messages({ receiverId, matchDate, updateCurrentMatch }) {
                     </div>
                     <div className="  overflow-auto h-80-p">
                         {messages.map((message, index) =>
-                            <Chat key={index} data={{ pictures: receiver.pictures, ...message, isCurrent: message.sender == currentUser.id, gender: message.sender == currentUser.id ? currentUser.gender : receiver.gender }} />
+                            <Chat key={index} data={{ pictures: receiver.pictures, ...message, isCurrent: message.sender == currentUser.id, gender: message.sender == currentUser.id ? currentUser.gender : receiver.gender ,chatRef}} />
 
                         )}
                     </div>
@@ -292,7 +287,7 @@ function Messages({ receiverId, matchDate, updateCurrentMatch }) {
                 </div>
 
             </div>
-            <div className="basis-1/3 bg-slate-500 h-screen overflow-y-auto">
+            <div className="basis-1/3 bg-gray-200 h-screen overflow-y-auto">
                 <Carousel images={receiver.pictures} />
                 <div className="bg-gray-200 border-l-2 border-b-2 border-gray-400 w-full h-max  py-3 px-2">
                     <h2 className="text-3xl font-poppins font-extrabold ">{receiver.firstName} {receiver.lastName} {receiver.age}</h2>
@@ -316,7 +311,7 @@ function Messages({ receiverId, matchDate, updateCurrentMatch }) {
                     <p className="text-xl font-poppins mt-3  text-gray-600 text-center">You won&rsquo;t see them; they won&rsquo;t see you.</p>
 
                 </div>
-                <div onClick={() => reportAndUnmatchUser(receiver.id)} className="cursor-pointer justify-items-center flex-col items-center bg-gray-200 border-l-2  border-gray-400 w-full h-max  py-3 px-2">
+                <div onClick={() => reportAndUnmatchUser(receiver.id)} className="cursor-pointer justify-items-center flex-col items-center bg-gray-200 border-l-2 border-b-2 border-gray-400 w-full h-max  py-3 px-2">
                     <h2 className="text-3xl font-poppins font-extrabold text-gray-600 text-center">Report</h2>
                     <p className="text-xl font-poppins mt-3  text-gray-600 text-center">Don&rsquo;t worry - we won&rsquo;t tell them.</p>
 

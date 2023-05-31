@@ -5,6 +5,7 @@ import store  from '../store/store';
 import { useRouter } from "next/router";
 // import Navbar from '../components/Navbar';
 import '../styles/globals.css';
+import '../styles/main.css';
 //import "bootstrap/dist/css/bootstrap.min.css";
 import "../public/assets/css/animate.min.css";
 //import "../public/assets/scss/light-bootstrap-dashboard-react.scss?v=2.0.0";

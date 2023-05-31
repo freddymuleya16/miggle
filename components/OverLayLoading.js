@@ -3,12 +3,13 @@ import { CircleLoader } from 'react-spinners'
 
 function OverLayLoading() {
     return (
-        <div className="bg-image h-screen overlay"    >
-            <div className="welcome-screen">
-                <CircleLoader color="#36d7b7" />
-                <h6 style={{ color: '#36d7b7' }}>Loading...</h6>
-            </div>
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-10">
+        <div className="relative">
+          <CircleLoader color="#fda4af" />
+          <h6 style={{ color: '#fda4af' }}>Loading...</h6>
         </div>
+      </div>
+      
     )
 }
 
