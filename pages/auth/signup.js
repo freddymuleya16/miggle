@@ -65,64 +65,70 @@ function Signup() {
   
   return (
     <AuthLayout>
-      {isLoading && <OverLayLoading/>}
-
-      <h2 className="text-dark">Sign up</h2>
-      <Form onSubmit={handleSignup}>
-        <Form.Group className="mb-3 text-left" controlId="formEmail">
-          <Form.Label className="text-dark">Email:</Form.Label>
-          <Form.Control
-            type="email"
-            error="fredd"
-            placeholder="Enter email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <span className="d-flex justify-content-end small text-danger">
-            {errors?.email}
-          </span>
-        </Form.Group>
-        <Form.Group className="mb-3 text-left" controlId="formPassword">
-          <Form.Label className="text-dark">Password:</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <span className="d-flex justify-content-end small text-danger">
-            {errors?.password}
-          </span>
-        </Form.Group>
-        <Form.Group className="mb-3 text-left" controlId="formCPassword">
-          <Form.Label className="text-dark">Confirm Password:</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Confirm Password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-          <span className="d-flex justify-content-end small text-danger">
-            {errors?.confirmPassword}
-          </span>
-        </Form.Group>
-
-        <Button
-          className="btn-fill pull-right"
-          type="submit"
-          variant="info"
-          disabled={isLoading}
-        >
-          Sign up
-        </Button>
-        <p className="card-text mt-2 text-dark">
-          Already have an account?{" "}
-          <Link className="text-info" href="/auth/login">
-            Login
-          </Link>
-        </p>
-      </Form>
-    </AuthLayout>
+    {isLoading && <OverLayLoading />}
+    <h2 className="text-3xl mb-3 font-bold text-rose-500 bg-gradient-to-r from-rose-500 to-rose-300 bg-clip-text text-transparent text-center uppercase">
+      Sign up</h2>
+    <form onSubmit={handleSignup}>
+      <div className="mb-3 text-left">
+        <label htmlFor="formEmail" className="text-dark">Email:</label>
+        <input
+          type="email"
+          id="formEmail"
+          placeholder="Enter email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="form-control"
+        />
+        <span className="d-flex justify-end small text-danger">
+          {errors?.email}
+        </span>
+      </div>
+      <div className="mb-3 text-left">
+        <label htmlFor="formPassword" className="text-dark">Password:</label>
+        <input
+          type="password"
+          id="formPassword"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="form-control"
+        />
+        <span className="d-flex justify-end small text-danger">
+          {errors?.password}
+        </span>
+      </div>
+      <div className="mb-3 text-left">
+        <label htmlFor="formCPassword" className="text-dark">Confirm Password:</label>
+        <input
+          type="password"
+          id="formCPassword"
+          placeholder="Confirm Password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          className="form-control"
+        />
+        <span className="d-flex justify-end small text-danger">
+          {errors?.confirmPassword}
+        </span>
+      </div>
+  
+      <button
+        className="btn-fill bg-rose-500 hover:bg-rose-600 text-white font-bold py-2 px-4 rounded-md mb-4 mx-auto block"
+        type="submit"
+        disabled={isLoading}
+      >
+        Sign up
+      </button>
+  
+      <p className="card-text mt-2 text-dark text-center">
+        Already have an account?{" "}
+        <Link href="/auth/login">
+          <span className="text-info">Login</span>
+        </Link>
+      </p>
+    </form>
+  </AuthLayout>
+  
   );
 }
 

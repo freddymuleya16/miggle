@@ -15,18 +15,15 @@ const Carousel = ({ images }) => {
     };
 
     return (
-        <div className="relative">
-             <Image
-    src={images[activeIndex]}
-    alt="Carousel Image"
-    className="mx-auto object-cover h-full"
-    layout="fixed"
-    width={500} // Set a preferred width here
-    height={300} // Set a preferred height here
-  /> 
-
-           
-
+        <div className="relative h-2/3">
+            <Image
+                src={images[activeIndex]}
+                alt="Carousel Image"
+                className="mx-auto object-cover h-full"
+                layout="fixed"
+                width={800} // Set a preferred width here
+                height={800} // Set a preferred height here
+            />
             <div className="absolute top-2 left-1/2 transform -translate-x-1/2">
                 <div className="flex">
                     {images.map((_, index) => (
@@ -45,7 +42,7 @@ const Carousel = ({ images }) => {
                     className="p-2   text-white rounded-full  focus:outline-none"
                     onClick={handlePrevious}
                 >
-                    <FontAwesomeIcon icon={faChevronLeft} className='text-3xl text-gray-800  hover:text-gray-700'/> 
+                    <FontAwesomeIcon icon={faChevronLeft} className='text-3xl text-gray-800  hover:text-gray-700' />
                 </button>
             </div>
 
@@ -54,8 +51,7 @@ const Carousel = ({ images }) => {
                     className="p-2   text-white rounded-full  focus:outline-none"
                     onClick={handleNext}
                 >
-                   
-                   <FontAwesomeIcon icon={faChevronRight} className='text-3xl text-gray-800  hover:text-gray-700'/> 
+                    <FontAwesomeIcon icon={faChevronRight} className='text-3xl text-gray-800  hover:text-gray-700' />
                 </button>
             </div>
         </div>

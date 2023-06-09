@@ -24,12 +24,13 @@ import { getUser } from '@/actions/authActions';
 import FullscreenLoading from '../FullscreenLoading';
 import OverLayLoading from '../OverLayLoading';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faHomeAlt, faLocationDot, faMars, faTransgender, faVenus } from '@fortawesome/free-solid-svg-icons';
+import { faArrowAltCircleDown, faArrowAltCircleLeft, faHome, faHomeAlt, faLocationDot, faMars, faTransgender, faVenus, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FaHome } from 'react-icons/fa';
+import ChatList from './ChatList';
 
 
 
-function Messages({ receiverId, matchDate, updateCurrentMatch }) {
+function Messages({ receiverId, matchDate, updateCurrentMatch,user }) {
     // Define a state for the message
     const [message, setMessage] = useState("");
 
@@ -47,10 +48,17 @@ function Messages({ receiverId, matchDate, updateCurrentMatch }) {
 
     const [loading, setLoading] = useState(false);
 
+    const [groupedMessages,setGroupedMessages] = useState({})
+
+    const [show, setShow] = useState(false)
+
+    function toggle(){
+        setShow((prev)=>!prev)
+    }
     useEffect(() => {
 
         getChatDocument(getAuth().currentUser.uid, receiverId).then((chatId) => {
-             setChatRef(
+            setChatRef(
                 chatId
             );
         })
@@ -58,7 +66,7 @@ function Messages({ receiverId, matchDate, updateCurrentMatch }) {
             setReceiver(user)
         })
         getUser(getAuth().currentUser.uid).then((user) => {
-             setCurrentUser(user)
+            setCurrentUser(user)
         })
 
 
@@ -79,13 +87,32 @@ function Messages({ receiverId, matchDate, updateCurrentMatch }) {
                     // Loop through each document in the messages collection and add it to the messages array
                     querySnapshot.forEach((doc) => {
                         messages.push({ ...doc.data(), id: doc.id });
-                    }); 
-                    setMessages([...messages]);
+                    });
+                    setMessages([...messages]); 
+
+                    const groupedChats = {};
+                    messages.forEach((chat) => {
+                        const { timestamp } = chat;
+                        console.log("grouped",timestamp.toDate())
+                        const date = new Date(timestamp.seconds * 1000);
+                        const dateString = date.toLocaleDateString('en-GB');
+                        if (!groupedChats[dateString]) {
+                            groupedChats[dateString] = [];
+                        }
+                        groupedChats[dateString].push(chat);
+                    });
+
+
+                    // Print the grouped chats
+                    setGroupedMessages(groupedChats)
+                    console.log(groupedChats,'grouped');
                 }
             );
             return () => unsubscribe();
         }
     }, [chatRef]);
+
+
 
     // Get the chat document for two given user IDs
     const getChatDocument = async (user1Id, user2Id) => {
@@ -110,36 +137,14 @@ function Messages({ receiverId, matchDate, updateCurrentMatch }) {
             });
             return newChatRef.id;
         }
-    };
-
-
-    // Get the user documents for a list of user IDs
-    async function getUsers(userIds) {
-        const userDocs = [];
-        const q = query(
-            collection(db, "users"),
-            where(documentId(), "in", userIds)
-        );
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-            userDocs.push({ ...doc.data(), id: doc.id });
-        });
-        return userDocs;
-    }
-
-    // Get the user matches and store them in the state
-    //   useEffect(() => {
-    //     getUsers(props.user.matches).then((users) => {
-    //       setMatches([...users]);
-    //     });
-    //   }, [props.user.matches]);
+    }; 
 
     // Add a new message to the messages collection for a chat
     const addMessage = async (chatId, message) => {
         try {
             const messagesRef = collection(db, `chats/${chatId}/messages`);
             await addDoc(messagesRef, message);
-            } catch (error) {
+        } catch (error) {
             console.error("Error adding message: ", error);
         }
     };
@@ -168,7 +173,7 @@ function Messages({ receiverId, matchDate, updateCurrentMatch }) {
             const matchDoc = doc(db, "users", matchId);
             const matchSnap = await getDoc(matchDoc);
             const matchData = matchSnap.data();
-             
+
             // Remove the match from the user's matches array
             const updatedUserMatches = userData.matches.filter(
                 (match) => {
@@ -237,12 +242,12 @@ function Messages({ receiverId, matchDate, updateCurrentMatch }) {
         }
     };
 
-    const likeMessage = async (chatId,liked) => {
+    const likeMessage = async (chatId, liked) => {
         setLoading(true)
         try {
-             
+
             // Report the user by incrementing the reportedCount field
-            const userDoc = doc(db, `chats/${chatId}`, );
+            const userDoc = doc(db, `chats/${chatId}`,);
             await updateDoc(userDoc, { reportedCount: increment(1) });
         } catch (error) {
             console.error(error)
@@ -254,41 +259,59 @@ function Messages({ receiverId, matchDate, updateCurrentMatch }) {
     if (receiver == null || currentUser == null) {
         return <OverLayLoading />
     }
+    
 
     return (
         <>
             {loading && <OverLayLoading />}
-            <div className="basis-2/3 bg-gray-200">
-                <div className="bg-gray-200 h-80p">
-                    <div className="bg-gray-200 p-3 h-10p flex items-center   shadow-md hover:shadow-lg transition-shadow">
-                        <Image src={receiver.pictures[0]} alt="" className="inline-block h-12 w-12 rounded-full ring-2 ring-white bg-white object-cover" width={48} height={48} />
-                        <p className="body-font text-2xl font-poppins text-gray-800 mx-3  ">
-                            You matched with {receiver.firstName} {receiver.lastName} on {matchDate}
-                        </p>
-                    </div>
-                    <div className="  overflow-auto h-80-p">
-                        {messages.map((message, index) =>
-                            <Chat key={index} data={{ pictures: receiver.pictures, ...message, isCurrent: message.sender == currentUser.id, gender: message.sender == currentUser.id ? currentUser.gender : receiver.gender ,chatRef}} />
+            <div className={`${show?'hidden':''} sm:block basis-2/3 bg-gray-200`}>
+                <div className="bg-gray-200 h-full">
+                    <div onClick={()=>toggle()} className="bg-gray-200 p-3 h-10p flex items-center   shadow-md hover:shadow-lg transition-shadow fixed top-0 left-0 right-0">
+                        <div className='  flex w-full justify-between'>
+                            <div className=' flex items-center'>
+                                <Image src={receiver.pictures[0]} alt="" className="inline-block h-12 w-12 rounded-full ring-2 ring-white bg-white object-cover" width={48} height={48} />
+                                <p className="body-font sm:text-2xl font-poppins text-gray-800 mx-3  ">
+                                    You matched with {receiver.firstName} {receiver.lastName} on {matchDate?.toDate().toLocaleDateString('en-GB')}
+                                </p>
+                            </div>
+                            <div className='  w-fit justify-self-end'>
+                                <button onClick={() => updateCurrentMatch(null)} className="flex items-center justify-center rounded-full  border-gray-500 text-gray-500  border-2 text-xl p-4 w-16 h-16  hover:border-4 hover:text-2xl">
+                                    <FontAwesomeIcon icon={faXmark} size="2xl" />
+                                </button>
+                            </div>
+                        </div>
 
-                        )}
+                    </div>
+                    <div className="bg-emerald-500  overflow-auto h-80-p">
+                    <ChatList groupedChats={groupedMessages} receiver={receiver} currentUser={user} chatRef={chatRef}/>
+                        {/* {messages.map((message, index) =>
+                            <Chat key={index} data={{ pictures: receiver.pictures, ...message, isCurrent: message.sender == currentUser.id, gender: message.sender == currentUser.id ? currentUser.gender : receiver.gender, chatRef }} />
+
+                        )} */}
                     </div>
 
 
                 </div>
-                <div className="h-10p px-4 border-t-2 border-gray-400  ">
+                <div className="h-10p px-4 border-t-2 border-gray-400 bg-gray-200 fixed bottom-0 left-0 right-0">
                     <input value={message}
                         onChange={(event) => setMessage(event.target.value)} placeholder="Type a message ..." className="h-full w-5/6 bg-transparent  font-poppins  border-none outline-none placeholder-gray-500 text-lg" />
                     <button
                         onClick={handleSubmit}
-                        className="w-1/6 h-4/6 rounded-full font-poppins bg-gradient-to-r from-rose-500 to-rose-300 text-white py-2 px-4 hover:opacity-75 focus:outline-none"
+                        className="w-1/6 h-4/6 rounded-full font-poppins bg-gradient-to-r from-rose-500 to-rose-300 text-white py-2 px-2 sm:px-4 hover:opacity-75 focus:outline-none"
                     >
                         Send
                     </button>
                 </div>
 
             </div>
-            <div className="basis-1/3 bg-gray-200 h-screen overflow-y-auto">
+            <div className={`${!show?'hidden':''} basis-1/3 bg-gray-200 h-screen overflow-y-auto`}>
                 <Carousel images={receiver.pictures} />
+                <div className='justify-end flex h-0 '>
+                      
+                <FontAwesomeIcon onClick={()=>toggle()} icon={faArrowAltCircleLeft} className='sm:hidden text-5xl text-rose-500  hover:text-rose-700 my-2 mx-2' />
+                         
+                </div>
+               
                 <div className="bg-gray-200 border-l-2 border-b-2 border-gray-400 w-full h-max  py-3 px-2">
                     <h2 className="text-3xl font-poppins font-extrabold ">{receiver.firstName} {receiver.lastName} {receiver.age}</h2>
                     {/* <h2 className="text-xl font-poppins my-2 ">

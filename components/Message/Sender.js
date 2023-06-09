@@ -36,12 +36,16 @@ function Sender({ data, onClick }) {
                     querySnapshot.forEach((doc) => {
                         messages.push({ ...doc.data(), id: doc.id });
                     });
-                     setMessage(messages[0]);
+                     setMessage(messages[0]??"-");
                 }
             );
             return () => unsubscribe();
         }
     }, [chatId]);
+    
+    if(message == "-"){
+        return <></>
+    }
 
     return (
         <div className="bg-transparent p-3 inline-flex w-full cursor-pointer" onClick={() => onClick()}>

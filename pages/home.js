@@ -1,132 +1,68 @@
-import { withAuth } from '@/utils/withAuth'
-import Image from "next/image";
-import React, { useEffect, useState } from "react";
-import Temp from "./../public/img/login-bg.jpg"
-import Carousel from "@/components/Carousel";
-import Sender from "@/components/Message/Sender";
-import Chat from "@/components/Message/Chat";
+import React, { useState } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBell, faClover, faHeart, faHome } from '@fortawesome/free-solid-svg-icons';
+
+import { withAuth } from '@/utils/withAuth';
 import Messages from "@/components/Message/Messages";
-import { collection, doc, documentId, getDocs, onSnapshot, query, where } from 'firebase/firestore';
-import { db } from '@/utils/firebase';
-import { getAuth } from 'firebase/auth';
-import Matcher from '@/components/Matcher'; 
 import MatchCard from '@/components/MatchCard';
+import UserNav from '@/components/UserNav';
 
+function Home({ user }) {
 
-function Home({user}) {
-    const [matches, setMatches] = useState([])
     const [currentMatch, setCurrentMatch] = useState(null)
+
     const updateCurrentMatch = (match) => {
         setCurrentMatch(match);
-    }; 
-    useEffect(() => {
-        const unsubscribe = onSnapshot(
-            query(
-                doc(db, `users`, getAuth().currentUser.uid),
-            ),
-            (querySnapshot) => {
-                const data = querySnapshot.data();
-                getUsers(data.matches.map((match) => {
-                    if (match.matchId) {
-                        return match.matchId
-                    } else {
-                        return match
-                    }
-                })).then((users) => {
+        setToggle((tog) => !tog)
+    };
 
-                    const usersWitchMatchdate = users.map(obj1 => {
-                        const match = data.matches.find(obj2 => obj1.id === obj2.matchId);
-                        return { ...obj1, ...match };
-                    });
+    const [toggle, setToggle] = useState(false)
 
-                    setMatches([...usersWitchMatchdate])
-                })
-            }
-        );
-        return () => unsubscribe();
-    }, [])
-    // Get the user documents for a list of user IDs
-    async function getUsers(userIds) {
-        const userDocs = [];
-        if (userIds.length > 0) {
-            const q = query(
-                collection(db, "users"),
-                where(documentId(), "in", userIds)
-            );
-            const querySnapshot = await getDocs(q);
-            querySnapshot.forEach((doc) => {
-                userDocs.push({ ...doc.data(), id: doc.id });
-            });
-        }
+    const [activeBar, setActiveBar] = useState('home');
 
-        return userDocs;
-    }
-    const [activeTab, setActiveTab] = useState('matches');
-
-    const handleTabClick = (tab) => {
-        setActiveTab(tab);
+    const handleBarClick = (bar) => {
+        setActiveBar(bar);
     };
 
     return (
-        <div className=" min-h-screen bg-slate-300 px-0">
-            <div class="flex flex-row mx-0 ">
-                <div class="basis-1/4  h-screen bg-white">
-                    <div className=" h-1/6">
-                        <div className="bg-gradient-to-r from-rose-500 to-rose-300 p-3 h-3/4 flex items-center  ">
-                            <Image src={user.pictures[0]} width={300} height={300} alt="" className="object-cover inline-block h-12 w-12 rounded-full ring-2 ring-white bg-white" />
-                            <span className="body-font font-poppins text-white mx-3 ">
-                                {user.firstName} {user.lastName} 
-                            </span>
-                        </div>
-                        <div className="px-2 h-1/4 "> 
-                                <button
-                                    className={`mr-3  px-2 font-medium focus:outline-none ${activeTab === 'matches' ? 'border-b-4 border-rose-500' : 'text-slate-700 p-2'
-                                        }`}
-                                    onClick={() => handleTabClick('matches')}
-                                >
-                                    Matches
-                                </button>
-                                <button
-                                    className={`mr-3  px-2  font-medium focus:outline-none ${activeTab === 'messages' ? 'border-b-4 border-rose-500' : 'text-slate-700  p-2'
-                                        }`}
-                                    onClick={() => handleTabClick('messages')}
-                                >
-                                    Messages
-                                </button>
-                            </div> 
-                    </div>
+        <div className="min-h-screen bg-white px-0">
+            <div className={`${(activeBar !== 'home' && activeBar !== 'notifications') || (!(activeBar !== 'match' && !currentMatch)) ? 'hidden sm:flex basis-3/4' : 'sm:basis-1/4 basis-full'} h-screen bg-white`}>
+    <UserNav user={user} setCurrentMatch={updateCurrentMatch} handleBarClick={handleBarClick} activeBar={activeBar}/>
+</div>
 
 
-                    {
-                        activeTab === 'matches'
-                        &&
-                        <div className="overflow-y-auto  h-5/6 p-3 flex ">
-                            {matches.map((match, index) => <Matcher onClick={() => {
-                                setCurrentMatch(match)
-                            console.log(match)
-                                handleTabClick('messages')
-                            }
-
-                            } key={index} data={{ pictures: match.pictures, name: match.firstName, surname: match.lastName, id: match.id }} />)}
-                        </div>
-                    }
-                    {
-                        activeTab === 'messages'
-                        &&
-                        <div className="overflow-y-auto   h-5/6">
-                            {matches.map((match, index) => <Sender onClick={() => setCurrentMatch(match)} key={index} data={{ pictures: match.pictures, name: match.firstName, surname: match.lastName, id: match.id }} />)}
-                        </div>
-                    }
-
-                </div>
-                <div class="basis-3/4 flex flex-row mx-0 my-0">
-                {!currentMatch && <MatchCard user={user}/>}
-                    {currentMatch &&
-                        <Messages receiverId={currentMatch.id} matchDate={currentMatch.matchDate} updateCurrentMatch={updateCurrentMatch} />}
-                </div>
+            <div className={`${activeBar !== 'match' && !currentMatch ? 'hidden sm:flex basis-3/4' : 'sm:basis-1/4 basis-full'} flex-row mx-0 my-0`}>
+                {!currentMatch && <MatchCard user={user} />}
+                {currentMatch && (
+                    <Messages
+                        receiverId={currentMatch.id}
+                        matchDate={currentMatch.matchDate}
+                        updateCurrentMatch={updateCurrentMatch}
+                        user={user}
+                    />
+                )}
             </div>
+
+
+            {!currentMatch && <div className="fixed bottom-0 left-0 right-0 bg-white sm:hidden h-[6vh] sm:h-0  shadow-md hover:shadow-lg transition-shadow">
+                <nav className="flex justify-between px-4 py-2">
+                    <a href="#" onClick={() => handleBarClick('home')} className={`flex flex-col items-center w-1/3 ${activeBar == 'home' ? 'text-rose-500 hover:text-rose-600' : 'text-gray-500 hover:text-gray-700'}`}>
+                        <FontAwesomeIcon icon={faHome} className="text-xl" />
+                        <span className="text-xs">Home</span>
+                    </a>
+                    <a href="#" onClick={() => handleBarClick('match')} className={`flex flex-col items-center w-1/3 ${activeBar == 'match' ? 'text-rose-500 hover:text-rose-600' : 'text-gray-500 hover:text-gray-700'}`}>
+                        <FontAwesomeIcon icon={faHeart} className="text-xl" />
+                        <span className="text-xs">Match</span>
+                    </a>
+                    <a href="#" onClick={() => handleBarClick('notifications')} className={`flex flex-col items-center w-1/3 ${activeBar == 'notifications' ? 'text-rose-500 hover:text-rose-600' : 'text-gray-500 hover:text-gray-700'}`}>
+                        <FontAwesomeIcon icon={faBell} className="text-xl" />
+                        <span className="text-xs">Notifications</span>
+                    </a>
+                </nav>
+
+            </div>}
         </div>
     )
 }
 
-export default withAuth(Home)
+export default withAuth(Home) 
