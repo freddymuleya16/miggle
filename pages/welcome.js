@@ -1,13 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { withoutAuth } from "../utils/withAuth";
-import backgroundImage from '../public/img/login-bg.jpg';
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { FaFacebookF } from "react-icons/fa";
-import { TwitterTimelineEmbed } from "react-twitter-embed";
-import { faFacebook, faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { Footer } from "@/components/Footer";
 
 const WelcomeAnimation = () => {
