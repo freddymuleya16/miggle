@@ -50,7 +50,7 @@ function MainLayout(props) {
             <Col xs={12} className="p-3">
               {props.children}
             </Col>
-          </Row>
+          </Row> 
         </Container>
         {props?.handleTabClick && (
           <BottomNav handleTabClick={props.handleTabClick} />
