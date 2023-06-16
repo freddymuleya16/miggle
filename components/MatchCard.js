@@ -189,7 +189,7 @@ function MatchCard({ user }) {
     return (
         <div className="basis-full bg-gray-200">
             <div className="flex justify-center  sm:py-5 bg-gray-200 sm:h-screen h-[96vh]">
-                <div className="w-100 sm:w-[unset]">
+                <div className="w-100 sm:max-w-md">
                     {/* <Carousel images={[Temp, Temp]} className='rounded-lg' /> */}
                     <div className="relative sm:rounded-2xl  p-0 h-full">
                         <Image

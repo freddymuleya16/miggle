@@ -33,6 +33,8 @@ export default function UserNav({ user, setCurrentMatch, toggle, activeBar, hand
                 getUsers(data.matches?.map((match) => {
                     if (match.matchId) {
                         return match.matchId
+                    } else if (match.userId) {
+                        return match.userId
                     } else {
                         return match
                     }
@@ -161,7 +163,7 @@ export default function UserNav({ user, setCurrentMatch, toggle, activeBar, hand
                     {notification}
                 </div>
             }
-            
+
 
         </>);
 }

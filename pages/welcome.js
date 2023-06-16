@@ -39,7 +39,7 @@ const WelcomeAnimation = () => {
         <div className="flex flex-col items-center mb-8">
           <h1 className="text-4xl text-white font-bold mb-4">Find Your True Love</h1>
           <p className="text-white text-lg">Join Miggle Dating and start your journey today.</p>
-          <Link href="/register" className="mt-8">
+          <Link href="/auth/register" className="mt-8">
             <span className="bg-white text-rose-500  hover:bg-rose-500 hover:text-white py-2 px-6 rounded-full mt-8">Get Started</span>
           </Link>
         </div>
@@ -77,10 +77,10 @@ const WelcomeAnimation = () => {
             </Link>
           </div>
         </div>
-      </section> 
-      <Footer/>
+      </section>
+      <Footer />
 
-{/* <footer className="py-4 px-8 text-center text-white">
+      {/* <footer className="py-4 px-8 text-center text-white">
   <section className="newsletter py-20">
     <div className="container mx-auto">
       <h2 className="text-3xl font-bold text-center mb-10 text-white">Subscribe to Our Newsletter</h2>

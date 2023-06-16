@@ -59,7 +59,7 @@ function Sender({ data, onClick }) {
                         "Loading ..."
                     ) : (
                         <>
-                            {message.sender === getAuth().currentUser.uid && (
+                            {message.sender == getAuth().currentUser.uid && (
                                 <FontAwesomeIcon icon={faReply} size="xs" />
                             )}
                             {" "}{message?.text}{message?.message}

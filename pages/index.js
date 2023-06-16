@@ -1,45 +1,68 @@
-import { Inter } from "next/font/google";
-import { logout } from "@/actions/authActions";
-import { useDispatch, useSelector } from "react-redux";
-import { withAuth } from "../utils/withAuth";
-import FullscreenLoading from "@/components/FullscreenLoading";
-import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import MainLayout from "@/components/MainLayout";
-import MatchPage from "./matches";
-import MessagingPage from "../components/chat/messaging";
+import React, { useState } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBell, faClover, faHeart, faHome } from '@fortawesome/free-solid-svg-icons';
 
-const inter = Inter({ subsets: ["latin"] });
+import { withAuth } from '@/utils/withAuth';
+import Messages from "@/components/Message/Messages";
+import MatchCard from '@/components/MatchCard';
+import UserNav from '@/components/UserNav';
 
-function Home(props) {
-  const dispatch = useDispatch();
-  const isLoading = useSelector((state) => state.auth.isLoading);
-  //const error = useSelector(state => state.auth.error);
-  const [activeTab, setActiveTab] = useState("#");
+function Home({ user }) {
 
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
-  };
+    const [currentMatch, setCurrentMatch] = useState(null)
 
-  const error = useSelector((state) => state);
+    const updateCurrentMatch = (match) => {
+        setCurrentMatch(match);
+        setToggle((tog) => !tog)
+    };
 
-  useEffect(() => {
-    if (error) {
-      toast.error(error.message);
-    }
-  }, [error]);
+    const [toggle, setToggle] = useState(false)
+
+    const [activeBar, setActiveBar] = useState('home');
+
+    const handleBarClick = (bar) => {
+        setActiveBar(bar);
+    };
+
+    return (
+        <div className="min-h-screen bg-white px-0 flex">
+            <div className={`${(activeBar !== 'home' && activeBar !== 'notifications') || (!(activeBar !== 'match' && !currentMatch)) ? 'hidden sm:block basis-1/4' : 'sm:basis-1/4 basis-full  '}     h-screen bg-white`}>
+                <UserNav user={user} setCurrentMatch={updateCurrentMatch} handleBarClick={handleBarClick} activeBar={activeBar} />
+            </div>
 
 
-  if (isLoading) {
-    return <FullscreenLoading />;
-  }
-  return (
-    <MainLayout handleTabClick={handleTabClick} user={props.user}>
-      {activeTab == "#" && <MatchPage user={props.user}/>}
-      {activeTab == "notification" && <h1>Notification</h1>}
-      {activeTab == "messages" && <MessagingPage user={props.user}/>}
-    </MainLayout>
-  );
+            <div className={`${activeBar !== 'match' && !currentMatch ? 'hidden sm:flex basis-3/4' : 'sm:basis-3/4 basis-full  '}     mx-0 my-0`}>
+                {!currentMatch && <MatchCard user={user} />}
+                {currentMatch && (
+                    <Messages
+                        receiverId={currentMatch.id}
+                        matchDate={currentMatch.matchDate}
+                        updateCurrentMatch={updateCurrentMatch}
+                        user={user}
+                    />
+                )}
+            </div>
+
+
+            {!currentMatch && <div className="fixed bottom-0 left-0 right-0 bg-white sm:hidden h-[6vh] sm:h-0  shadow-md hover:shadow-lg transition-shadow">
+                <nav className="flex justify-between px-4 py-2 border-t-2">
+                    <a href="#" onClick={() => handleBarClick('home')} className={`flex flex-col items-center w-1/3 ${activeBar == 'home' ? 'text-rose-500 hover:text-rose-600' : 'text-gray-500 hover:text-gray-700'}`}>
+                        <FontAwesomeIcon icon={faHome} className="text-xl" />
+                        <span className="text-xs">Home</span>
+                    </a>
+                    <a href="#" onClick={() => handleBarClick('match')} className={`flex flex-col items-center w-1/3 ${activeBar == 'match' ? 'text-rose-500 hover:text-rose-600' : 'text-gray-500 hover:text-gray-700'}`}>
+                        <FontAwesomeIcon icon={faHeart} className="text-xl" />
+                        <span className="text-xs">Match</span>
+                    </a>
+                    <a href="#" onClick={() => handleBarClick('notifications')} className={`flex flex-col items-center w-1/3 ${activeBar == 'notifications' ? 'text-rose-500 hover:text-rose-600' : 'text-gray-500 hover:text-gray-700'}`}>
+                        <FontAwesomeIcon icon={faBell} className="text-xl" />
+                        <span className="text-xs">Notifications</span>
+                    </a>
+                </nav>
+
+            </div>}
+        </div>
+    )
 }
 
 export default withAuth(Home);
