@@ -268,8 +268,8 @@ function Messages({ receiverId, matchDate, updateCurrentMatch, user }) {
     return (
         <>
             {loading && <OverLayLoading />}
-            <div className={`${show ? 'hidden' : ''} sm:block basis-2/3 bg-gray-200`}>
-                <div className="bg-gray-200 h-full">
+            <div className={`${show ? 'hidden sm:block' : ''} sm:block basis-2/3 bg-gray-200`}>
+                <div className="bg-gray-200   h-[90vh]">
                     <div onClick={() => toggle()} className="bg-gray-200 bg-transparent p-3 h-10p flex items-center   shadow-md hover:shadow-lg transition-shadow">
                         <div className='  flex w-full justify-between'>
                             <div className=' flex items-center'>
@@ -296,7 +296,7 @@ function Messages({ receiverId, matchDate, updateCurrentMatch, user }) {
 
 
                 </div>
-                <div className="h-10p px-4 border-t-2 border-gray-400 bg-gray-200 fixed bottom-0 left-0 right-0 sm:relative">
+                <div className=" h-[10vh] px-4 border-t-2 border-gray-400 bg-gray-200 fixed bottom-0 left-0 right-0 sm:relative">
                     <input value={message}
                         onChange={(event) => setMessage(event.target.value)} placeholder="Type a message ..." className="h-full w-5/6 bg-transparent  font-poppins  border-none outline-none placeholder-gray-500 text-lg" />
                     <button
@@ -308,7 +308,7 @@ function Messages({ receiverId, matchDate, updateCurrentMatch, user }) {
                 </div>
 
             </div>
-            <div className={`${!show ? 'hidden' : ''} basis-1/3 bg-gray-200 h-screen overflow-y-auto`}>
+            <div className={`${!show ? 'hidden sm:block' : ''} basis-1/3 bg-gray-200 h-screen overflow-y-auto`}>
                 <Carousel images={receiver.pictures} />
                 <div className='justify-end flex h-0 '>
 

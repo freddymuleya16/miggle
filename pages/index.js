@@ -31,7 +31,7 @@ function Home({ user }) {
             </div>
 
 
-            <div className={`${activeBar !== 'match' && !currentMatch ? 'hidden sm:flex basis-3/4' : 'sm:basis-3/4 basis-full  '}     mx-0 my-0`}>
+            <div className={`${activeBar !== 'match' && !currentMatch ? 'hidden  basis-3/4' : 'sm:basis-3/4 basis-full  '}   sm:flex  mx-0 my-0`}>
                 {!currentMatch && <MatchCard user={user} />}
                 {currentMatch && (
                     <Messages
