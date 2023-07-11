@@ -1,53 +1,52 @@
-import MainLayout from "@/components/MainLayout";
+import WelcomeLayout from "@/components/WelcomeLayout";
 import React from "react";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
 
-const ContactPage = () => {
+const Contact = () => {
   return (
-    <>
-      <Container className="my-5">
-        <Row>
-          <Col md={{ span: 8, offset: 2 }}>
-            <h1>Contact Us</h1>
-            <p>
-              We are here to help you with any questions or concerns you may
-              have. Please fill out the form below and we will get back to you
-              as soon as possible.
+   <WelcomeLayout>
+        <div className="container mx-auto py-8">
+          <div className="my-4">
+            <h1 className="text-3xl font-bold text-white">Contact Us</h1>
+            <p className="text-lg text-white">
+              We&apos;re here to assist you. If you have any questions, feedback, or
+              inquiries, please don&apos;t hesitate to get in touch with our
+              dedicated support team. We value your input and strive to provide
+              prompt and helpful assistance.
             </p>
-            <Form>
-              <Form.Group controlId="formName">
-                <Form.Label>Name</Form.Label>
-                <Form.Control type="text" placeholder="Enter your name" />
-              </Form.Group>
-
-              <Form.Group controlId="formEmail">
-                <Form.Label>Email address</Form.Label>
-                <Form.Control type="email" placeholder="Enter email" />
-              </Form.Group>
-
-              <Form.Group controlId="formSubject">
-                <Form.Label>Subject</Form.Label>
-                <Form.Control type="text" placeholder="Enter subject" />
-              </Form.Group>
-
-              <Form.Group controlId="formMessage">
-                <Form.Label>Message</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  rows={5}
-                  placeholder="Enter your message"
-                />
-              </Form.Group>
-
-              <Button variant="primary" type="submit">
-                Submit
-              </Button>
-            </Form>
-          </Col>
-        </Row>
-      </Container>
-    </>
+          </div>
+          <div className="my-4">
+            <h2 className="text-2xl font-bold text-white">Contact Information</h2>
+            <p className="text-lg text-white">
+              You can reach us using the following contact details:
+            </p>
+            <ul className="list-disc list-inside text-lg text-white">
+              <li>Email: info@mingle.com</li>
+              <li>Phone: +1 123-456-7890</li>
+              <li>Address: 123 Main Street, City, Country</li>
+            </ul>
+          </div>
+          <div className="my-4">
+            <h2 className="text-2xl font-bold text-white">Customer Support</h2>
+            <p className="text-lg text-white">
+              Our dedicated customer support team is available to assist you
+              with any issues or concerns you may have. Please reach out to us
+              and we&apos;ll get back to you as soon as possible.
+            </p>
+            <p className="text-lg text-white">
+              For support inquiries, please email{" "}
+              <a
+                href="mailto:support@mingle.com"
+                className="text-rose-300 hover:text-rose-400"
+              >
+                support@mingle.com
+              </a>
+              .
+            </p>
+          </div>
+        </div>
+        
+     </WelcomeLayout>
   );
 };
 
-export default ContactPage;
+export default Contact;

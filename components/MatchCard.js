@@ -54,6 +54,12 @@ function MatchCard({ user }) {
 
                 }
 
+                // Check if the potential match is blocked by the current user
+                if (user.blockedUsers && user.blockedUsers.includes(potentialMatch.id)) {
+                    console.log(potentialMatch.firstName, ` is blocked by current user`);
+                    return false;
+                }
+
                 // Calculate the distance between the potential match and the current user
                 const distance = calculateDistance(
                     potentialMatch.location,
@@ -79,7 +85,7 @@ function MatchCard({ user }) {
                 }
 
                 // Check if the potential match's gender matches the current user's orientation
-                if (user.orientation !== potentialMatch.gender) {
+                if (user.orientation !== potentialMatch.gender && user.orientation !== 'both') {
                     console.info(
                         `Current user (${user.gender}) is looking for ${user.orientation}, but potential match (${potentialMatch.gender}) is the same gender.`
                     );

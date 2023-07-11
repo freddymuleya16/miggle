@@ -27,6 +27,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowAltCircleDown, faArrowAltCircleLeft, faHome, faHomeAlt, faLocationDot, faMars, faTransgender, faVenus, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FaHome } from 'react-icons/fa';
 import ChatList from './ChatList';
+import UserMessageAction from '../UserMessageAction';
 
 
 
@@ -328,22 +329,26 @@ function Messages({ receiverId, matchDate, updateCurrentMatch, user }) {
                         {' '} {receiver.distance} kilometres away</h2>
 
                 </div>
-                <div onClick={() => removeMatch(currentUser.id, receiver.id)} className="cursor-pointer justify-items-center flex-col items-center bg-gray-200 border-l-2 border-b-2 border-gray-400 w-full h-max  py-3 px-2">
+                <UserMessageAction onConfirm={() => removeMatch(currentUser.id, receiver.id)}>
                     <h2 className="text-3xl font-poppins font-extrabold text-gray-600 text-center">Unmatch</h2>
-                    <p className="text-xl font-poppins mt-3  text-gray-600 text-center">No longer interested? Remove them from your matches.</p>
+                    <p className="text-xl font-poppins mt-3  text-gray-600 text-center">
+                        No longer interested? Remove them from your matches.
+                    </p>
+                </UserMessageAction>
 
-                </div>
-                <div onClick={() => blockUser(receiver.id)} className="cursor-pointer justify-items-center flex-col items-center bg-gray-200 border-l-2 border-b-2 border-gray-400 w-full h-max  py-3 px-2">
+                <UserMessageAction onConfirm={() => blockUser(receiver.id)}>
                     <h2 className="text-3xl font-poppins font-extrabold text-gray-600 text-center">Block</h2>
-                    <p className="text-xl font-poppins mt-3  text-gray-600 text-center">You won&rsquo;t see them; they won&rsquo;t see you.</p>
+                    <p className="text-xl font-poppins mt-3  text-gray-600 text-center">
+                        You won&rsquo;t see them; they won&rsquo;t see you.
+                    </p>
+                </UserMessageAction>
 
-                </div>
-                <div onClick={() => reportAndUnmatchUser(receiver.id)} className="cursor-pointer justify-items-center flex-col items-center bg-gray-200 border-l-2 border-b-2 border-gray-400 w-full h-max  py-3 px-2">
+                <UserMessageAction onConfirm={() => reportAndUnmatchUser(receiver.id)}>
                     <h2 className="text-3xl font-poppins font-extrabold text-gray-600 text-center">Report</h2>
-                    <p className="text-xl font-poppins mt-3  text-gray-600 text-center">Don&rsquo;t worry - we won&rsquo;t tell them.</p>
-
-                </div>
-
+                    <p className="text-xl font-poppins mt-3  text-gray-600 text-center">
+                        Don&rsquo;t worry - we won&rsquo;t tell them.
+                    </p>
+                </UserMessageAction>
             </div>
         </>
     )

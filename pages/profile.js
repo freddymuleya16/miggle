@@ -36,7 +36,9 @@ const QuestionnaireForm = () => {
 
   useEffect(() => {
     return () => {
+      
       getUserLocation().then((value) => {
+        console.log('ran',value)
         setLocation(value);
       });
     };
@@ -166,7 +168,7 @@ const QuestionnaireForm = () => {
   return (
     <Layout>
       {isLoading && <OverLayLoading />}
-      
+
       <div className="sm:h-[90vh] overflow-y-auto  ">
         <h1 className="text-4xl">
           Find your true <br />
@@ -214,7 +216,7 @@ const QuestionnaireForm = () => {
                 />
                 <label htmlFor="men">Men</label>
               </div>
-              <div className="  items-center">
+              <div className="mr-4  items-center">
                 <input
                   type="radio"
                   id="women"
@@ -224,6 +226,16 @@ const QuestionnaireForm = () => {
                 />
                 <label htmlFor="women">Women</label>
               </div>
+              <div className="  items-center">
+                <input
+                  type="radio"
+                  id="both"
+                  checked={orientation === "both"}
+                  onChange={() => setOrientation("both")}
+                  className="mr-2"
+                />
+                <label htmlFor="both">Both</label>
+              </div>
             </div>
 
             {errors.orientation && <p className="text-red-500">{errors.orientation}</p>}
@@ -231,7 +243,7 @@ const QuestionnaireForm = () => {
 
           <hr className="my-3" />
 
-          <div className="form-group" controlId="formBasicFirstName">
+          <div className="form-group" control id="formBasicFirstName">
             <label>My first name is</label>
             <input
               type="text"
@@ -246,7 +258,7 @@ const QuestionnaireForm = () => {
           </div>
           <hr className="my-3" />
 
-          <div className="form-group" controlId="formBasicLastName">
+          <div className="form-group" control id="formBasicLastName">
             <label>My last name is</label>
             <input
               type="text"
@@ -261,7 +273,7 @@ const QuestionnaireForm = () => {
           </div>
           <hr className="my-3" />
 
-          <div className="form-group" controlId="formBasicAge">
+          <div className="form-group" control id="formBasicAge">
             <label>My age</label>
             <input
               type="number"
@@ -274,20 +286,20 @@ const QuestionnaireForm = () => {
           </div>
           <hr className="my-3" />
 
-          <div className="form-group" controlId="formBasicAgeRange">
+          <div className="form-group" control id="formBasicAgeRange">
             <label>My dating range</label>
             <div className="flex">
               <div className="flex-col">
                 <input
-                type="number"
-                className="form-control mr-2"
-                placeholder="Min age"
-                value={minAge}
-                onChange={(e) => setMinAge(e.target.value)}
-              />
-              {errors.minAge && (
-                <p className="text-danger">{errors.minAge}</p>
-              )}
+                  type="number"
+                  className="form-control mr-2"
+                  placeholder="Min age"
+                  value={minAge}
+                  onChange={(e) => setMinAge(e.target.value)}
+                />
+                {errors.minAge && (
+                  <p className="text-danger">{errors.minAge}</p>
+                )}
               </div>
               <div className="flex-col ml-2"> <input
                 type="number"
@@ -296,11 +308,11 @@ const QuestionnaireForm = () => {
                 value={maxAge}
                 onChange={(e) => setMaxAge(e.target.value)}
               />
-              {errors.maxAge && (
-                <p className="text-danger">{errors.maxAge}</p>
-              )}
+                {errors.maxAge && (
+                  <p className="text-danger">{errors.maxAge}</p>
+                )}
               </div>
-              
+
             </div>
             {errors.ageRange && (
               <p className="text-red-500">{errors.ageRange}</p>
@@ -308,7 +320,7 @@ const QuestionnaireForm = () => {
           </div>
           <hr className="my-3" />
 
-          <div className="form-group" controlId="formBasicDistance">
+          <div className="form-group" control id="formBasicDistance">
             <label>My preferred distance is</label>
             <input
               type="number"
@@ -323,7 +335,7 @@ const QuestionnaireForm = () => {
           )}
           <hr className="my-3" />
 
-          <div className="form-group" controlId="formBasicAbout">
+          <div className="form-group" control id="formBasicAbout">
             <label>About Me</label>
             <textarea
               rows={3}
@@ -338,7 +350,7 @@ const QuestionnaireForm = () => {
           </div>
           <hr className="my-3" />
 
-          <div className="form-group" controlId="formBasicPictures">
+          <div className="form-group" control id="formBasicPictures">
             <label>And here are my pictures</label>
             <input
               type="file"

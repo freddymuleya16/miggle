@@ -1,38 +1,59 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Project Tasks - Deadline: 10/07/2023
 
-## Getting Started
+This document outlines the tasks to be completed by 10/07/2023 for the project. Each task has an estimated time scale assigned to it. 
 
-First, run the development server:
+Please note that these are approximate time estimates and may vary based on individual factors. 
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+## Task List
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. **Reset Matches** - Estimated Time: 1 hour (Completed)
+   - Implement the functionality to reset matches for a user.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+2. **Edit Profile** - Estimated Time: 4 hours
+   - Develop the feature to allow users to edit their profile information.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+3. **Settings (Logout, Delete Account, Change Password)** - Estimated Time: 3 hours
+   - Implement the settings functionality, including logout, account deletion, and password change.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+4. **Both Male and Female** - Estimated Time: 1 hour (Completed)
+   - Modify the system to support both male and female users.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+5. **Encrypt Messages** - Estimated Time: 2 hours
+   - Implement message encryption to enhance security and privacy.
 
-## Learn More
+6. **Change Primary Color** - Estimated Time: 1 hour
+   - Update the primary color theme of the application.
 
-To learn more about Next.js, take a look at the following resources:
+7. **Sending Pictures in Chats** - Estimated Time: 3 hours
+   - Develop the ability to send pictures within chat conversations.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+8. **Voice Notes** - Estimated Time: 4 hours
+   - Implement the functionality to send and receive voice notes in chats.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+9. **Voice Call / Video Call** - Estimated Time: 5 hours
+   - Develop the feature to initiate voice and video calls between users.
 
-## Deploy on Vercel
+10. **Payment Gateway** - Estimated Time: 5 hours
+    - Integrate a payment gateway to enable premium features and subscription plans.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+11. **Privacy Policy** - Estimated Time: 2 hours (Completed)
+    - Create a privacy policy page to inform users about data handling and protection.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+12. **Terms and Conditions** - Estimated Time: 2 hours 
+(Completed)
+    - Draft the terms and conditions page to establish guidelines for app usage.
+
+13. **About Us** - Estimated Time: 2 hours (Completed)
+    - Create an "About Us" section to provide information about the company or app.
+
+14. **Contact Us** - Estimated Time: 4 hours (Completed)
+    - Develop a contact page to allow users to get in touch with the app's support team.
+
+15. **Sending Videos** - Estimated Time: 3 hours
+    - Implement the functionality to send videos within chat conversations.
+
+## Note
+Please note that the estimated time scales are provided for guidance and may vary based on individual development factors and complexities. It's important to allocate additional time for testing, bug fixing, and any unforeseen issues that may arise during the development process.
+
+It's recommended to prioritize the tasks based on their dependencies and criticality to ensure the timely completion of the project. Regular progress monitoring and updates will help track the project's development and make any necessary adjustments to the timeline if required.
+ 
