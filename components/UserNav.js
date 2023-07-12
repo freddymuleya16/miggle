@@ -6,11 +6,11 @@ import { db } from '@/utils/firebase';
 import { getAuth } from 'firebase/auth';
 import Matcher from '@/components/Matcher';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell, faCog, faCross, faRightFromBracket, faXmark, faXmarkSquare } from '@fortawesome/free-solid-svg-icons';
+import { faBell, faCog, faCross, faHome, faHomeAlt, faHomeLg, faHomeUser, faPerson, faRightFromBracket, faTrash, faUser, faXmark, faXmarkSquare } from '@fortawesome/free-solid-svg-icons';
 import UseNotifications from "./Notifications";
 import { logout } from "@/actions/authActions";
 import { useDispatch } from "react-redux";
-import MatchCard from "./MatchCard";
+import MatchCard from "./MatchCard"; 
 
 
 export default function UserNav({ user, setCurrentMatch, toggle, activeBar, handleBarClick }) {
@@ -80,22 +80,24 @@ export default function UserNav({ user, setCurrentMatch, toggle, activeBar, hand
         < >
             <div className=" h-1/6">
                 <div className="bg-gradient-to-r from-rose-500 to-rose-300 p-3 h-3/4 flex items-center justify-between">
-                    <div className="flex items-center cursor-pointer" onClick={() => handleBarClick('home')}>
+                    <div className="flex items-center cursor-pointer" >
                         <Image src={user.pictures[0]} width={300} height={300} alt="" className="object-cover inline-block h-12 w-12 rounded-full ring-2 ring-white bg-white" />
                         <span className="body-font font-poppins text-white mx-3">
                             {user.firstName} {user.lastName}
                         </span>
                     </div>
                     <div className="flex items-center">
-
-                        <button onClick={() => handleBarClick('notifications')} className="sm:inline-block hidden relative bg-white rounded-full p-3 border-2 text-rose-500 focus:bg-rose-500 hover:bg-rose-500 hover:border-rose-500">
+                    <button onClick={() => handleBarClick('home')} className="sm:inline-block focus:outline-none hidden relative  p-2 text-white hover:text-xl">
+                            <FontAwesomeIcon icon={faHomeLg} size='lg' />
+                        </button>
+                        <button onClick={(e) => handleSignout(e)} className="inline-block focus:outline-none sm:hidden relative  p-2 text-white hover:text-xl">
+                            <FontAwesomeIcon icon={faRightFromBracket} size='xl' />
+                        </button>
+                        <button onClick={() => handleBarClick('notifications')} className="sm:inline-block focus:outline-none hidden relative  p-2 text-white hover:text-xl">
                             <FontAwesomeIcon icon={faBell} size='xl' />
-                            <span className="absolute top-0 right-0 bg-rose-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                            <span className="absolute top-0 right-0 bg-rose-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
                                 {notificationNumber}
                             </span>
-                        </button>
-                        <button onClick={(e) => handleSignout(e)} className='bg-white rounded-full ml-2 p-3 border-2 text-rose-500  focus:bg-rose-500 hover:bg-rose-500 hover:border-rose-500'>
-                            <FontAwesomeIcon icon={faRightFromBracket} size='xl' />
                         </button>
                     </div>
                 </div>
@@ -142,13 +144,22 @@ export default function UserNav({ user, setCurrentMatch, toggle, activeBar, hand
             {
                 activeTab === 'matches' && activeBar == 'home'
                 &&
-                <div className="overflow-y-auto  h-5/6 p-3 flex ">
-                    {matches.map((match, index) => <Matcher onClick={() => {
-                        setCurrentMatch(match);
-                        console.log(match);
-                        handleTabClick('messages');
-                    }} key={index} data={{ pictures: match.pictures, name: match.firstName, surname: match.lastName, id: match.id }} />)}
-                </div>}
+                <>
+                    <div className="overflow-y-auto  h-[78%] p-3 flex  ">
+                        {matches.map((match, index) => <Matcher onClick={() => {
+                            setCurrentMatch(match);
+                            console.log(match);
+                            handleTabClick('messages');
+                        }} key={index} data={{ pictures: match.pictures, name: match.firstName, surname: match.lastName, id: match.id }} />)}
+                    </div>
+                    <div className="p-1 h-[5.3333%] bg-gradient-to-r from-rose-500 to-rose-300 ">
+                        <button onClick={() => handleBarClick('settings')} className=" h-100  hover:text-lg   text-white   flex items-center justify-center w-100 focus:outline-none ">
+                            <FontAwesomeIcon icon={faCog} className="mr-2" />
+                            Settings
+                        </button>
+                    </div>
+
+                </>}
             {
                 activeTab === 'messages' && activeBar == 'home'
                 &&
@@ -164,6 +175,21 @@ export default function UserNav({ user, setCurrentMatch, toggle, activeBar, hand
                 </div>
             }
 
+            {
+                activeBar == 'settings'
+                &&
+                <>
+                    <div className="overflow-y-auto  h-[78%] p-3 flex-col font-poppins">
+ 
+                    </div>
+                    <div className="p-1 h-[5.3333%] bg-gradient-to-r from-rose-500 to-rose-300 hidden sm:block">
+                        <button onClick={(e) => handleSignout(e)} class=" h-100  hover:text-lg   text-white   flex items-center justify-center w-100 focus:outline-none ">
+                            <FontAwesomeIcon icon={faRightFromBracket} className="mr-2" />
+                            Sign out
+                        </button>
+                    </div>
+                </> 
+            }
 
         </>);
 }

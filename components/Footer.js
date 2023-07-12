@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export const Footer = () => {
     return (
-        <footer className="flex justify-between items-center py-4 px-8 bg-gradient-to-r from-rose-400 to-rose-500">
+        <footer className="flex justify-between items-center py-4 sm:px-8 bg-gradient-to-r from-rose-400 to-rose-500">
             <div className="container mx-auto px-8">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                     <div>

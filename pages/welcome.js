@@ -28,9 +28,9 @@ const WelcomeAnimation = () => {
           </Link>
         </div>
 
-        <div className="grid grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
           <div className="flex flex-col items-center">
-            <Image src="/img/matches.jpg" width={500} height={500} alt="Feature 1" className="h-72 mb-4 object-cover" />
+            <Image src="/img/matches.jpg" width={500} height={500} alt="Feature 1" className="h-72 mb-4 object-cover rounded-lg" />
             <h3 className="text-white text-lg font-semibold">Advanced Matching</h3>
             <p className="text-white">
               Our advanced matching algorithm connects you with compatible partners who share your interests and values.
@@ -38,7 +38,7 @@ const WelcomeAnimation = () => {
             </p>
           </div>
           <div className="flex flex-col items-center">
-            <Image src="/img/privacy.jpg" width={500} height={500} alt="Feature 1" className="h-72 mb-4 object-cover" />
+            <Image src="/img/privacy.jpg" width={500} height={500} alt="Feature 1" className="h-72 mb-4 object-cover rounded-lg" />
             <h3 className="text-white text-lg font-semibold">Secure and Private</h3>
             <p className="text-white">
               At Miggle Dating, your privacy is our top priority. We employ advanced security measures to ensure that
@@ -46,7 +46,7 @@ const WelcomeAnimation = () => {
             </p>
           </div>
           <div className="flex flex-col items-center">
-            <Image src="/img/24/7.jpg" width={500} height={500} alt="Feature 1" className="h-72 mb-4 object-cover" />
+            <Image src="/img/24/7.jpg" width={500} height={500} alt="Feature 1" className="h-72 mb-4 object-cover rounded-lg" />
             <h3 className="text-white text-lg font-semibold">24/7 Support</h3>
             <p className="text-white">
               Our dedicated support team is available 24/7 to assist you. Whether you have questions, need guidance, or
@@ -56,18 +56,18 @@ const WelcomeAnimation = () => {
         </div>
       </section>
 
-      <section class="about py-20">
-        <div class="container mx-auto flex flex-wrap">
+      <section class="about sm:py-20 px-3 ">
+        <div class="container mx-auto flex flex-wrap ">
           <div class="w-full md:w-1/2">
             <Image
               src="/img/about.jpg"
-              width={300}
-              height={300}
+              width={500}
+              height={500}
               alt="About Us Image"
-              class="h-64 object-cover mx-auto mb-6 md:mb-0 md:ml-auto md:mr-0 w-3/4 md:w-full rounded-lg"
+              class="h-72 sm:h-64 object-cover mx-auto mb-6 md:mb-0 md:ml-auto md:mr-0 sm:w-3/4 md:w-full rounded-lg"
             />
           </div>
-          <div class="w-full md:w-1/2 flex flex-col justify-center px-4 h-fit">
+          <div class="w-full md:w-1/2 flex flex-col justify-center items-center sm:px-4 h-fit">
             <h2 class="text-3xl font-bold mb-4 text-white">About Mingle</h2>
             <p class="text-lg mb-2 text-white">
               Welcome to Mingle, the leading dating platform where you can meet like-minded individuals and find your

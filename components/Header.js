@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import React from 'react'
+import React from 'react' 
 
 function Header() {
     const router = useRouter()
@@ -11,28 +11,41 @@ function Header() {
     }
 
     return (
-        <nav className="flex justify-between items-center py-4 px-8">
-            <Link href="/" className='hover:no-underline'>
-                <span className={`text-white font-bold text-2xl ${isActive('/')}`}>Miggle</span>
-            </Link>
-            <div className="flex space-x-4">
+        <>
+            <nav className="flex sm:justify-between justify-center items-center py-4 px-8">
                 <Link href="/" className='hover:no-underline'>
-                    <span className={`text-white ${isActive('/welcome')}`}>Home</span>
+                    <span className={`text-white font-bold text-2xl ${isActive('/')}`}>Miggle</span>
                 </Link>
-                <Link href="/privacy" className='hover:no-underline'>
-                    <span className={`text-white ${isActive('/privacy')}`}>Privacy</span>
-                </Link>
-                <Link href="/about" className='hover:no-underline'>
-                    <span className={`text-white ${isActive('/about')}`}>About</span>
-                </Link>
-                <Link href="/contact" className='hover:no-underline'>
-                    <span className={`text-white ${isActive('/contact')}`}>Contact Us</span>
-                </Link>
-                <Link href="/auth/login" className='hover:no-underline'>
-                    <span className={`text-white ${isActive('/auth/login')}`}>Sign In</span>
-                </Link>
+                <div className="space-x-4 hidden sm:flex">
+                    <NavLinks isActive={isActive} />
+                </div>
+            </nav>
+            <div className="nav-links flex sm:hidden  justify-between px-3">
+                <NavLinks isActive={isActive} />
             </div>
-        </nav>
+        </>
+    )
+}
+
+const NavLinks = ({ isActive }) => {
+    return (<>
+        <Link href="/" className='hover:no-underline'>
+            <span className={`text-white ${isActive('/welcome')}`}>Home</span>
+        </Link>
+        <Link href="/privacy" className='hover:no-underline'>
+            <span className={`text-white ${isActive('/privacy')}`}>Privacy</span>
+        </Link>
+        <Link href="/about" className='hover:no-underline'>
+            <span className={`text-white ${isActive('/about')}`}>About</span>
+        </Link>
+        <Link href="/contact" className='hover:no-underline'>
+            <span className={`text-white ${isActive('/contact')}`}>Contact Us</span>
+        </Link>
+        <Link href="/auth/login" className='hover:no-underline'>
+            <span className={`text-white ${isActive('/auth/login')}`}>Sign In</span>
+        </Link>
+    </>
+
     )
 }
 

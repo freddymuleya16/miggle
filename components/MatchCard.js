@@ -121,7 +121,7 @@ function MatchCard({ user }) {
     if (potentialMatches.length == 0) {
         if (noMatches) {
             return (<div className="basis-full bg-gray-200">
-                <div className="bg-image h-screen" style={{ backgroundColor: '#fff' }}   >
+                <div className="bg-image h-screen">
                     <div className="align-items-center flex h-screen justify-center welcome-screen">
                         <FontAwesomeIcon icon={faSadTear} size='2xl' className='text-rose-500 mr-2' />
                         <h2 className='text-rose-500 mr-2 text-xl font-bold font-poppins'>No matches found.</h2>
