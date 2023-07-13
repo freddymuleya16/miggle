@@ -56,14 +56,17 @@ function Messages({ receiverId, matchDate, updateCurrentMatch, user }) {
 
     function toggle() {
         setShow((prev) => !prev)
-    }
+    }  
     useEffect(() => {
 
-        getChatDocument(getAuth().currentUser.uid, receiverId).then((chatId) => {
-            setChatRef(
-                chatId
-            );
-        })
+        console.log('chatref',chatRef)
+        if (!chatRef) {
+            getChatDocument(getAuth().currentUser.uid, receiverId).then((chatId) => {
+                setChatRef(
+                    chatId
+                );
+            })
+        }
         getUser(receiverId).then((user) => {
             setReceiver(user)
         })
@@ -72,10 +75,9 @@ function Messages({ receiverId, matchDate, updateCurrentMatch, user }) {
         })
 
 
-    }, [receiverId])
+    }, [chatRef, receiverId])
 
-    // Listen for changes in messages when a chat is opened
-    useEffect(() => {
+useEffect(() => {
 
         if (chatRef) {
             // Use onSnapshot to listen for changes in the messages collection for this chat
@@ -131,7 +133,9 @@ function Messages({ receiverId, matchDate, updateCurrentMatch, user }) {
             return doc.data().users.includes(user2Id);
         });
         // If there's a match, return the chat document ID
+        console.log('docs found:', matchingDocs)
         if (matchingDocs.length > 0) {
+
             return matchingDocs[0].id;
         } else {
             // If there's no match, create a new chat document and return its ID
@@ -140,6 +144,7 @@ function Messages({ receiverId, matchDate, updateCurrentMatch, user }) {
                 id: newChatRef.id,
                 users: [user1Id, user2Id],
             });
+            console.log('Created:', newChatRef.id)
             return newChatRef.id;
         }
     };
