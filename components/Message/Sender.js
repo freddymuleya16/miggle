@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import Image from 'next/image'
 import { getAuth } from 'firebase/auth'
-import { getChatDocumentWithoutCreating } from '@/utils/helpers'
+import { decryptMessage, getChatDocumentWithoutCreating } from '@/utils/helpers'
 import { collection, limit, onSnapshot, orderBy, query } from 'firebase/firestore'
 import { db } from '@/utils/firebase'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -38,7 +38,7 @@ function Sender({ data, onClick }) {
                     const messages = [];
                     // Loop through each document in the messages collection and add it to the messages array
                     querySnapshot.forEach((doc) => {
-                        messages.push({ ...doc.data(), id: doc.id });
+                        messages.push({ ...doc.data(), id: doc.id, message:decryptMessage(doc.data().message)});
                     });
                     setMessage(messages[0] ?? "-");
                 }
