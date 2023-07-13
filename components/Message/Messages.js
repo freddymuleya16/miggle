@@ -17,7 +17,7 @@ import {
     serverTimestamp,
     orderBy, updateDoc, arrayRemove, getDoc, increment
 } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Container, Row, Col, Form, Button, Nav } from "react-bootstrap";
 import { getAuth } from 'firebase/auth';
 import { getUser } from '@/actions/authActions';
@@ -28,13 +28,14 @@ import { faArrowAltCircleLeft, faHome, faHomeAlt, faLocationDot, faMars, faVenus
 import { FaHome } from 'react-icons/fa';
 import ChatList from './ChatList';
 import UserMessageAction from '../UserMessageAction';
-import { decryptMessage, encryptMessage } from '@/utils/helpers';
+import { decryptMessage, encryptMessage, getChatDocument } from '@/utils/helpers';
 
 
 
 function Messages({ receiverId, matchDate, updateCurrentMatch, user }) {
     // Define a state for the message
     const [message, setMessage] = useState("");
+    const effectRan = useRef(false)
 
     // Define a state for the list of messages
     //const [messages, setMessages] = useState([]);
@@ -56,17 +57,22 @@ function Messages({ receiverId, matchDate, updateCurrentMatch, user }) {
 
     function toggle() {
         setShow((prev) => !prev)
-    }  
+    }
     useEffect(() => {
-
-        console.log('chatref',chatRef)
-        if (!chatRef) {
-            getChatDocument(getAuth().currentUser.uid, receiverId).then((chatId) => {
+        if (effectRan.current === false) {
+            async function fetchData() {
+                // You can await here
+                const response = await getChatDocument(getAuth().currentUser.uid, receiverId, 'messages.js');
                 setChatRef(
-                    chatId
+                    response
                 );
-            })
+            }
+            fetchData();
+
         }
+        return () => { effectRan.current = true }
+    }, [receiverId]);
+    useEffect(() => {
         getUser(receiverId).then((user) => {
             setReceiver(user)
         })
@@ -77,7 +83,7 @@ function Messages({ receiverId, matchDate, updateCurrentMatch, user }) {
 
     }, [chatRef, receiverId])
 
-useEffect(() => {
+    useEffect(() => {
 
         if (chatRef) {
             // Use onSnapshot to listen for changes in the messages collection for this chat
@@ -120,34 +126,6 @@ useEffect(() => {
         }
     }, [chatRef]);
 
-
-
-    // Get the chat document for two given user IDs
-    const getChatDocument = async (user1Id, user2Id) => {
-        const chatCollection = collection(db, "chats");
-        // Create a query for all chat documents that contain user1Id
-        const q = query(chatCollection, where("users", "array-contains", user1Id));
-        const querySnapshot = await getDocs(q);
-        // Filter the results to find the chat document that contains both user1Id and user2Id
-        const matchingDocs = querySnapshot.docs.filter((doc) => {
-            return doc.data().users.includes(user2Id);
-        });
-        // If there's a match, return the chat document ID
-        console.log('docs found:', matchingDocs)
-        if (matchingDocs.length > 0) {
-
-            return matchingDocs[0].id;
-        } else {
-            // If there's no match, create a new chat document and return its ID
-            const newChatRef = doc(chatCollection);
-            await setDoc(newChatRef, {
-                id: newChatRef.id,
-                users: [user1Id, user2Id],
-            });
-            console.log('Created:', newChatRef.id)
-            return newChatRef.id;
-        }
-    };
 
     // Add a new message to the messages collection for a chat
     const addMessage = async (chatId, message) => {

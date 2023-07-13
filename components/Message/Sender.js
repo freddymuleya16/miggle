@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import Image from 'next/image'
 import { getAuth } from 'firebase/auth'
-import { getChatDocument } from '@/utils/helpers'
+import { getChatDocumentWithoutCreating } from '@/utils/helpers'
 import { collection, limit, onSnapshot, orderBy, query } from 'firebase/firestore'
 import { db } from '@/utils/firebase'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -11,13 +11,17 @@ import { faReply } from '@fortawesome/free-solid-svg-icons'
 function Sender({ data, onClick }) {
     const [chatId, setChatId] = useState(null)
     const [message, setMessage] = useState(null)
-    useEffect(() => { 
-        getChatDocument(getAuth().currentUser.uid, data.id).then((chatId) => {
-             setChatId(
-                chatId
+
+    useEffect(() => {
+        async function fetchData() {
+            // You can await here
+            const response = await getChatDocumentWithoutCreating(getAuth().currentUser.uid, data.id, 'sender.js');
+            setChatId(
+                response
             );
-        })
-    }, [data.id])
+        }
+        fetchData();
+    }, [data.id]);
 
     // Listen for changes in messages when a chat is opened
     useEffect(() => {
@@ -36,14 +40,14 @@ function Sender({ data, onClick }) {
                     querySnapshot.forEach((doc) => {
                         messages.push({ ...doc.data(), id: doc.id });
                     });
-                     setMessage(messages[0]??"-");
+                    setMessage(messages[0] ?? "-");
                 }
             );
             return () => unsubscribe();
         }
     }, [chatId]);
-    
-    if(message == "-"){
+
+    if (message == "-") {
         return <></>
     }
 
