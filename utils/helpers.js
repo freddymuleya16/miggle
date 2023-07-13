@@ -1,5 +1,6 @@
 import { collection, doc, getDocs, query, setDoc, where } from "firebase/firestore";
 import { db } from "./firebase";
+import CryptoJS from 'crypto-js';
 
 // Function to calculate distance between two locations using Haversine formula
 export const calculateDistance = (location1, location2) => {
@@ -68,4 +69,14 @@ export function getUserLocation() {
       });
       return newChatRef.id;
   }
+};
+
+export const encryptMessage = (message) => {
+  const encrypted = CryptoJS.AES.encrypt(message,process.env.NEXT_PUBLIC_ENCRYPTION_KEY).toString();
+ return encrypted;
+};
+
+export const decryptMessage = (encryptedMessage) => {
+  const decrypted = CryptoJS.AES.decrypt(encryptedMessage, process.env.NEXT_PUBLIC_ENCRYPTION_KEY).toString(CryptoJS.enc.Utf8);
+  return decrypted;
 };

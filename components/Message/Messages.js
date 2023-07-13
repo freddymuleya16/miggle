@@ -24,10 +24,11 @@ import { getUser } from '@/actions/authActions';
 import FullscreenLoading from '../FullscreenLoading';
 import OverLayLoading from '../OverLayLoading';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowAltCircleDown, faArrowAltCircleLeft, faHome, faHomeAlt, faLocationDot, faMars, faTransgender, faVenus, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faArrowAltCircleLeft, faHome, faHomeAlt, faLocationDot, faMars, faVenus, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FaHome } from 'react-icons/fa';
 import ChatList from './ChatList';
 import UserMessageAction from '../UserMessageAction';
+import { decryptMessage, encryptMessage } from '@/utils/helpers';
 
 
 
@@ -87,7 +88,7 @@ function Messages({ receiverId, matchDate, updateCurrentMatch, user }) {
                     const messages = [];
                     // Loop through each document in the messages collection and add it to the messages array
                     querySnapshot.forEach((doc) => {
-                        messages.push({ ...doc.data(), id: doc.id });
+                        messages.push({ ...doc.data(), id: doc.id, message: decryptMessage(doc.data().message) });
                     });
                     // setMessages([...messages]); 
 
@@ -138,7 +139,6 @@ function Messages({ receiverId, matchDate, updateCurrentMatch, user }) {
             await setDoc(newChatRef, {
                 id: newChatRef.id,
                 users: [user1Id, user2Id],
-                messages: [],
             });
             return newChatRef.id;
         }
@@ -159,7 +159,7 @@ function Messages({ receiverId, matchDate, updateCurrentMatch, user }) {
         event.preventDefault();
         const newMessage = {
             sender: getAuth().currentUser.uid,
-            message,
+            message: encryptMessage(message),
             timestamp: serverTimestamp(),
             liked: false
         };
