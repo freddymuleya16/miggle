@@ -10,10 +10,11 @@ import { faBell, faCog, faCross, faHome, faHomeAlt, faHomeLg, faHomeUser, faPers
 import UseNotifications from "./Notifications";
 import { logout } from "@/actions/authActions";
 import { useDispatch } from "react-redux";
-import MatchCard from "./MatchCard"; 
+import MatchCard from "./MatchCard";
+import SettingsItem from "./SettingsItem";
 
 
-export default function UserNav({ user, setCurrentMatch, toggle, activeBar, handleBarClick }) {
+export default function UserNav({ user, setCurrentMatch, toggle, activeBar, handleBarClick, setProfileOpen }) {
     const [activeTab, setActiveTab] = useState('matches');
     const [matches, setMatches] = useState([])
     const { notificationNumber, notification } = UseNotifications()
@@ -87,7 +88,7 @@ export default function UserNav({ user, setCurrentMatch, toggle, activeBar, hand
                         </span>
                     </div>
                     <div className="flex items-center">
-                    <button onClick={() => handleBarClick('home')} className="sm:inline-block focus:outline-none hidden relative  p-2 text-white hover:text-xl">
+                        <button onClick={() => handleBarClick('home')} className="sm:inline-block focus:outline-none hidden relative  p-2 text-white hover:text-xl">
                             <FontAwesomeIcon icon={faHomeLg} size='lg' />
                         </button>
                         <button onClick={(e) => handleSignout(e)} className="inline-block focus:outline-none sm:hidden relative  p-2 text-white hover:text-xl">
@@ -120,7 +121,7 @@ export default function UserNav({ user, setCurrentMatch, toggle, activeBar, hand
                 {activeBar == 'settings' &&
                     <div className="px-2 h-1/4 ">
                         <button
-                            className={`mr-3 font-poppins px-2 font-medium focus:outline-none  border-b-4 border-rose-500      p-2 
+                            className={`mr-3 font-poppins px-2 font-medium focus:outline-none  border-b-4 border-rose-500 
                                   }`}
                         >
                             Settings
@@ -148,7 +149,6 @@ export default function UserNav({ user, setCurrentMatch, toggle, activeBar, hand
                     <div className="overflow-y-auto  h-[78%] p-3 flex  ">
                         {matches.map((match, index) => <Matcher onClick={() => {
                             setCurrentMatch(match);
-                            console.log(match);
                             handleTabClick('messages');
                         }} key={index} data={{ pictures: match.pictures, name: match.firstName, surname: match.lastName, id: match.id }} />)}
                     </div>
@@ -179,8 +179,13 @@ export default function UserNav({ user, setCurrentMatch, toggle, activeBar, hand
                 activeBar == 'settings'
                 &&
                 <>
-                    <div className="overflow-y-auto  h-[78%] p-3 flex-col font-poppins">
- 
+                    <div className="flex flex-wrap font-poppins h-[78%] overflow-y-auto p-3">
+                        <SettingsItem name="Profile Set Up" picture={'https://firebasestorage.googleapis.com/v0/b/mingle-7d654.appspot.com/o/SystemImages%2FProfile_Picture.jpg?alt=media&token=851cdf22-4bc0-4dd9-88fe-865e4a5d1cac'} onClick={() => { setProfileOpen((prev) => !prev) }} />
+                        <SettingsItem name="Security Settings" onClick={() => { }} picture={'https://firebasestorage.googleapis.com/v0/b/mingle-7d654.appspot.com/o/SystemImages%2Fsecurity.jpg?alt=media&token=1101161b-cf67-4146-b2ed-12489efbb572'} />
+                        <SettingsItem name="Communication Settings" picture={'https://firebasestorage.googleapis.com/v0/b/mingle-7d654.appspot.com/o/SystemImages%2Fcommunication.jpg?alt=media&token=f9ffa68d-5ca9-4511-9180-66b0ce2d9226'} onClick={() => { }} />
+                        <SettingsItem name="Account Management" onClick={() => { }} picture={'https://firebasestorage.googleapis.com/v0/b/mingle-7d654.appspot.com/o/SystemImages%2FAccount.jpg?alt=media&token=d7c2be02-0adf-44a5-897d-03498bc86cf0'} />
+                        <SettingsItem name="Terms and Privacy Policy" onClick={() => { }} picture={'https://firebasestorage.googleapis.com/v0/b/mingle-7d654.appspot.com/o/SystemImages%2Fterms.jpg?alt=media&token=0320ac0b-046b-49ba-bb28-fe0566790109'} />
+
                     </div>
                     <div className="p-1 h-[5.3333%] bg-gradient-to-r from-rose-500 to-rose-300 hidden sm:block">
                         <button onClick={(e) => handleSignout(e)} class=" h-100  hover:text-lg   text-white   flex items-center justify-center w-100 focus:outline-none ">
@@ -188,7 +193,7 @@ export default function UserNav({ user, setCurrentMatch, toggle, activeBar, hand
                             Sign out
                         </button>
                     </div>
-                </> 
+                </>
             }
 
         </>);

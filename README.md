@@ -18,7 +18,7 @@ Please note that these are approximate time estimates and may vary based on indi
 4. **Both Male and Female** - Estimated Time: 1 hour (Completed)
    - Modify the system to support both male and female users.
 
-5. **Encrypt Messages** - Estimated Time: 2 hours
+5. **Encrypt Messages** - Estimated Time: 2 hours (Completed)
    - Implement message encryption to enhance security and privacy.
 
 6. **Change Primary Color** - Estimated Time: 1 hour

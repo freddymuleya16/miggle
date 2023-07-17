@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell,  faCog, faHeart, faHome } from '@fortawesome/free-solid-svg-icons';
+import { faBell, faCog, faHeart, faHome } from '@fortawesome/free-solid-svg-icons';
 
 import { withAuth } from '@/utils/withAuth';
 import Messages from "@/components/Message/Messages";
 import MatchCard from '@/components/MatchCard';
 import UserNav from '@/components/UserNav';
+import Profile from "./profile";
 
 function Home({ user }) {
 
     const [currentMatch, setCurrentMatch] = useState(null)
+    const [profileOpen, setProfileOpen] = useState(false)
 
     const updateCurrentMatch = (match) => {
         setCurrentMatch(match);
@@ -27,7 +29,7 @@ function Home({ user }) {
     return (
         <div className="min-h-screen bg-white px-0 flex">
             <div className={`${(activeBar !== 'home' && activeBar !== 'notifications' && activeBar !== 'settings') || (!(activeBar !== 'match' && !currentMatch)) ? 'hidden sm:block basis-1/4' : 'sm:basis-1/4 basis-full  '}     h-screen bg-white`}>
-                <UserNav user={user} setCurrentMatch={updateCurrentMatch} handleBarClick={handleBarClick} activeBar={activeBar} />
+                <UserNav setProfileOpen={setProfileOpen} user={user} setCurrentMatch={updateCurrentMatch} handleBarClick={handleBarClick} activeBar={activeBar} />
             </div>
 
 
@@ -41,6 +43,10 @@ function Home({ user }) {
                         user={user}
                     />
                 )}
+            </div>
+
+            <div className={`${activeBar !== 'settings' && !profileOpen ? 'hidden  basis-3/4' : 'sm:basis-3/4 basis-full  '}   sm:flex  mx-0 my-0`}>
+                {/* <Profile/> */}
             </div>
 
 
