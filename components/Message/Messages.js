@@ -263,7 +263,7 @@ function Messages({ receiverId, matchDate, updateCurrentMatch, user }) {
                                 </p>
                             </div>
                             <div className='  w-fit justify-self-end'>
-                                <button onClick={() => updateCurrentMatch(null)} className="flex items-center justify-center rounded-full  border-gray-500 text-gray-500  border-2 text-xl p-4 w-12 h-12  hover:border-4 hover:text-2xl">
+                                <button onClick={() => updateCurrentMatch(null)} className="focus:outline-none flex items-center justify-center rounded-full  border-gray-500 text-gray-500  border-2 text-xl p-4 w-12 h-12  hover:border-4 hover:text-2xl">
                                     <FontAwesomeIcon icon={faXmark} size="2xl" />
                                 </button>
                             </div>

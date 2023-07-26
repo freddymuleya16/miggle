@@ -98,3 +98,13 @@ export const decryptMessage = (encryptedMessage) => {
   const decrypted = CryptoJS.AES.decrypt(encryptedMessage, process.env.NEXT_PUBLIC_ENCRYPTION_KEY).toString(CryptoJS.enc.Utf8);
   return decrypted;
 };
+
+export const convertToBase64 = (file) => {
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = () => {
+    // The result contains the Base64 data URL
+    console.log('Photo',reader.result);
+    return reader.result;
+  };
+};

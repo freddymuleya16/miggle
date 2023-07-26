@@ -67,11 +67,11 @@ const VerifyEmail = () => {
       Verify Your Email</h2>
     <p>A verification email has been sent to {user?.email}. Please follow the instructions in the email to verify your email address.</p>
     <div className="flex justify-center mt-4">
-      <button onClick={handleSignout}  className="btn-fill bg-rose-500 hover:bg-rose-600 text-white font-bold py-2 px-4 rounded-md mb-4 mx-auto block"
+      <button onClick={handleSignout}  className="focus:outline-none btn-fill bg-rose-500 hover:bg-rose-600 text-white font-bold py-2 px-4 rounded-md mb-4 mx-auto block"
         >
         Cancel
       </button>
-      <button onClick={handleSendEmailVerification} className="btn-fill bg-rose-500 hover:bg-rose-600 text-white font-bold py-2 px-4 rounded-md mb-4 mx-auto block"
+      <button onClick={handleSendEmailVerification} className="focus:outline-none btn-fill bg-rose-500 hover:bg-rose-600 text-white font-bold py-2 px-4 rounded-md mb-4 mx-auto block"
         >
         Resend 
       </button>

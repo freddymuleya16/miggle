@@ -14,7 +14,7 @@ import MatchCard from "./MatchCard";
 import SettingsItem from "./SettingsItem";
 
 
-export default function UserNav({ user, setCurrentMatch, toggle, activeBar, handleBarClick, setProfileOpen }) {
+export default function UserNav({profileOpen, user, setCurrentMatch, toggle, activeBar, handleBarClick, setProfileOpen }) {
     const [activeTab, setActiveTab] = useState('matches');
     const [matches, setMatches] = useState([])
     const { notificationNumber, notification } = UseNotifications()
@@ -146,7 +146,7 @@ export default function UserNav({ user, setCurrentMatch, toggle, activeBar, hand
                 activeTab === 'matches' && activeBar == 'home'
                 &&
                 <>
-                    <div className="overflow-y-auto  h-[78%] p-3 flex  ">
+                    <div className="overflow-y-auto  h-[78vh] p-3 flex  ">
                         {matches.map((match, index) => <Matcher onClick={() => {
                             setCurrentMatch(match);
                             handleTabClick('messages');
@@ -179,13 +179,13 @@ export default function UserNav({ user, setCurrentMatch, toggle, activeBar, hand
                 activeBar == 'settings'
                 &&
                 <>
-                    <div className="flex flex-wrap font-poppins h-[78%] overflow-y-auto p-3">
-                        <SettingsItem name="Profile Set Up" picture={'https://firebasestorage.googleapis.com/v0/b/mingle-7d654.appspot.com/o/SystemImages%2FProfile_Picture.jpg?alt=media&token=851cdf22-4bc0-4dd9-88fe-865e4a5d1cac'} onClick={() => { setProfileOpen((prev) => !prev) }} />
-                        <SettingsItem name="Security Settings" onClick={() => { }} picture={'https://firebasestorage.googleapis.com/v0/b/mingle-7d654.appspot.com/o/SystemImages%2Fsecurity.jpg?alt=media&token=1101161b-cf67-4146-b2ed-12489efbb572'} />
-                        <SettingsItem name="Communication Settings" picture={'https://firebasestorage.googleapis.com/v0/b/mingle-7d654.appspot.com/o/SystemImages%2Fcommunication.jpg?alt=media&token=f9ffa68d-5ca9-4511-9180-66b0ce2d9226'} onClick={() => { }} />
-                        <SettingsItem name="Account Management" onClick={() => { }} picture={'https://firebasestorage.googleapis.com/v0/b/mingle-7d654.appspot.com/o/SystemImages%2FAccount.jpg?alt=media&token=d7c2be02-0adf-44a5-897d-03498bc86cf0'} />
-                        <SettingsItem name="Terms and Privacy Policy" onClick={() => { }} picture={'https://firebasestorage.googleapis.com/v0/b/mingle-7d654.appspot.com/o/SystemImages%2Fterms.jpg?alt=media&token=0320ac0b-046b-49ba-bb28-fe0566790109'} />
-
+                    <div className="overflow-y-auto h-[78vh]">                        
+                            <SettingsItem profileOpen={profileOpen} name="Profile Set Up" picture={'https://firebasestorage.googleapis.com/v0/b/mingle-7d654.appspot.com/o/SystemImages%2FProfile_Picture.jpg?alt=media&token=851cdf22-4bc0-4dd9-88fe-865e4a5d1cac'} onClick={() => { setProfileOpen((prev) => !prev) }} />
+                            <SettingsItem name="Security Settings" onClick={() => { }} picture={'https://firebasestorage.googleapis.com/v0/b/mingle-7d654.appspot.com/o/SystemImages%2Fsecurity.jpg?alt=media&token=1101161b-cf67-4146-b2ed-12489efbb572'} />
+                            <SettingsItem name="Communication Settings" picture={'https://firebasestorage.googleapis.com/v0/b/mingle-7d654.appspot.com/o/SystemImages%2Fcommunication.jpg?alt=media&token=f9ffa68d-5ca9-4511-9180-66b0ce2d9226'} onClick={() => { }} />
+                            <SettingsItem name="Account Management" onClick={() => { }} picture={'https://firebasestorage.googleapis.com/v0/b/mingle-7d654.appspot.com/o/SystemImages%2FAccount.jpg?alt=media&token=d7c2be02-0adf-44a5-897d-03498bc86cf0'} />
+                            <SettingsItem name="Terms and Privacy Policy" onClick={() => { }} picture={'https://firebasestorage.googleapis.com/v0/b/mingle-7d654.appspot.com/o/SystemImages%2Fterms.jpg?alt=media&token=0320ac0b-046b-49ba-bb28-fe0566790109'} />
+ 
                     </div>
                     <div className="p-1 h-[5.3333%] bg-gradient-to-r from-rose-500 to-rose-300 hidden sm:block">
                         <button onClick={(e) => handleSignout(e)} class=" h-100  hover:text-lg   text-white   flex items-center justify-center w-100 focus:outline-none ">

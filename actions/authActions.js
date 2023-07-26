@@ -27,6 +27,7 @@ import {
   query,
   where,
   getDocs,
+  updateDoc,
 } from "firebase/firestore";
 
 export const signup = (email, password) => async (dispatch) => {
@@ -174,30 +175,34 @@ import {
 } from "firebase/storage";
 import { db } from "@/utils/firebase";
 
-export const uploadFormToFirebase =
-  (
-    gender,
-    orientation,
-    firstName,
-    lastName,
-    age,
-    ageRange,
-    distance,
-    pictures,
-    location,
-    aboutMe
-  ) =>
-  async (dispatch) => {
-    dispatch(setLoading(true));
-    try {
-      // Create a reference to Firebase Storage
-      const storage = getStorage();
-      const storageRef = ref(storage, "pictures");
-      pictures = [...pictures];
-      //console.log("sasdasdas", pictures);
-      // Create a reference for each picture uploaded
-      const pictureRefs = await Promise.all(
-        pictures.map((picture) => {
+export const uploadFormToFirebase = (
+  gender,
+  orientation,
+  firstName,
+  lastName,
+  age,
+  ageRange,
+  distance,
+  pictures,
+  location,
+  aboutMe,
+  editMode = false
+) => async (dispatch) => {
+  dispatch(setLoading(true));
+  try {
+    // Create a reference to Firebase Storage
+    const storage = getStorage();
+    const storageRef = ref(storage, "pictures");
+    pictures = [...pictures];
+
+    // Create a reference for each picture uploaded
+    const pictureRefs = await Promise.all(
+      pictures.map((picture) => {
+        if (typeof picture === "string" || picture instanceof String) {
+          // Picture is already uploaded, return the URL directly
+          return picture;
+        } else {
+          // Picture is being uploaded, upload it to Firebase Storage
           const fileRef = ref(
             storage,
             `pictures/${Date.now()}-${picture.name}`
@@ -205,19 +210,36 @@ export const uploadFormToFirebase =
           return uploadBytesResumable(fileRef, picture).then((snapshot) =>
             getDownloadURL(snapshot.ref)
           );
-        })
-      );
+        }
+      })
+    );
 
-      // Create a reference to Firebase Firestore
-      const db_ = db;
+    // Create a reference to Firebase Firestore
+    const db_ = db;
+    const currentUser = getAuth().currentUser;
 
-      //console.log("adgrgrg", pictureRefs);
-
-      // Add the form data to Firestore
-      const currentUser = getAuth().currentUser;
-
-      await setDoc(doc(collection(db_, "users"), currentUser.uid), {
-        email:currentUser.email,
+    if (editMode) {
+      // Update the existing user document in Firestore
+      const userRef = doc(db_, "users", currentUser.uid);
+      await updateDoc(userRef, {
+        gender,
+        orientation,
+        firstName,
+        lastName,
+        age,
+        ageRange,
+        distance,
+        pictures: pictureRefs,
+        aboutMe,
+        location: {
+          latitude: location.latitude,
+          longitude: location.longitude,
+        },
+      });
+    } else {
+      // Create a new user document in Firestore
+      await setDoc(doc(db_, "users", currentUser.uid), {
+        email: currentUser.email,
         gender,
         orientation,
         firstName,
@@ -229,20 +251,21 @@ export const uploadFormToFirebase =
         createdAt: serverTimestamp(),
         profileCompleted: true,
         aboutMe,
-        location:{
-          latitude:location.latitude ,
+        location: {
+          latitude: location.latitude,
           longitude: location.longitude,
         },
       });
-
-      dispatch(checkUserProfileCompletion());
-    } catch (error) {
-      //console.log(error);
-      dispatch(setError(error));
-    } finally {
-      dispatch(setLoading(false));
     }
-  };
+
+    dispatch(checkUserProfileCompletion());
+  } catch (error) {
+    dispatch(setError(error));
+  } finally {
+    dispatch(setLoading(false));
+  }
+};
+
 
 export const facebookSignIn = () => async (dispatch) => {
   dispatch(setLoading(true));

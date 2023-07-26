@@ -1,16 +1,24 @@
-import { logout, uploadFormToFirebase } from "@/actions/authActions";
+import { getUser, logout, uploadFormToFirebase } from "@/actions/authActions";
 import Layout from "@/components/Layout";
 import OverLayLoading from "@/components/OverLayLoading";
+import { setLoading } from "@/reducers/authSlice";
 import { getUserLocation } from "@/utils/helpers";
 import { withAuth } from "@/utils/withAuth";
+import { getAuth } from "firebase/auth";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import ReactAvatarEditor from 'react-avatar-editor';
+import Image from "next/image";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimesCircle, faXmark, faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
+import { collection, doc, onSnapshot, query } from "firebase/firestore";
+import { db } from "@/utils/firebase";
 
-const QuestionnaireForm = () => {
+const QuestionnaireForm = ({ edit ,setProfileOpen}) => {
   const [gender, setGender] = useState("");
   const [orientation, setOrientation] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -26,6 +34,8 @@ const QuestionnaireForm = () => {
   const error = useSelector((state) => state.auth.error);
   const profileCompleted = useSelector((state) => state.auth.profileCompleted);
   const router = useRouter();
+  const [imageFile, setImageFile] = useState(null);
+  const [previewPicture, setPreviewPicture] = useState([]);
 
   const [location, setLocation] = useState(null);
 
@@ -33,12 +43,89 @@ const QuestionnaireForm = () => {
     e.preventDefault();
     dispatch(logout());
   };
+  useEffect(() => {
+    if (true) {
+      // Use onSnapshot to listen for changes in the user document
+      const unsubscribe = onSnapshot(
+        doc(db, `users/${getAuth().currentUser.uid}`),
+        (docSnapshot) => {
+          if (docSnapshot.exists()) {
+            // If the document exists, update the user state with the document data
+
+            try {
+              dispatch(setLoading(true))
+              const user = docSnapshot.data()
+              setGender(user.gender);
+              setOrientation(user.orientation);
+              setFirstName(user.firstName);
+              setLastName(user.lastName);
+              setAge(user.age);
+              const ageRange = user.ageRange.split("-");
+              setMinAge(ageRange[0]);
+              setMaxAge(ageRange[1]);
+              setDistance(user.distance);
+              setAboutMe(user.aboutMe);
+              setPictures([...user.pictures]);
+              console.log(user.pictures, 'kj')
+            } catch (error) {
+              // Handle error if any
+              console.log(error);
+            } finally {
+              dispatch(setLoading(false))
+            }
+          } else {
+            // If the document doesn't exist, handle it accordingly (e.g., set default values)
+
+          }
+        },
+        (error) => {
+          // Handle any errors that occur during the snapshot listening
+          console.error("Error fetching user document: ", error);
+        }
+      );
+
+      return () => unsubscribe();
+    }
+  }, [dispatch]);
+
+
+  const getUserDetails = useCallback(async () => {
+    try {
+      dispatch(setLoading(true))
+      const user = await getUser(getAuth().currentUser.uid);
+      setGender(user.gender);
+      setOrientation(user.orientation);
+      setFirstName(user.firstName);
+      setLastName(user.lastName);
+      setAge(user.age);
+      const ageRange = user.ageRange.split("-");
+      setMinAge(ageRange[0]);
+      setMaxAge(ageRange[1]);
+      setDistance(user.distance);
+      setAboutMe(user.aboutMe);
+      setPictures([...user.pictures]);
+      console.log(user.pictures, 'kj')
+    } catch (error) {
+      // Handle error if any
+      console.log(error);
+    } finally {
+      dispatch(setLoading(false))
+    }
+  }, [dispatch])
+  useEffect(() => {
+    if (edit) {
+
+      //(getUserDetails())
+    }
+
+  }, [dispatch, edit, getUserDetails])
+
 
   useEffect(() => {
     return () => {
-      
+
       getUserLocation().then((value) => {
-        console.log('ran',value)
+        console.log('ran', value)
         setLocation(value);
       });
     };
@@ -160,9 +247,16 @@ const QuestionnaireForm = () => {
         distance,
         pictures,
         location,
-        aboutMe
+        aboutMe,
+        edit
       )
     );
+    if (edit) {
+      console.log(pictures)
+      await getUserDetails()
+      console.log(pictures)
+
+    }
   };
 
   return (
@@ -170,6 +264,13 @@ const QuestionnaireForm = () => {
       {isLoading && <OverLayLoading />}
 
       <div className="sm:h-[90vh] overflow-y-auto  ">
+      {edit &&
+        <FontAwesomeIcon
+          onClick={() => setProfileOpen(false)}
+          size="lg"
+          icon={faXmark}
+          className="absolute top-1 right-1 text-gray-600 m-2 cursor-pointer" />
+        }
         <h1 className="text-4xl">
           Find your true <br />
           L❤️VE
@@ -356,9 +457,42 @@ const QuestionnaireForm = () => {
               type="file"
               accept="image/*"
               multiple
-              onChange={(e) => setPictures([...e.target.files])}
+              onChange={(e) => {
+
+                const newObjectUrls = [...e.target.files].map((pic) => {
+                  pic.preview = window.URL.createObjectURL(pic)
+                  return pic
+                });
+
+                setPictures((prev) => {
+                  return [...prev, ...newObjectUrls]
+                })
+
+                setPreviewPicture(newObjectUrls)
+              }
+              }
               className="form-control"
             />
+
+            <div >
+              {pictures.map((pic, i) => (
+
+
+                <div key={i} className="relative overflow-x-auto flex rounded-md">
+                  <FontAwesomeIcon onClick={() => {
+                    const updatedPictures = [...pictures];
+                    updatedPictures.splice(i, 1);
+                    setPictures(updatedPictures);
+
+                    console.log(pictures.filter((pic) => !(typeof pic === 'string' || pic instanceof String)))
+                  }} size="lg" icon={faXmark} className="absolute top-1 right-1 text-white mt-2 cursor-pointer" />
+                  <Image width={500} height={500} src={(typeof pic === 'string' || pic instanceof String) ? pic : pic.preview} alt="Selected Image" className="mt-2 rounded-md" />
+                </div>
+              ))
+              }
+
+            </div>
+
             {errors.pictures && (
               <p className="text-red-500">{errors.pictures}</p>
             )}
@@ -368,7 +502,7 @@ const QuestionnaireForm = () => {
 
           <div className="text-center mt-4">
             <button
-              className="btn-fill bg-rose-500 hover:bg-rose-600 text-white font-bold py-2 px-4 rounded-md mb-4"
+              className="focus:outline-none btn-fill  bg-rose-500 hover:bg-rose-600 text-white font-bold py-2 px-4 rounded-md mb-4"
               type="submit"
             >
               Save
@@ -376,10 +510,13 @@ const QuestionnaireForm = () => {
           </div>
 
         </form>
-        <Link href="#"
-          onClick={handleSignout} className="text-center block mt-1">
-          <span className="text-info">Sign out</span>
-        </Link>
+        {!edit &&
+          <Link href="#"
+            onClick={handleSignout} className="text-center block mt-1">
+            <span className="text-info">Sign out</span>
+          </Link>
+        }
+
 
       </div>
     </Layout>

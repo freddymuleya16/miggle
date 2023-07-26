@@ -249,20 +249,20 @@ function MatchCard({ user }) {
                             <hr color='white' />
 
                             <div className="flex justify-between items-center p-4  sm:rounded-b-2xl bg-black ">
-                                <button className="flex items-center justify-center rounded-full  border-orange-500 text-orange-500  border-2 text-xl p-4 w-16 h-16 hover:bg-orange-500 hover:text-white hover:text-2xl">
+                                <button className="focus:outline-none flex items-center justify-center rounded-full  border-orange-500 text-orange-500  border-2 text-xl p-4 w-16 h-16 hover:bg-orange-500 hover:text-white hover:text-2xl">
                                     <FontAwesomeIcon icon={faArrowRotateLeft} size="2xl" />
                                 </button>
-                                <button onClick={() => handleSwipe('dislike', potentialMatches[0].id)} className="flex items-center justify-center rounded-full  border-red-500 text-red-500  border-2 text-xl p-4 w-20 h-20 hover:bg-red-500 hover:text-white hover:text-2xl">
+                                <button onClick={() => handleSwipe('dislike', potentialMatches[0].id)} className="focus:outline-none flex items-center justify-center rounded-full  border-red-500 text-red-500  border-2 text-xl p-4 w-20 h-20 hover:bg-red-500 hover:text-white hover:text-2xl">
                                     <FontAwesomeIcon icon={faXmark} size="2xl" />
                                 </button>
-                                <button className="flex items-center justify-center rounded-full border-blue-500 text-blue-500  border-2  text-xl p-4 w-16 h-16 hover:bg-blue-500 hover:text-white hover:text-2xl">
+                                <button className="focus:outline-none flex items-center justify-center rounded-full border-blue-500 text-blue-500  border-2  text-xl p-4 w-16 h-16 hover:bg-blue-500 hover:text-white hover:text-2xl">
                                     <FontAwesomeIcon icon={faStar} size="2xl" />
                                 </button>
 
-                                <button onClick={() => handleSwipe('like', potentialMatches[0].id)} className="flex items-center justify-center rounded-full border-green-500 text-green-500  border-2  text-xl p-4 w-20 h-20 hover:bg-green-500 hover:text-white hover:text-2xl">
+                                <button onClick={() => handleSwipe('like', potentialMatches[0].id)} className="focus:outline-none flex items-center justify-center rounded-full border-green-500 text-green-500  border-2  text-xl p-4 w-20 h-20 hover:bg-green-500 hover:text-white hover:text-2xl">
                                     <FontAwesomeIcon icon={faHeart} size="2xl" />
                                 </button>
-                                <button className="flex items-center justify-center rounded-full  border-purple-500 text-purple-500  border-2 text-xl p-4 w-16 h-16 hover:bg-purple-500 hover:text-white hover:text-2xl">
+                                <button className="focus:outline-none flex items-center justify-center rounded-full  border-purple-500 text-purple-500  border-2 text-xl p-4 w-16 h-16 hover:bg-purple-500 hover:text-white hover:text-2xl">
                                     <FontAwesomeIcon icon={faBoltLightning} size="2xl" />
                                 </button>
                             </div>

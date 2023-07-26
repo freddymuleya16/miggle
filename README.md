@@ -9,10 +9,10 @@ Please note that these are approximate time estimates and may vary based on indi
 1. **Reset Matches** - Estimated Time: 1 hour (Completed)
    - Implement the functionality to reset matches for a user.
 
-2. **Edit Profile** - Estimated Time: 4 hours
+2. **Edit Profile** - Estimated Time: 4 hours (InProgress)
    - Develop the feature to allow users to edit their profile information.
 
-3. **Settings (Logout, Delete Account, Change Password)** - Estimated Time: 3 hours
+3. **Settings (Logout, Delete Account, Change Password)** - Estimated Time: 3 hours (InProgress)
    - Implement the settings functionality, including logout, account deletion, and password change.
 
 4. **Both Male and Female** - Estimated Time: 1 hour (Completed)
@@ -21,7 +21,7 @@ Please note that these are approximate time estimates and may vary based on indi
 5. **Encrypt Messages** - Estimated Time: 2 hours (Completed)
    - Implement message encryption to enhance security and privacy.
 
-6. **Change Primary Color** - Estimated Time: 1 hour
+6. **Change Primary Color** - Estimated Time: 1 hour (Completed)
    - Update the primary color theme of the application.
 
 7. **Sending Pictures in Chats** - Estimated Time: 3 hours
@@ -39,7 +39,7 @@ Please note that these are approximate time estimates and may vary based on indi
 11. **Privacy Policy** - Estimated Time: 2 hours (Completed)
     - Create a privacy policy page to inform users about data handling and protection.
 
-12. **Terms and Conditions** - Estimated Time: 2 hours 
+12. **Terms and Conditions** - Estimated Time: 2 hours (Completed)
 (Completed)
     - Draft the terms and conditions page to establish guidelines for app usage.
 
@@ -57,3 +57,6 @@ Please note that the estimated time scales are provided for guidance and may var
 
 It's recommended to prioritize the tasks based on their dependencies and criticality to ensure the timely completion of the project. Regular progress monitoring and updates will help track the project's development and make any necessary adjustments to the timeline if required.
  
+
+
+I would switch on first switch and wait a few minutes and then after a few minutes I would switch it off after I would switch on the second switch then enter the room and feel the lights the bulb that is on is the second switch, the bulb that is off and warm is the first switch and the bulb that is off and cool corresponds to the third switch.
