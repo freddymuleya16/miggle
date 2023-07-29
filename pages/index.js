@@ -37,19 +37,20 @@ function Home({ user }) {
     if (currentMatch) {
       return (
         <div className={`basis-full sm:basis-3/4 ${!profileOpen && 'sm:flex'}`}>
-          <div className="basis-full sm:basis-1/4">
+          <div className="basis-full sm:flex">
             <Messages
               receiverId={currentMatch.id}
               matchDate={currentMatch.matchDate}
               updateCurrentMatch={handleMatchClick}
               user={user}
             />
-          </div></div>
+          </div>
+        </div>
       );
     }
 
     return (
-      <div className={`${activeBar != 'match' && 'hidden' } basis-full sm:basis-3/4 ${!profileOpen && 'sm:flex'}`}>
+      <div className={`${activeBar != 'match' && 'hidden'} basis-full sm:basis-3/4 ${!profileOpen && 'sm:flex'}`}>
         <div className={`${activeBar != 'match' ? 'hidden sm:contents' : "basis-full flex "}`}>
 
           <MatchCard user={user} />
