@@ -1,35 +1,24 @@
-import Chat from './Chat'
 import Image from 'next/image'
 import Carousel from '../Carousel'
-import Temp from "../../public/img/login-bg.jpg"
 import { db } from "@/utils/firebase";
 import {
     collection,
     query,
-    where,
-    getDocs,
-    FieldPath,
-    documentId,
     doc,
-    setDoc,
     addDoc,
     onSnapshot,
     serverTimestamp,
-    orderBy, updateDoc, arrayRemove, getDoc, increment
+    orderBy, updateDoc, getDoc, increment
 } from "firebase/firestore";
 import React, { useEffect, useRef, useState } from "react";
-import { Container, Row, Col, Form, Button, Nav } from "react-bootstrap";
 import { getAuth } from 'firebase/auth';
 import { getUser } from '@/actions/authActions';
-import FullscreenLoading from '../FullscreenLoading';
 import OverLayLoading from '../OverLayLoading';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowAltCircleLeft, faHome, faHomeAlt, faImages, faLocationDot, faMars, faTrash, faTrashAlt, faVenus, faXmark } from '@fortawesome/free-solid-svg-icons';
-import { FaHome } from 'react-icons/fa';
+import { faArrowAltCircleLeft, faImages, faLocationDot, faMars, faTrashAlt, faVenus, faXmark } from '@fortawesome/free-solid-svg-icons';
 import ChatList from './ChatList';
 import UserMessageAction from '../UserMessageAction';
-import { decryptMessage, encryptMessage, getChatDocument } from '@/utils/helpers';
-import FileUploader from './FileUploader';
+import { decryptMessage, encryptMessage, getChatDocument } from '@/utils/helpers'; 
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 
 
