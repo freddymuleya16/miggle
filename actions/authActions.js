@@ -285,26 +285,29 @@ export const facebookSignIn = () => async (dispatch) => {
     const accessToken = credential.accessToken;
 
     // IdP data available using getAdditionalUserInfo(result)
-  } catch (error) { 
-    debugger;
-    console.info("GGGGGGGGGGGGGG",error)
-    // Handle Errors here.
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    // The email of the user's account used.
-    const email = error.customData.email;
-    // The AuthCredential type that was used.
-    console.info("code",errorCode)
-    console.info("errorMessage",errorMessage)
-    console.info("email",email)
-    const credential = FacebookAuthProvider.credentialFromError(error);
-    const user = await signInWithCredential(auth,credential);
-    linkWithCredential(user,credential);
+  } catch (error) {
+    if (error.code === "auth/account-exists-with-different-credential") {
+      const facebookProvider = new FacebookAuthProvider();
+      // Handle Errors here.
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // The email of the user's account used.
+      const email = error.customData.email;
+      // The AuthCredential type that was used.
+      console.info("code", errorCode)
+      console.info("errorMessage", errorMessage)
+      console.info("email", email)
+      const credential = FacebookAuthProvider.credentialFromError(error);
+      console.log("credential",credential)
+      const user = await signInWithCredential(auth, credential);
+      console.log('user',user)
+      linkWithCredential(user, credential);
 
+    } else {
+      console.error(error);
 
-    console.error(error);
-
-    dispatch(setError(error));
+      dispatch(setError(error));
+    }
   } finally {
     dispatch(setLoading(false));
   }
