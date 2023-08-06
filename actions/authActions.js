@@ -300,8 +300,8 @@ export const facebookSignIn = () => async (dispatch) => {
       console.info("email", email)
       const credential = FacebookAuthProvider.credentialFromError(error);
       console.log("credential",credential)
-      try {
-        const providers = await fetchSignInMethodsForEmail(email)
+      try { 
+        const providers = await fetchSignInMethodsForEmail(getAuth(),email)
         console.log('prov',providers)
         const user = await signInWithCredential(providers[0])
         console.log('user',user)
