@@ -9,7 +9,7 @@ Please note that these are approximate time estimates and may vary based on indi
 1. **Reset Matches** - Estimated Time: 1 hour (Completed)
    - Implement the functionality to reset matches for a user.
 
-2. **Edit Profile** - Estimated Time: 4 hours (InProgress)
+2. **Edit Profile** - Estimated Time: 4 hours (Completed)
    - Develop the feature to allow users to edit their profile information.
 
 3. **Settings (Logout, Delete Account, Change Password)** - Estimated Time: 3 hours (InProgress)

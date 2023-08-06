@@ -18,7 +18,7 @@ const WelcomeAnimation = () => {
         <div className="flex flex-col items-center mb-8">
           <h1 className="text-4xl text-white font-bold mb-4">Find Your True Love</h1>
           <p className="text-white text-lg">
-            Join Miggle Dating and start your journey today. Discover a world of connections and meet like-minded
+            Join Mingle Dating and start your journey today. Discover a world of connections and meet like-minded
             individuals to find your soulmate.
           </p>
           <Link href="/auth/signup" className="mt-8 hover:no-underline">
@@ -41,7 +41,7 @@ const WelcomeAnimation = () => {
             <Image src="/img/privacy.jpg" width={500} height={500} alt="Feature 1" className="h-72 mb-4 object-cover rounded-lg" />
             <h3 className="text-white text-lg font-semibold">Secure and Private</h3>
             <p className="text-white">
-              At Miggle Dating, your privacy is our top priority. We employ advanced security measures to ensure that
+              At Mingle Dating, your privacy is our top priority. We employ advanced security measures to ensure that
               your personal information remains secure. Enjoy a safe and private dating experience.
             </p>
           </div>

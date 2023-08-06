@@ -66,7 +66,7 @@ const withAuth = (WrappedComponent) => {
             !Router.pathname.includes("/verify-email")
           ) {
             Router.push("/profile");
-            ////console.log(Router.pathname)
+            //////console.log(Router.pathname)
             return;
           }
           this.setState({ user: userData, loading: false });
@@ -120,7 +120,7 @@ const withAuth3 = (WrappedComponent) => {
       !Router.pathname.includes("/profile")
     ) {
       //Router.push("/profile");
-      ////console.log(Router.pathname)
+      //////console.log(Router.pathname)
       return <FullscreenLoading />;
     }
 

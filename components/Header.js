@@ -14,7 +14,7 @@ function Header() {
         <>
             <nav className="flex sm:justify-between justify-center items-center py-4 px-8">
                 <Link href="/" className='hover:no-underline'>
-                    <span className={`text-white font-bold text-2xl ${isActive('/')}`}>Miggle</span>
+                    <span className={`text-white font-bold text-2xl ${isActive('/')}`}>Mingle</span>
                 </Link>
                 <div className="space-x-4 hidden sm:flex">
                     <NavLinks isActive={isActive} />

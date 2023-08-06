@@ -56,7 +56,7 @@ export const getChatDocument = async (user1Id, user2Id, from = 'unkown') => {
   const matchingDocs = querySnapshot.docs.filter((doc) => {
     return doc.data().users.includes(user2Id);
   });
-  console.log('Matching Docs', matchingDocs, 'from:', from)
+  //console.log('Matching Docs', matchingDocs, 'from:', from)
   // If there's a match, return the chat document ID
   if (matchingDocs.length > 0) {
     return matchingDocs[0].id;
@@ -68,7 +68,7 @@ export const getChatDocument = async (user1Id, user2Id, from = 'unkown') => {
       users: [user1Id, user2Id],
       lastestDoc: from
     });
-    console.log('New Chat ID', newChatRef.id)
+    //console.log('New Chat ID', newChatRef.id)
     return newChatRef.id;
   }
 };
@@ -104,7 +104,7 @@ export const convertToBase64 = (file) => {
   reader.readAsDataURL(file);
   reader.onload = () => {
     // The result contains the Base64 data URL
-    console.log('Photo',reader.result);
+    //console.log('Photo',reader.result);
     return reader.result;
   };
 };
