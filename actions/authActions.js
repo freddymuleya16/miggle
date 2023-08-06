@@ -18,6 +18,7 @@ import {
   signInWithCredential,
   fetchSignInMethodsForEmail,
   EmailAuthProvider,
+  linkWithPopup,
 } from "firebase/auth";
 
 import {
