@@ -270,14 +270,13 @@ export const uploadFormToFirebase = (
   }
 };
 
-
+ 
 export const facebookSignIn = () => async (dispatch) => {
   dispatch(setLoading(true));
   try {
-    debugger;
     const auth = getAuth();
     const provider = new FacebookAuthProvider();
-    let result = await signInWithPopup(auth, provider);
+    const result = await signInWithPopup(auth, provider);
 
     // The signed-in user info.
     const user = result.user;
@@ -289,44 +288,36 @@ export const facebookSignIn = () => async (dispatch) => {
     // IdP data available using getAdditionalUserInfo(result)
   } catch (error) {
     if (error.code === "auth/account-exists-with-different-credential") {
-      const facebookProvider = new FacebookAuthProvider();
-      // Handle Errors here.
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // The email of the user's account used.
-      const email = error.customData.email;
-      // The AuthCredential type that was used.
-      console.info("code", errorCode)
-      console.info("errorMessage", errorMessage)
-      console.info("email", email)
-      const credential = FacebookAuthProvider.credentialFromError(error);
-      console.log("credential", credential)
-      try {
-        const providers = await fetchSignInMethodsForEmail(getAuth(), email)
-        console.log('prov', providers)
-        if (confirm(`You have already registered with ${providers[0]} do you want to link your facebook account?`)) {
+      const { email } = error.customData;
+      const providers = await fetchSignInMethodsForEmail(getAuth(), email);
+
+      if (confirm(`You have already registered with ${providers[0]}. Do you want to link your Facebook account?`)) {
+        try {
           let prov;
-          if (providers[0] == 'google.com') {
+          if (providers[0] === 'google.com') {
             prov = new GoogleAuthProvider();
-          } else if (providers[0] == 'password') {
-            prov = new EmailAuthProvider()
+          } else if (providers[0] === 'password') {
+            prov = new EmailAuthProvider();
           }
-          const user = await signInWithPopup(getAuth(), prov)
-          console.log('user', user)
+          const user = await signInWithPopup(getAuth(), prov);
           await linkWithCredential(user, credential);
           console.log("New provider successfully linked!");
-        } else {
-
+        } catch (linkError) {
+          if (error.code === "auth/popup-blocked") {
+            // Handle the "popup-blocked" error
+            alert("Popup blocked. Please enable popups to sign in.");
+          }
+          console.error("Error linking provider:", linkError);
+          // Handle the error that occurred while linking the new provider.
         }
-
-        // You can handle the successful link, such as updating the UI or displaying a message.
-      } catch (linkError) {
-        console.error("Error linking provider:", linkError);
-        // Handle the error that occurred while linking the new provider.
+      } else {
+        // User chose not to link accounts, handle as needed.
       }
+    } else if (error.code === "auth/popup-blocked") {
+      // Handle the "popup-blocked" error
+      alert("Popup blocked. Please enable popups to sign in.");
     } else {
       console.error(error);
-
       dispatch(setError(error));
     }
   } finally {
