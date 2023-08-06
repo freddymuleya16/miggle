@@ -270,7 +270,7 @@ export const uploadFormToFirebase = (
   }
 };
 
- 
+
 export const facebookSignIn = () => async (dispatch) => {
   dispatch(setLoading(true));
   try {
@@ -292,26 +292,40 @@ export const facebookSignIn = () => async (dispatch) => {
       const providers = await fetchSignInMethodsForEmail(getAuth(), email);
 
       if (confirm(`You have already registered with ${providers[0]}. Do you want to link your Facebook account?`)) {
-        try {
-          let prov;
-          if (providers[0] === 'google.com') {
-            prov = new GoogleAuthProvider();
-          } else if (providers[0] === 'password') {
-            prov = new EmailAuthProvider();
-          }
-          const user = await signInWithPopup(getAuth(), prov);
-          const credential = FacebookAuthProvider.credentialFromError(error);
-          console.log('credentials',credential)
-          await linkWithCredential(user, credential);
-          console.log("New provider successfully linked!");
-        } catch (linkError) {
-          if (error.code === "auth/popup-blocked") {
-            // Handle the "popup-blocked" error
-            alert("Popup blocked. Please enable popups to sign in.");
-          }
-          console.error("Error linking provider:", linkError);
-          // Handle the error that occurred while linking the new provider.
-        }
+        const provider = new FacebookAuthProvider();
+
+        const auth = getAuth();
+        linkWithPopup(auth.currentUser, provider).then((result) => {
+          // Accounts successfully linked.
+          const credential = FacebookAuthProvider.credentialFromResult(result);
+          const user = result.user;
+          console.log(credential,user)
+          // ...
+        }).catch((error) => {
+          console.log(error)
+          // Handle Errors here.
+          // ...
+        });
+        // try {
+        //   let prov;
+        //   if (providers[0] === 'google.com') {
+        //     prov = new GoogleAuthProvider();
+        //   } else if (providers[0] === 'password') {
+        //     prov = new EmailAuthProvider();
+        //   }
+        //   const user = await signInWithPopup(getAuth(), prov);
+        //   const credential = FacebookAuthProvider.credentialFromError(error);
+        //   console.log('credentials',credential)
+        //   await linkWithCredential(user, credential);
+        //   console.log("New provider successfully linked!");
+        // } catch (linkError) {
+        //   if (error.code === "auth/popup-blocked") {
+        //     // Handle the "popup-blocked" error
+        //     alert("Popup blocked. Please enable popups to sign in.");
+        //   }
+        //   console.error("Error linking provider:", linkError);
+        //   // Handle the error that occurred while linking the new provider.
+        // }
       } else {
         // User chose not to link accounts, handle as needed.
       }
