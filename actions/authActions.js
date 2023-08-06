@@ -272,6 +272,7 @@ export const uploadFormToFirebase = (
 export const facebookSignIn = () => async (dispatch) => {
   dispatch(setLoading(true));
   try {
+    debugger;
     const auth = getAuth();
     const provider = new FacebookAuthProvider();
     let result = await signInWithPopup(auth, provider);
@@ -285,6 +286,7 @@ export const facebookSignIn = () => async (dispatch) => {
 
     // IdP data available using getAdditionalUserInfo(result)
   } catch (error) { 
+    debugger;
     console.info("GGGGGGGGGGGGGG",error)
     // Handle Errors here.
     const errorCode = error.code;
