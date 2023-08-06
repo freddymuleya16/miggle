@@ -284,8 +284,7 @@ export const facebookSignIn = () => async (dispatch) => {
     const accessToken = credential.accessToken;
 
     // IdP data available using getAdditionalUserInfo(result)
-  } catch (error) {
-    console.log("GGGGGGGGGGGGGG",error)
+  } catch (error) { 
     console.info("GGGGGGGGGGGGGG",error)
     // Handle Errors here.
     const errorCode = error.code;
@@ -293,6 +292,9 @@ export const facebookSignIn = () => async (dispatch) => {
     // The email of the user's account used.
     const email = error.customData.email;
     // The AuthCredential type that was used.
+    console.info("code",errorCode)
+    console.info("errorMessage",errorMessage)
+    console.info("email",email)
     const credential = FacebookAuthProvider.credentialFromError(error);
     const user = await signInWithCredential(auth,credential);
     linkWithCredential(user,credential);
