@@ -303,10 +303,16 @@ export const facebookSignIn = () => async (dispatch) => {
       try { 
         const providers = await fetchSignInMethodsForEmail(getAuth(),email)
         console.log('prov',providers)
-        const user = await signInWithCredential(providers[0])
-        console.log('user',user)
-         await linkWithCredential(user, credential);
-        console.log("New provider successfully linked!");
+        if (confirm(`You have already registered with ${providers[0]} do you want to link your facebook account?`)) {
+          
+          const user = await signInWithPopup(getAuth(),providers[0])
+          console.log('user',user)
+           await linkWithCredential(user, credential);
+          console.log("New provider successfully linked!");
+        } else {
+           
+        }
+        
         // You can handle the successful link, such as updating the UI or displaying a message.
       } catch (linkError) {
         console.error("Error linking provider:", linkError);
