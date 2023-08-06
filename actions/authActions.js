@@ -299,7 +299,7 @@ export const facebookSignIn = () => async (dispatch) => {
       console.info("email", email)
       const credential = FacebookAuthProvider.credentialFromError(error);
       console.log("credential",credential)
-      const user = await signInWithCredential(auth, credential);
+      const user = await signInWithCredential(getAuth(), credential);
       console.log('user',user)
       linkWithCredential(user, credential);
 
