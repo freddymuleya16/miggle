@@ -301,6 +301,7 @@ export const facebookSignIn = () => async (dispatch) => {
           }
           const user = await signInWithPopup(getAuth(), prov);
           const credential = FacebookAuthProvider.credentialFromError(error);
+          console.log('credentials',credential)
           await linkWithCredential(user, credential);
           console.log("New provider successfully linked!");
         } catch (linkError) {
