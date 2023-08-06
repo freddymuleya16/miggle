@@ -17,6 +17,7 @@ import {
   linkWithCredential,
   signInWithCredential,
   fetchSignInMethodsForEmail,
+  EmailAuthProvider,
 } from "firebase/auth";
 
 import {
@@ -299,20 +300,25 @@ export const facebookSignIn = () => async (dispatch) => {
       console.info("errorMessage", errorMessage)
       console.info("email", email)
       const credential = FacebookAuthProvider.credentialFromError(error);
-      console.log("credential",credential)
-      try { 
-        const providers = await fetchSignInMethodsForEmail(getAuth(),email)
-        console.log('prov',providers)
+      console.log("credential", credential)
+      try {
+        const providers = await fetchSignInMethodsForEmail(getAuth(), email)
+        console.log('prov', providers)
         if (confirm(`You have already registered with ${providers[0]} do you want to link your facebook account?`)) {
-          
-          const user = await signInWithPopup(getAuth(),providers[0])
-          console.log('user',user)
-           await linkWithCredential(user, credential);
+          let prov;
+          if (providers[0] == 'google.com') {
+            prov = new GoogleAuthProvider();
+          } else if (providers[0] == 'password') {
+            prov = new EmailAuthProvider()
+          }
+          const user = await signInWithPopup(getAuth(), prov)
+          console.log('user', user)
+          await linkWithCredential(user, credential);
           console.log("New provider successfully linked!");
         } else {
-           
+
         }
-        
+
         // You can handle the successful link, such as updating the UI or displaying a message.
       } catch (linkError) {
         console.error("Error linking provider:", linkError);
