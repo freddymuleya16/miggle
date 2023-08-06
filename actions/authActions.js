@@ -14,6 +14,8 @@ import {
   FacebookAuthProvider,
   signInWithPopup,
   GoogleAuthProvider,
+  linkWithCredential,
+  signInWithCredential,
 } from "firebase/auth";
 
 import {
@@ -283,6 +285,8 @@ export const facebookSignIn = () => async (dispatch) => {
 
     // IdP data available using getAdditionalUserInfo(result)
   } catch (error) {
+    console.log("GGGGGGGGGGGGGG",error)
+    console.info("GGGGGGGGGGGGGG",error)
     // Handle Errors here.
     const errorCode = error.code;
     const errorMessage = error.message;
@@ -290,7 +294,12 @@ export const facebookSignIn = () => async (dispatch) => {
     const email = error.customData.email;
     // The AuthCredential type that was used.
     const credential = FacebookAuthProvider.credentialFromError(error);
+    const user = await signInWithCredential(auth,credential);
+    linkWithCredential(user,credential);
+
+
     console.error(error);
+
     dispatch(setError(error));
   } finally {
     dispatch(setLoading(false));

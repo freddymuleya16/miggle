@@ -269,7 +269,7 @@ const QuestionnaireForm = ({ edit ,setProfileOpen}) => {
           onClick={() => setProfileOpen(false)}
           size="lg"
           icon={faXmark}
-          className="absolute top-1 right-1 text-gray-600 m-2 cursor-pointer" />
+          className="absolute top-1 right-1 text-gray-600 m-2 cursor-pointer sm:top-3 " />
         }
         <h1 className="text-4xl">
           Find your true <br />

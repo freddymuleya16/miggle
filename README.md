@@ -52,6 +52,9 @@ Please note that these are approximate time estimates and may vary based on indi
 15. **Sending Videos** - Estimated Time: 3 hours
     - Implement the functionality to send videos within chat conversations.
 
+
+16. **Dynamic color schemes**
+
 ## Note
 Please note that the estimated time scales are provided for guidance and may vary based on individual development factors and complexities. It's important to allocate additional time for testing, bug fixing, and any unforeseen issues that may arise during the development process.
 
@@ -60,3 +63,36 @@ It's recommended to prioritize the tasks based on their dependencies and critica
 
 
 I would switch on first switch and wait a few minutes and then after a few minutes I would switch it off after I would switch on the second switch then enter the room and feel the lights the bulb that is on is the second switch, the bulb that is off and warm is the first switch and the bulb that is off and cool corresponds to the third switch.
+
+1. like dislike
+
+2. Profile set up
+
+3. Notifications
+
+4. Unmatch
+
+5. block
+
+6. report
+
+7. Chats
+
+8. sending images
+
+9. sending videos
+
+10. like message
+
+11. welcome screen
+
+13. Privacy Policy
+
+14. About Us
+
+15. Contact Us
+
+16. google sign in
+
+17. facebook sign in
+
