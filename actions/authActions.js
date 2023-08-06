@@ -16,6 +16,7 @@ import {
   GoogleAuthProvider,
   linkWithCredential,
   signInWithCredential,
+  fetchSignInMethodsForEmail,
 } from "firebase/auth";
 
 import {
@@ -300,7 +301,11 @@ export const facebookSignIn = () => async (dispatch) => {
       const credential = FacebookAuthProvider.credentialFromError(error);
       console.log("credential",credential)
       try {
-        const { user } = await linkWithCredential(getAuth().currentUser, credential);
+        const providers = await fetchSignInMethodsForEmail(email)
+        console.log('prov',providers)
+        const user = await signInWithCredential(providers[0])
+        console.log('user',user)
+         await linkWithCredential(user, credential);
         console.log("New provider successfully linked!");
         // You can handle the successful link, such as updating the UI or displaying a message.
       } catch (linkError) {
