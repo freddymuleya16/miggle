@@ -299,9 +299,14 @@ export const facebookSignIn = () => async (dispatch) => {
       console.info("email", email)
       const credential = FacebookAuthProvider.credentialFromError(error);
       console.log("credential",credential)
-      console.log('user',user)
-      linkWithCredential(user, credential);
-
+      try {
+        const { user } = await linkWithCredential(getAuth().currentUser, credential);
+        console.log("New provider successfully linked!");
+        // You can handle the successful link, such as updating the UI or displaying a message.
+      } catch (linkError) {
+        console.error("Error linking provider:", linkError);
+        // Handle the error that occurred while linking the new provider.
+      }
     } else {
       console.error(error);
 
