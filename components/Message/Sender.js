@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
 import Image from 'next/image'
 import { getAuth } from 'firebase/auth'
 import { decryptMessage, getChatDocumentWithoutCreating } from '@/utils/helpers'
 import { collection, limit, onSnapshot, orderBy, query } from 'firebase/firestore'
 import { db } from '@/utils/firebase'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faReply } from '@fortawesome/free-solid-svg-icons'
+import { faImage, faMicrophone, faReply, faVideo } from '@fortawesome/free-solid-svg-icons'
 
 function Sender({ data, onClick }) {
     const [chatId, setChatId] = useState(null)
@@ -38,7 +37,7 @@ function Sender({ data, onClick }) {
                     const messages = [];
                     // Loop through each document in the messages collection and add it to the messages array
                     querySnapshot.forEach((doc) => {
-                        messages.push({ ...doc.data(), id: doc.id, message:decryptMessage(doc.data().message)});
+                        messages.push({ ...doc.data(), id: doc.id, message: decryptMessage(doc.data().message) });
                     });
                     setMessage(messages[0] ?? "-");
                 }
@@ -47,7 +46,7 @@ function Sender({ data, onClick }) {
         }
     }, [chatId]);
 
-    if (message == "-") {
+    if (message == null) {
         return <></>
     }
 
@@ -58,9 +57,35 @@ function Sender({ data, onClick }) {
                 <span className="font-poppins font-bold text-ms">
                     {data.name} {data.surname}
                 </span>
+
                 <span className="font-poppins font-bold text-xs block w-40 text-ellipsis whitespace-nowrap overflow-hidden">
                     {message == null ? (
-                        "Loading ..."
+                        "Loading..."
+                    ) : (message.videos && message.videos.length > 0) ? (
+                        <>
+                            {message.sender == getAuth().currentUser.uid && (
+                                <FontAwesomeIcon icon={faReply} size="xs" className='mr-2' />
+                            )}
+                            <FontAwesomeIcon icon={faVideo} size="xs" className='mr-2' />
+                            {message?.message ? message?.message : "Video"}
+                        </>
+                    ) : message.images && message.images.length > 0 ? (
+                        <>
+
+                            {message.sender == getAuth().currentUser.uid && (
+                                <FontAwesomeIcon icon={faReply} size="xs" className='mr-2' />
+                            )}
+                            <FontAwesomeIcon icon={faImage} size="xs" className='mr-2' />
+                            {message?.message ? message?.message : "Image"}
+                        </>
+                    ) : message.audio ? (
+                        <>
+                            {message.sender == getAuth().currentUser.uid && (
+                                <FontAwesomeIcon icon={faReply} size="xs" className='mr-2' />
+                            )}
+                            <FontAwesomeIcon icon={faMicrophone} size="xs" className='mr-2' />
+                            Audio
+                        </>
                     ) : (
                         <>
                             {message.sender == getAuth().currentUser.uid && (
