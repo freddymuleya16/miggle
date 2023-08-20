@@ -114,7 +114,9 @@ export const convertToBase64 = (file) => {
 const myData = {
   "merchant_id": "10030696",
   "merchant_key": "mrxb3svcao6ne" ,
-  email_address:'freddymuleya16@gmail.com'
+  "email_address":'freddymuleya16@gmail.com',
+  "amount":"200",
+  "item_name":'buiscuits'
 }
 
 const passPhrase = 'jt7NOE43FZPn';
