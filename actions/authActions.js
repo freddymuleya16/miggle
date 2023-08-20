@@ -295,18 +295,17 @@ export const facebookSignIn = () => async (dispatch) => {
       if (confirm(`You have already registered with ${providers[0]}. Do you want to link your Facebook account?`)) {
         const provider = new FacebookAuthProvider();
         let prov;
-          if (providers[0] === 'google.com') {
-            prov = new GoogleAuthProvider();
-          } else if (providers[0] === 'password') {
-            prov = new EmailAuthProvider();
-          }
-          const user = await signInWithPopup(getAuth(), prov);
+        if (providers[0] === 'google.com') {
+          prov = new GoogleAuthProvider();
+        } else if (providers[0] === 'password') {
+          prov = new EmailAuthProvider();
+        }
+        const user = await signInWithPopup(getAuth(), prov);
         const auth = getAuth();
         linkWithPopup(auth.currentUser, provider).then((result) => {
           // Accounts successfully linked.
           const credential = FacebookAuthProvider.credentialFromResult(result);
-          const user = result.user;
-          console.log(credential,user)
+          const user = result.user; 
           // ...
         }).catch((error) => {
           console.log(error)

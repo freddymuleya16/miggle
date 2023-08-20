@@ -18,12 +18,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowAltCircleLeft, faImages, faLocationDot, faMars, faTrashAlt, faVenus, faXmark } from '@fortawesome/free-solid-svg-icons';
 import ChatList from './ChatList';
 import UserMessageAction from '../UserMessageAction';
-import { decryptMessage, encryptMessage, getChatDocument } from '@/utils/helpers'; 
+import { decryptMessage, encryptMessage, getChatDocument } from '@/utils/helpers';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
+import VoiceRecorder from './VoiceRecorder';
 
 
 
 function Messages({ receiverId, matchDate, updateCurrentMatch, user }) {
+
+    const [recording, setRecording] = useState(false);
     // Define a state for the message
     const [message, setMessage] = useState("");
     const effectRan = useRef(false)
@@ -46,9 +49,65 @@ function Messages({ receiverId, matchDate, updateCurrentMatch, user }) {
 
     const [show, setShow] = useState(false)
 
+    const sendVN = async (blob) => {
+        {
+            const storage = getStorage();
+
+            console.log(blob)
+            const fileRef = ref(
+                storage,
+                `Chats/${chatRef}/${Date.now()}-audio`
+            );
+            const uploadTask = uploadBytesResumable(fileRef, blob)
+
+
+            uploadTask.on('state_changed',
+                (snapshot) => {
+                    // Observe state change events such as progress, pause, and resume
+                    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    console.log('Upload is ' + progress + '% done');
+                    switch (snapshot.state) {
+                        case 'paused':
+                            //console.log('Upload is paused');
+                            break;
+                        case 'running':
+                            //console.log('Upload is running');
+                            break;
+                    }
+                },
+                (error) => {
+                    // Handle unsuccessful uploads
+                    console.error('Error uploading file:', error);
+
+                },
+                async () => {
+                    try {
+                        //console.log('pics', pictureRef)
+                    } catch (error) {
+                        console.error("Error adding message:", error);
+                    }
+                }
+            );
+
+            const snapshot = await uploadTask;
+
+            const audio = await getDownloadURL(snapshot.ref)
+
+            const newMessage = {
+                sender: getAuth().currentUser.uid,
+                timestamp: serverTimestamp(),
+                message: encryptMessage(message),
+                liked: false,
+                audio
+            };
+            await addMessage(chatRef, newMessage);
+        }
+    }
     function toggle() {
         setShow((prev) => !prev)
     }
+
     useEffect(() => {
         if (effectRan.current === false) {
             async function fetchData() {
@@ -142,7 +201,7 @@ function Messages({ receiverId, matchDate, updateCurrentMatch, user }) {
                     handleUpload(filteredVideos),
                     handleUpload(filteredImages),
                 ])
-             
+
             const newMessage = {
                 sender: getAuth().currentUser.uid,
                 message: encryptMessage(message),
@@ -423,12 +482,15 @@ function Messages({ receiverId, matchDate, updateCurrentMatch, user }) {
                         </label>
                         <input value={message}
                             onChange={(event) => setMessage(event.target.value)} placeholder="Type a message ..." className="flex-grow  bg-transparent  font-poppins  border-none outline-none placeholder-gray-500 text-lg" />
-                        <button
-                            onClick={handleSubmit}
-                            className="w-1/6 h-4/6 rounded-full font-poppins bg-gradient-to-r from-rose-500 to-rose-300 text-white py-2 px-2 sm:px-4 hover:opacity-75 focus:outline-none"
-                        >
-                            Send
-                        </button>
+                        <VoiceRecorder recording={recording} setRecording={setRecording} sendVN={sendVN} />
+                        {!recording &&
+                            <button
+                                onClick={handleSubmit}
+                                className="w-1/6 h-4/6 rounded-full font-poppins bg-gradient-to-r from-rose-500 to-rose-300 text-white py-2 px-2 sm:px-4 hover:opacity-75 focus:outline-none"
+                            >
+                                Send
+                            </button>
+                        }
                     </div>
 
                 </div>

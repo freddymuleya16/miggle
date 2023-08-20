@@ -29,7 +29,7 @@ function Chat({ data }) {
                 {data.images && data.images.map((attachment, i) => {
                     return (
                         <div key={i} className={`${data.gender == 'woman' ? 'bg-pink-500' : data.gender == 'man' ? 'bg-blue-800' : ''} max-w-md my-3 px-2 py-2 ${data.isCurrent ? 'rounded-s-2xl' : 'rounded-e-2xl'} rounded-t-2xl body-font font-poppins text-white  mx-3 text-lg`}>
-                            <Image src={attachment} width={500} height={500} alt='' className={`${data.isCurrent ? 'rounded-s-2xl' : 'rounded-e-2xl'} rounded-t-2xl `}/></div>)
+                            <Image src={attachment} width={500} height={500} alt='' className={`${data.isCurrent ? 'rounded-s-2xl' : 'rounded-e-2xl'} rounded-t-2xl `} /></div>)
                 })}
                 {data.videos && data.videos.map((attachment, i) => {
                     return (
@@ -39,6 +39,17 @@ function Chat({ data }) {
                             </video>
                         </div>)
                 })}
+                {
+                    data.audio
+                    &&
+                    <audio
+                        color='blue'
+                        controls
+                        className={`${data.gender == 'woman' ? 'bg-pink-500' : data.gender == 'man' ? 'bg-blue-800' : ''} max-w-md my-3 px-2 py-2 ${data.isCurrent ? 'rounded-s-2xl' : 'rounded-e-2xl'} rounded-t-2xl body-font font-poppins text-white  mx-3 text-lg`} >
+                        <source src={data.audio} type="audio/ogg" ></source>
+                    </audio>
+                }
+
                 {data.message != '' && <p className={`${data.gender == 'woman' ? 'bg-pink-500' : data.gender == 'man' ? 'bg-blue-800' : ''} max-w-md px-3 py-2 ${data.isCurrent ? 'rounded-s-2xl' : 'rounded-e-2xl'} rounded-t-2xl body-font font-poppins text-white  mx-3 text-lg`}>
                     {data.message} {data.text}
                 </p>
