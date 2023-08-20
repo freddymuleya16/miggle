@@ -3,7 +3,7 @@ import React from "react";
 const ConfirmationModal = ({ isOpen, title, message, onConfirm, onCancel }) => {
     return (
         <div
-            className={`fixed z-10 inset-0 flex items-center justify-center bg-opacity-75 ${isOpen ? "visible" : "hidden"
+            className={`fixed z-10 inset-0 flex bg-black items-center justify-center bg-opacity-75 ${isOpen ? "visible" : "hidden"
                 }`}
         >
             <div className="bg-white w-96 p-8 rounded-lg shadow-lg text-center">
@@ -17,7 +17,7 @@ const ConfirmationModal = ({ isOpen, title, message, onConfirm, onCancel }) => {
                         Cancel
                     </button>
                     <button
-                        className="px-4 py-2 bg-rose-500 text-white rounded-lg"
+                        className="px-4 py-2 bg-rose-500 text-white rounded-lg focus:outline-none"
                         onClick={onConfirm}
                     >
                         Confirm

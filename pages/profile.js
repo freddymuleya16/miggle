@@ -250,7 +250,12 @@ const QuestionnaireForm = ({ edit ,setProfileOpen}) => {
         aboutMe,
         edit
       )
-    );
+    ).then(()=>{
+      if (edit){
+        toast.success('Profile Saved');
+        setProfileOpen(false);
+      }
+    });
     if (edit) {
       console.log(pictures)
       await getUserDetails()

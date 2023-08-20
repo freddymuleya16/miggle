@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRotateLeft, faBoltLightning, faCheck, faChevronLeft, faChevronRight, faHeart, faSadTear, faStar, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { db } from '@/utils/firebase'
 import { collection, doc, getDoc, onSnapshot, serverTimestamp, updateDoc } from 'firebase/firestore'
-import { calculateDistance } from '@/utils/helpers'
+import { calculateDistance, getChatDocument } from '@/utils/helpers'
 import FullscreenLoading from './FullscreenLoading'
 import { getAuth } from 'firebase/auth'
 import { addNotification } from '@/actions/notificationActions'
@@ -172,7 +172,8 @@ function MatchCard({ user }) {
 
                 await updateDoc(userDoc, updatedUserData);
                 await updateDoc(matchDoc, updatedMatchData);
-
+                const chatID = await getChatDocument(userId, matchId);
+                console.log(chatID,'-created chat')
                 // Display match success message
                 const fullName = `${matchDocData.firstName} ${matchDocData.lastName}`;
                 toast.success(`Matched with ${fullName}`);

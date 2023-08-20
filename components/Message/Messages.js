@@ -18,7 +18,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowAltCircleLeft, faImages, faLocationDot, faMars, faTrashAlt, faVenus, faXmark } from '@fortawesome/free-solid-svg-icons';
 import ChatList from './ChatList';
 import UserMessageAction from '../UserMessageAction';
-import { decryptMessage, encryptMessage, getChatDocument } from '@/utils/helpers';
+import { decryptMessage, encryptMessage, getChatDocument, getChatDocumentWithoutCreating } from '@/utils/helpers';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import VoiceRecorder from './VoiceRecorder';
 
@@ -109,18 +109,16 @@ function Messages({ receiverId, matchDate, updateCurrentMatch, user }) {
     }
 
     useEffect(() => {
-        if (effectRan.current === false) {
-            async function fetchData() {
-                // You can await here
-                const response = await getChatDocument(getAuth().currentUser.uid, receiverId, 'messages.js');
-                setChatRef(
-                    response
-                );
-            }
-            fetchData();
-
+        async function fetchData() {
+            // You can await here
+            const response = await getChatDocumentWithoutCreating(getAuth().currentUser.uid, receiverId, 'messages.js');
+            setChatRef(
+                response
+            ); 
+            console.log('Effect ran false', response)
         }
-        return () => { effectRan.current = true }
+        fetchData();
+
     }, [receiverId]);
     useEffect(() => {
         getUser(receiverId).then((user) => {

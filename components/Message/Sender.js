@@ -38,7 +38,7 @@ function Sender({ data, onClick }) {
                     // Loop through each document in the messages collection and add it to the messages array
                     querySnapshot.forEach((doc) => {
                         messages.push({ ...doc.data(), id: doc.id, message: decryptMessage(doc.data().message) });
-                    });
+                    }); 
                     setMessage(messages[0] ?? "-");
                 }
             );
@@ -46,7 +46,7 @@ function Sender({ data, onClick }) {
         }
     }, [chatId]);
 
-    if (message == null) {
+    if (message == null || message == '-') {
         return <></>
     }
 

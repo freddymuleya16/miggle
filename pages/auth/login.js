@@ -76,7 +76,7 @@ const Login = () => {
 
         <div className="flex justify-center">
           <button
-            className="btn-fill bg-rose-500 hover:bg-rose-600 text-white font-bold py-2 px-4 rounded-md mb-4"
+            className="btn-fill bg-rose-500 hover:bg-rose-600 text-white font-bold py-2 px-4 rounded-md mb-4 focus:outline-none"
             type="submit"
             disabled={isLoading}
           >
