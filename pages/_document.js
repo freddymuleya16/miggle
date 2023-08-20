@@ -6,7 +6,7 @@ export default function Document() {
       <Head>
         <link href="/dist/output.css" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Kalam&display=swap" rel="stylesheet"/>
-
+        <script src="https://www.payfast.co.za/onsite/engine.js" async ></script>
         <link
           rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
