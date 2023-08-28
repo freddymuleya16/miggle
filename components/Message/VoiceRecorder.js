@@ -6,7 +6,6 @@ const VoiceRecorder = ({ recording, setRecording, sendVN }) => {
   //const [recording, setRecording] = useState(false);
   const audioRef = useRef(null); // Initialize with null
   const [record, setRecord] = useState(null)
-  const [blob, setBlob] = useState(null)
   const [timer, setTimer] = useState(0);
   const timerInterval = useRef(null);
 
@@ -21,11 +20,11 @@ const VoiceRecorder = ({ recording, setRecording, sendVN }) => {
       chunks.push(event.data);
     };
 
-    mediaRecorder.onstop = () => {
+    mediaRecorder.onstop = () => { 
       const audioBlob = new Blob(chunks, { type: 'audio/wav' });
       const audioUrl = URL.createObjectURL(audioBlob);
       setRecord(audioUrl)
-      setBlob(audioBlob);
+      sendVN(audioBlob)
     };
 
     mediaRecorder.start();
@@ -49,8 +48,7 @@ const VoiceRecorder = ({ recording, setRecording, sendVN }) => {
       audioRef.current.stream.getTracks().forEach(track => track.stop());
       clearInterval(audioRef.current.timerInterval); // Clear the timer interval
       setRecording(false);
-      setTimer(0);
-      sendVN(blob);
+      setTimer(0);      
     }
   };
 
@@ -59,9 +57,8 @@ const VoiceRecorder = ({ recording, setRecording, sendVN }) => {
       clearInterval(audioRef.current.timerInterval); // Clear the timer interval
       setRecording(false);
       setTimer(0);
-      audioRef.current.stream.getTracks().forEach(track => track.stop());
+      //audioRef.current.stream.getTracks().forEach(track => track.stop());
       audioRef.current = null;
-      setBlob(null)
     }
   };
 

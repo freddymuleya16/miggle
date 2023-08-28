@@ -44,7 +44,7 @@ function Chat({ data }) {
                     &&
                     <div className={`${data.gender == 'woman' ? 'bg-pink-500' : data.gender == 'man' ? 'bg-blue-800' : ''} max-w-md my-3 px-2 py-2 ${data.isCurrent ? 'rounded-s-2xl' : 'rounded-e-2xl'} rounded-t-2xl body-font font-poppins text-white  mx-3 text-lg `} >
                         <audio color='blue' controls>
-                            <source src={data.audio} type="audio/ogg" ></source>
+                            <source src={data.audio} type="audio/wav" ></source>
                         </audio>
                     </div>
                 }
