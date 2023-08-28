@@ -119,6 +119,11 @@ export const logout = () => async (dispatch) => {
   const auth = getAuth();
   dispatch(setLoading(true));
   try {
+    const userRef = doc(db, 'users', getAuth().currentUser.uid);
+
+    // Update user's online status and last seen when they log out
+    await updateDoc(userRef, { isOnline: false, lastSeen: serverTimestamp() });
+
     await auth.signOut();
     dispatch(setUser(null));
   } catch (error) {
@@ -305,7 +310,7 @@ export const facebookSignIn = () => async (dispatch) => {
         linkWithPopup(auth.currentUser, provider).then((result) => {
           // Accounts successfully linked.
           const credential = FacebookAuthProvider.credentialFromResult(result);
-          const user = result.user; 
+          const user = result.user;
           // ...
         }).catch((error) => {
           console.log(error)

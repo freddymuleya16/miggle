@@ -43,7 +43,7 @@ export default function UserNav({ profileOpen, user, setCurrentMatch, toggle, ac
                 })).then((users) => {
 
                     const usersWitchMatchdate = users.map(obj1 => {
-                        const match = data.matches.find(obj2 => obj1.id === obj2.matchId);
+                        const match = data.matches.find(obj2 => obj1.id === obj2.matchId||obj1.id === obj2.userId);
                         return { ...obj1, ...match };
                     });
 

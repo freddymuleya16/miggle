@@ -96,3 +96,14 @@ I would switch on first switch and wait a few minutes and then after a few minut
 
 17. facebook sign in
 
+
+
+
+1. Match Time
+2. online
+3. last seen
+4. rest of settings
+5. **Dynamic color schemes**
+6. voice note bug
+7. vn mobile
+8. 

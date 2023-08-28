@@ -34,7 +34,7 @@ function Home({ user }) {
       </div>;
     }
 
-    if (currentMatch) {
+    if (currentMatch) { 
       return (
         <div className={`basis-full sm:basis-3/4 ${!profileOpen && 'sm:flex'}`}>
           <div className="basis-full sm:flex">

@@ -15,12 +15,13 @@ import { getAuth } from 'firebase/auth';
 import { getUser } from '@/actions/authActions';
 import OverLayLoading from '../OverLayLoading';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowAltCircleLeft, faImages, faLocationDot, faMars, faTrashAlt, faVenus, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faArrowAltCircleLeft, faCircleDot, faImages, faLocationDot, faMars, faTrashAlt, faVenus, faXmark } from '@fortawesome/free-solid-svg-icons';
 import ChatList from './ChatList';
 import UserMessageAction from '../UserMessageAction';
 import { decryptMessage, encryptMessage, getChatDocument, getChatDocumentWithoutCreating } from '@/utils/helpers';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import VoiceRecorder from './VoiceRecorder';
+import { format, formatRelative } from 'date-fns';
 
 
 
@@ -114,7 +115,7 @@ function Messages({ receiverId, matchDate, updateCurrentMatch, user }) {
             const response = await getChatDocumentWithoutCreating(getAuth().currentUser.uid, receiverId, 'messages.js');
             setChatRef(
                 response
-            ); 
+            );
             console.log('Effect ran false', response)
         }
         fetchData();
@@ -385,6 +386,21 @@ function Messages({ receiverId, matchDate, updateCurrentMatch, user }) {
         return pictureRefs;
     };
 
+    useEffect(() => {
+        const unsubscribe = onSnapshot(
+            query(
+                doc(db, `users`, receiverId),
+            ),
+            (querySnapshot) => {
+                const data = querySnapshot.data();
+                console.log("reciever listener", data)
+                setReceiver(data)
+            }
+        );
+        return () => unsubscribe();
+
+    }, [receiverId])
+
 
     if (receiver == null || currentUser == null) {
         return <OverLayLoading />
@@ -400,9 +416,18 @@ function Messages({ receiverId, matchDate, updateCurrentMatch, user }) {
                         <div className='  flex w-full justify-between'>
                             <div className=' flex items-center'>
                                 <Image src={receiver.pictures[0]} alt="" className="inline-block h-12 sm:w-12 w-16 rounded-full ring-2 ring-white bg-white object-cover" width={200} height={200} />
-                                <p className="body-font sm:text-2xl font-poppins text-gray-800 mx-3  ">
-                                    You matched with {receiver.firstName} {receiver.lastName} on {matchDate?.toDate().toLocaleDateString('en-GB')}
-                                </p>
+                                <div className={`${receiver.isOnline ? 'bg-rose-500' : 'bg-gray-500'} rounded-full h-3 w-3 -mt-10 -ml-3`}></div>
+                                <div>
+                                    <p className="body-font sm:text-2xl font-poppins text-gray-800 mx-3  ">
+                                        You matched with {receiver.firstName} {receiver.lastName} on {format(matchDate?.toDate(), 'yyyy/MM/dd HH:mm ')}
+                                    </p>
+                                    {
+                                        !receiver.isOnline && receiver.lastSeen
+                                        &&
+                                        <span className="body-font sm:text-sm font-poppins text-gray-800 mx-3 ">Last seen {formatRelative(receiver.lastSeen.toDate(), new Date())}</span>
+                                    }
+                                </div>
+
                             </div>
                             <div className='  w-fit justify-self-end'>
                                 <button onClick={() => updateCurrentMatch(null)} className="focus:outline-none flex items-center justify-center rounded-full  border-gray-500 text-gray-500  border-2 text-xl p-4 w-12 h-12  hover:border-4 hover:text-2xl">
