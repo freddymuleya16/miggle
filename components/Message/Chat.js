@@ -6,11 +6,11 @@ import Image from 'next/image'
 import React from 'react'
 
 function Chat({ data }) {
-    const like = async (id) => {
+    const like = async (id,reaction) => {
         const messageRef = doc(db, `chats/${data.chatRef}/messages/${id}`);
 
         await updateDoc(messageRef, {
-            liked: true
+            liked: !reaction
         });
     }
     return (
@@ -58,7 +58,7 @@ function Chat({ data }) {
 
 
             {!data.isCurrent &&
-                <div className="h-8 w-8 cursor-pointer  rounded-full flex items-center justify-centern " onClick={() => like(data.id)}>
+                <div className="h-8 w-8 cursor-pointer  rounded-full flex items-center justify-centern " onClick={() => like(data.id,data.liked)}>
                     <FontAwesomeIcon icon={faHeart} size='xl' className={`${data.liked ? "text-red-500" : "text-white"}`} />
 
                     {/* <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><path d="M128,216S28,160,28,92A52,52,0,0,1,128,72h0A52,52,0,0,1,228,92C228,160,128,216,128,216Z" fill={data.liked ? "red" : "white"} stroke={data.liked ? "red" : "gray"} stroke-linecap="round" stroke-linejoin="round" stroke-width="8"></path></svg> */}

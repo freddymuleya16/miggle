@@ -17,8 +17,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimesCircle, faXmark, faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
 import { collection, doc, onSnapshot, query } from "firebase/firestore";
 import { db } from "@/utils/firebase";
+import ConfirmationModal from "@/components/Confirmation";
 
-const QuestionnaireForm = ({ edit ,setProfileOpen}) => {
+const QuestionnaireForm = ({ edit, setProfileOpen }) => {
+  const [ showConfirmation, setShowConfirmation] = useState(false)
   const [gender, setGender] = useState("");
   const [orientation, setOrientation] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -143,8 +145,7 @@ const QuestionnaireForm = ({ edit ,setProfileOpen}) => {
 
   const [errors, setErrors] = useState({});
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async ( ) => { 
 
     // validate form fields
     const validatinErrors = {};
@@ -250,8 +251,8 @@ const QuestionnaireForm = ({ edit ,setProfileOpen}) => {
         aboutMe,
         edit
       )
-    ).then(()=>{
-      if (edit){
+    ).then(() => {
+      if (edit) {
         toast.success('Profile Saved');
         setProfileOpen(false);
       }
@@ -269,18 +270,18 @@ const QuestionnaireForm = ({ edit ,setProfileOpen}) => {
       {isLoading && <OverLayLoading />}
 
       <div className="sm:h-[90vh] overflow-y-auto  ">
-      {edit &&
-        <FontAwesomeIcon
-          onClick={() => setProfileOpen(false)}
-          size="lg"
-          icon={faXmark}
-          className="absolute top-1 right-1 text-gray-600 m-2 cursor-pointer sm:top-3 " />
+        {edit &&
+          <FontAwesomeIcon
+            onClick={() => setProfileOpen(false)}
+            size="lg"
+            icon={faXmark}
+            className="absolute top-1 right-1 text-gray-600 m-2 cursor-pointer sm:top-3 " />
         }
         <h1 className="text-4xl">
           Find your true <br />
           L❤️VE
         </h1>
-        <form onSubmit={handleSubmit} className="text-left">
+        <form onSubmit={(e)=>{e.preventDefault();setShowConfirmation(true)}} className="text-left">
           <div className="text-left mt-3">
             <label className="mr-4">I am a</label>
             <div className="flex">
@@ -515,6 +516,13 @@ const QuestionnaireForm = ({ edit ,setProfileOpen}) => {
           </div>
 
         </form>
+        <ConfirmationModal
+          isOpen={showConfirmation}
+          title="Confirm!"
+          message="Are you sure?"
+          onConfirm={() => handleSubmit()}
+          onCancel={() => setShowConfirmation(false)}
+        />
         {!edit &&
           <Link href="#"
             onClick={handleSignout} className="text-center block mt-1">
