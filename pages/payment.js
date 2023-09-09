@@ -5,6 +5,9 @@ import Link from 'next/link';
 import { withAuth } from '@/utils/withAuth';
 import { identifier } from '@/utils/helpers';
 
+import axios from "axios";
+const crypto = require("crypto");
+
 const PremiumPlanCard = ({ title, price, features, user }) => {
     return (
         <div className="border rounded-lg p-6 shadow-md">
@@ -34,18 +37,7 @@ const PremiumPlanCard = ({ title, price, features, user }) => {
 
             </form>
             <button
-                onClick={() => {
-                    window.payfast_do_onsite_payment({ "uuid": identifier }, function (result) {
-                        if (result === true) {
-                            // Payment Completed
-                            console.log('subscribed successfully')
-                        }
-                        else {
-                            console.log('subscribed unsuccessfully')
-                            // Payment Window Closed
-                        }
-                    });
-                }}
+                onClick={paymentHandler}
                 type='submit' className="btn-fill bg-rose-500 hover:bg-rose-600 text-white font-bold py-2 px-4 rounded-md mb-4 focus:outline-none        mt-4   inline-block   transition duration-300">
                 Upgrade Now
 
@@ -105,3 +97,65 @@ const GetPremiumPage = ({ user }) => {
 };
 
 export default withAuth(GetPremiumPage);
+
+
+const generateSignature = (data, passPhrase = null) => {
+    // Create parameter string
+    let pfOutput = "";
+    for (let key in data) {
+        if (data.hasOwnProperty(key)) {
+            if (data[key] !== "") {
+                pfOutput += `${key}=${encodeURIComponent(data[key].trim()).replace(/%20/g, "+")}&`
+            }
+        }
+    }
+
+    // Remove last ampersand
+    let getString = pfOutput.slice(0, -1);
+    if (passPhrase !== null) {
+        getString += `&passphrase=${encodeURIComponent(passPhrase.trim()).replace(/%20/g, "+")}`;
+    }
+
+    return crypto.createHash("md5").update(getString).digest("hex");
+};
+const paymentHandler = async () => {
+
+    const myData = {
+        "merchant_id": "10030696",
+        "merchant_key": "mrxb3svcao6ne",
+        email_address: "fredrixten@gmail.com"
+    };
+    const passPhrase = 'jt7NOE43FZPn';
+
+    const dataToString = (dataArray) => {
+        // Convert your data array to a string
+        let pfParamString = "";
+        for (let key in dataArray) {
+            if (dataArray.hasOwnProperty(key)) { pfParamString += `${key}=${encodeURIComponent(dataArray[key].trim()).replace(/%20/g, "+")}&`; }
+        }
+        // Remove last ampersand
+        return pfParamString.slice(0, -1);
+    };
+
+    const generatePaymentIdentifier = async (pfParamString) => {
+        const result = await axios.post(`https://sandbox.payfast.co.za/onsite/​process`, pfParamString)
+            .then((res) => {
+                return res.data.uuid || null;
+            })
+            .catch((error) => {
+                console.error(error)
+            });
+        console.log("res.data", result);
+        return result;
+    };
+
+    // Generate signature (see Custom Integration -> Step 2)
+    myData["signature"] = generateSignature(myData, passPhrase);
+
+    // Convert the data array to a string
+    const pfParamString = dataToString(myData);
+
+    // Generate payment identifier
+    const identifier = await generatePaymentIdentifier(pfParamString);
+    console.log("Identifier", identifier)
+}
