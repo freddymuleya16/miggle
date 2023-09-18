@@ -30,7 +30,7 @@ const Banner = ({ user }) => {
   return (
     !isDismissed && (
       <div className={`${isDismissed ? 'opacity-0 scale-0' : 'opacity-100 scale-100'
-        } transition-opacity  bg-rose-500 text-white p-2 absolute w-1/4 shadow-lg  shadow-black right-2 bottom-2 z-20 rounded-md font-poppins duration-500 ease-in-out`}
+        } transition-opacity  bg-rose-500 text-white p-2 absolute w-1/2 sm:w-1/4 shadow-lg  shadow-black  right-2 bottom-20 sm:bottom-2 z-20 rounded-md font-poppins duration-500 ease-in-out`}
       ><div className="container mx-auto">
           <div className="flex flex-col items-center justify-between">
             <p className="text-md font-semibold  text-center ">Upgrade to Premium for Exclusive Features!</p>

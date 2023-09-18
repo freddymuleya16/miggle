@@ -12,12 +12,10 @@ import { useRouter } from 'next/router';
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
 const SubscriptionPage = ({ user }) => {
-    const premiumFeatures = [
-        "Ad-free browsing",
+    const premiumFeatures = [ 
         "Advanced search filters",
         "Unlimited likes/swipes",
-        "Exclusive messaging privileges",
-        // Add more features as needed
+        "Exclusive messaging privileges", 
     ];
 
     const isLoading = useSelector((state) => state.auth.isLoading);

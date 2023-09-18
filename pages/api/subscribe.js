@@ -1,4 +1,4 @@
-const stripe = require('stripe')('sk_test_51NhEtZBq3YClo4F39rcFKIpoBcNRaza9GY9i7Vi3SElhoFCDtBO7h0O152iIRRYKXrnxbqpgDuyk3dlgcjqcY6VA00VQfQpYV8');
+const stripe = require('stripe')(process.env.NEXT_PUBLIC_STRIPE_PRIVATE_KEY);
 
 export default async function handler(req, res) {
     if (req.method === 'POST') {
@@ -33,8 +33,11 @@ export default async function handler(req, res) {
                 payment_method: paymentMethodId
             })
             
-            
-            res.status(200).json({ success: intent.status});
+            if (intent.status === 'succeeded') {
+                res.status(200).json({ success: true });
+              } else {
+                res.status(400).json({ success: false, error: 'Payment not succeeded' });
+              }
 
         } catch (error) {
             // Handle payment failure and send an error response to the client
