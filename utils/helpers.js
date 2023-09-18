@@ -109,75 +109,19 @@ export const convertToBase64 = (file) => {
     return reader.result;
   };
 };
+ 
+export const isSubscribed = (user) => {
+  if (user && user.premium === true) {
+    // Check the expiry date (assuming 'expiryDate' is a valid date string)
+    const currentDate = new Date();
+    const expiryDate = new Date(user.expiryDate);
 
-
-// const myData = {
-//   "merchant_id": "10030696",
-//   "merchant_key": "mrxb3svcao6ne",
-//   "return_url": 'https://mingle-sa.vercel.app/payment-success',
-//   "cancel_url": "https://mingle-sa.vercel.app/payment-success",
-//   'notify_url': "https://mingle-sa.vercel.app/payment-success",
-//   'name_first': "Freddy",
-//   "name_last": "Muleya",
-//   "email_address": 'freddymuleya16@gmail.com',
-//   "m_payment_id": '0123456',
-//   "amount": "200",
-//   "item_name": 'buiscuits'
-// }
-
-// const passPhrase = 'jt7NOE43FZPn';
-
-// const dataToString = (dataArray) => {
-//   // Convert your data array to a string
-//   let pfParamString = "";
-//   for (let key in dataArray) {
-//     if (dataArray.hasOwnProperty(key)) { pfParamString += `${key}=${encodeURIComponent(dataArray[key].trim()).replace(/%20/g, "+")}&`; }
-//   }
-//   // Remove last ampersand
-//   return pfParamString.slice(0, -1);
-// };
-
-// const generatePaymentIdentifier = async (pfParamString) => {
-//   const result = await axios.post('https://sandbox.payfast.co.za/onsite/process', pfParamString)
-//     .then((res) => {
-//       return res.data.uuid || null;
-//     })
-//     .catch((error) => {
-//       console.error(error)
-//     });
-//   console.log("res.data", result);
-//   return result;
-// };
-// import crypto from "crypto"
-
-// const generateSignature = (data, passPhrase = null) => {
-//   // Create parameter string
-//   let pfOutput = "";
-//   for (let key in data) {
-//     if (data.hasOwnProperty(key)) {
-//       if (data[key] !== "") {
-//         pfOutput += `${key}=${encodeURIComponent(data[key].trim()).replace(/%20/g, "+")}&`
-//       }
-//     }
-//   }
-
-//   // Remove last ampersand
-//   let getString = pfOutput.slice(0, -1);
-//   if (passPhrase !== null) {
-//     getString += `&passphrase=${encodeURIComponent(passPhrase.trim()).replace(/%20/g, "+")}`;
-//   }
-//  // console.log(pfOutput)
-//   const g = crypto.createHash("md5").update(getString).digest("hex");
-//   //console.log(g)
-//   return g
-// };
-// // Generate signature (see Custom Integration -> Step 2)
-// myData["signature"] = generateSignature(myData, passPhrase);
-
-// // Convert the data array to a string
-// const pfParamString = dataToString(myData);
-
-// // Generate payment identifier
-// export const identifier = await generatePaymentIdentifier(pfParamString);
-
-
+    if (expiryDate > currentDate) {
+      return true; // User is subscribed and the subscription is not expired
+    } else {
+      return false; // User is subscribed, but the subscription has expired
+    }
+  } else {
+    return false; // User is not subscribed
+  }
+};

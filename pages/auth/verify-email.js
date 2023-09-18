@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getAuth, sendEmailVerification } from 'firebase/auth';
+import { getAuth, sendEmailVerification, signOut } from 'firebase/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import AuthLayout from '@/components/Auth-Layout';
 import { toast } from 'react-toastify';
@@ -32,7 +32,7 @@ const VerifyEmail = () => {
         } else {
           setTries((prevTries) => prevTries + 1);
           if (tries >= MAX_TRIES) {
-            getAuth().signOut();
+            dispatch(signOut())
           }
         }
       }

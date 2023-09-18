@@ -173,7 +173,7 @@ function MatchCard({ user }) {
                 await updateDoc(userDoc, updatedUserData);
                 await updateDoc(matchDoc, updatedMatchData);
                 const chatID = await getChatDocument(userId, matchId);
-                console.log(chatID,'-created chat')
+                console.log(chatID, '-created chat')
                 // Display match success message
                 const fullName = `${matchDocData.firstName} ${matchDocData.lastName}`;
                 toast.success(`Matched with ${fullName}`);
@@ -194,8 +194,8 @@ function MatchCard({ user }) {
     }
 
     return (
-        <div className="basis-full bg-black">
-            <div className="flex justify-center  sm:py-5 bg-black sm:h-screen h-[96vh]">
+        <div className="basis-full bg-gray-200">
+            <div className="flex justify-center  sm:py-5 bg-gray-200 sm:h-screen h-[96vh]">
                 <div className="w-100 sm:max-w-md">
                     {/* <Carousel images={[Temp, Temp]} className='rounded-lg' /> */}
                     <div className="relative sm:rounded-2xl  p-0 h-full">
