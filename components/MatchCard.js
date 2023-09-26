@@ -7,20 +7,26 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRotateLeft, faBoltLightning, faCheck, faChevronLeft, faChevronRight, faHeart, faSadTear, faStar, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { db } from '@/utils/firebase'
 import { collection, doc, getDoc, onSnapshot, serverTimestamp, updateDoc } from 'firebase/firestore'
-import { calculateDistance, getChatDocument } from '@/utils/helpers'
+import { calculateDistance, getChatDocument, isSubscribed } from '@/utils/helpers'
 import FullscreenLoading from './FullscreenLoading'
 import { getAuth } from 'firebase/auth'
 import { addNotification } from '@/actions/notificationActions'
 import { toast } from 'react-toastify'
 import { useDispatch } from 'react-redux'
+import useSwipeLimit from './useSwipeLimit'
+import { setIsPremiumModelOpen } from '@/reducers/modelSlice'
 
 function MatchCard({ user }) {
     const dispatch = useDispatch()
-    const [potentialMatches, setPotentialMatches] = useState([]);
     const [images, setImages] = useState([])
     const [activeIndex, setActiveIndex] = useState(0);
     const [noMatches, setNoMatches] = useState(false);
-
+    const dailySwipeLimit = 2; // Set your desired limit here
+    const { remainingSwipes, canSwipe, swipe, potentialMatches,setPotentialMatches } = useSwipeLimit(
+        user, 
+        dailySwipeLimit,
+        
+    );
     const handleNext = () => {
         setActiveIndex((prevIndex) => (prevIndex === images.length - 1 ? 0 : prevIndex + 1));
     };
@@ -116,7 +122,7 @@ function MatchCard({ user }) {
         return () => {
             unsubscribe();
         };
-    }, []);
+    }, []); 
 
     if (potentialMatches.length == 0) {
         if (noMatches) {
@@ -132,66 +138,19 @@ function MatchCard({ user }) {
         return <div className="basis-full bg-gray-200"><FullscreenLoading /></div>
     }
 
-    const handleSwipe = async (swipe, matchId) => {
-        // Get user document and update swiping history
-        const usersCollection = collection(db, "users");
-        const userId = getAuth().currentUser.uid;
-        const userDoc = doc(usersCollection, userId);
-        const userSnapshot = await getDoc(userDoc);
-        const userData = userSnapshot.data();
+ 
 
-        const updatedData = {
-            swipingHistory: {
-                [matchId]: swipe,
-                ...(userData.swipingHistory || {}),
-            },
-        };
-
-        user.swipingHistory = updatedData.swipingHistory
-
-        await updateDoc(userDoc, updatedData);
-
-        // Check if the user swiped right and the match also swiped right
-        if (swipe === "like") {
-            const matchDoc = doc(usersCollection, matchId);
-            const matchDocSnapshot = await getDoc(matchDoc);
-            const matchDocData = matchDocSnapshot.data();
-            if (
-                matchDocData.swipingHistory &&
-                matchDocData.swipingHistory[userId] === "like"
-            ) {
-                // Update both users' matches arrays
-                const userMatches = userData.matches
-                    ? [...userData.matches, { matchId, matchDate: new Date() }]
-                    : [{ matchId, matchDate: new Date() }];
-                const matchMatches = matchDocData.matches
-                    ? [...matchDocData.matches, { userId, matchDate: new Date() }]
-                    : [{ userId, matchDate: new Date() }];
-                const updatedUserData = { matches: userMatches };
-                const updatedMatchData = { matches: matchMatches };
-
-                await updateDoc(userDoc, updatedUserData);
-                await updateDoc(matchDoc, updatedMatchData);
-                const chatID = await getChatDocument(userId, matchId);
-                console.log(chatID, '-created chat')
-                // Display match success message
-                const fullName = `${matchDocData.firstName} ${matchDocData.lastName}`;
-                toast.success(`Matched with ${fullName}`);
-                dispatch(
-                    addNotification(matchId, "New Match", `You matched with ${userData.firstName} ${userData.lastName}`)
-                );
-                dispatch(
-                    addNotification(userId, "New Match", `You matched with ${fullName}`)
-                );
-            }
-            // Remove match from potential matches and display next match (if available)
-            setPotentialMatches((matches) => {
-                const remainingMatches = matches.filter((match) => match.id !== matchId);
-                return remainingMatches;
-            });
+    const handleSwipe = async (swipeType, matchId) => {debugger;
+        if (canSwipe || isSubscribed(user)) {
+            // Perform the swipe actiondebugger;
+            
+            await swipe(swipeType, matchId);
+ 
+        } else {
+            dispatch(setIsPremiumModelOpen(true))
+             
         }
-
-    }
+    };
 
     return (
         <div className="basis-full bg-gray-200">

@@ -8,6 +8,7 @@ import MatchCard from '@/components/MatchCard';
 import UserNav from '@/components/UserNav';
 import Profile from "./profile";
 import Banner from "@/components/Banner";
+import PremiumModal from "@/components/PremiumModel";
 
 function Home({ user }) {
   const [currentMatch, setCurrentMatch] = useState(null);
@@ -58,11 +59,12 @@ function Home({ user }) {
         </div>
       </div>
     );
-  };
-
+  };  
+  
   return (
     <div className="min-h-screen bg-white px-0 flex">
       <Banner user={user}/>
+      <PremiumModal/> 
       <div className={`${activeBar != 'home' && activeBar != 'notifications' && activeBar != 'settings' || currentMatch || profileOpen ? 'hidden sm:block' : "sm:block"} basis-full sm:basis-1/4`}>
         <UserNav
           setProfileOpen={handleProfileClick}
