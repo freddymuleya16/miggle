@@ -34,10 +34,15 @@ const PremiumModal = ({ isOpen, }) => {
             Unlock exclusive features and enhance your experience with Premium membership:
           </p>
           <ul className="list-disc pl-5 mt-2">
-            <li>Access to advanced search filters</li>
-            <li>Unlimited likes and matches</li>
-            <li>Ad-free experience</li>
-            <li>Priority customer support</li>
+            <li>Enjoy unlimited likes and matches.</li>
+            <li>Upload a minimum of 10 pictures.</li>
+            <li>Send videos in direct messages.</li>
+            <li>Create 30-second video bio posts.</li>
+            <li>Record voice notes with a maximum duration of 2 minutes.</li>
+            <li>Access an exclusive premium sticker.</li>
+            <li>Get unlimited daily matches.</li>
+            <li>Customize your UI colors.</li>
+            <li>Receive priority customer support.</li>
           </ul>
           <div className="mt-4">
             <button

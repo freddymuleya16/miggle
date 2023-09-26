@@ -18,7 +18,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowAltCircleLeft, faCircleDot, faImages, faLocationDot, faMars, faTrashAlt, faVenus, faXmark } from '@fortawesome/free-solid-svg-icons';
 import ChatList from './ChatList';
 import UserMessageAction from '../UserMessageAction';
-import { decryptMessage, encryptMessage, getChatDocument, getChatDocumentWithoutCreating } from '@/utils/helpers';
+import { decryptMessage, encryptMessage, getChatDocument, getChatDocumentWithoutCreating, isSubscribed } from '@/utils/helpers';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import VoiceRecorder from './VoiceRecorder';
 import { format, formatRelative } from 'date-fns';
@@ -318,13 +318,26 @@ function Messages({ receiverId, matchDate, updateCurrentMatch, user }) {
     const [currentFile, setCurrentFile] = useState(0)
 
     const handleFileChange = (e) => {
-        const newObjectUrls = [...e.target.files].map((pic) => {
-            pic.preview = window.URL.createObjectURL(pic)
-            return pic
+        const files = [...e.target.files];
+
+        // Determine the maximum number of selected files based on subscription status
+        const maxFiles = isSubscribed(user) ? 10 : 3;
+
+        // Filter out video files if the user is not subscribed
+        const filteredFiles = isSubscribed(user) ? files : files.filter((file) => !file.type.startsWith('video/'));
+
+        // Select the first maxFiles files
+        const selectedFiles = filteredFiles.slice(0, maxFiles);
+
+        // Create object URLs for the selected files
+        const newObjectUrls = selectedFiles.map((file) => {
+            file.preview = window.URL.createObjectURL(file);
+            return file;
         });
 
-        setSelectedFiles([...newObjectUrls])
+        setSelectedFiles([...newObjectUrls]);
     };
+
 
     const handleUpload = async (files) => {
         if (!files) return [];
@@ -498,14 +511,15 @@ function Messages({ receiverId, matchDate, updateCurrentMatch, user }) {
                             <input
                                 type="file"
                                 className="hidden"
-                                accept="image/*, video/*"
+                                accept={isSubscribed(user) ? `image/*, video/*` : `image/*`}
                                 multiple={true}
+                                max={isSubscribed(user) ? 10 : 3}
                                 onChange={handleFileChange}
                             />
                         </label>
                         <input value={message}
                             onChange={(event) => setMessage(event.target.value)} placeholder="Type a message ..." className="flex-grow  bg-transparent  font-poppins  border-none outline-none placeholder-gray-500 text-lg" />
-                        <VoiceRecorder recording={recording} setRecording={setRecording} sendVN={sendVN} />
+                        <VoiceRecorder user={user} recording={recording} setRecording={setRecording} sendVN={sendVN} />
                         {!recording &&
                             <button
                                 onClick={handleSubmit}

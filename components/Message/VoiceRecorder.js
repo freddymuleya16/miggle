@@ -1,8 +1,9 @@
+import { isSubscribed } from '@/utils/helpers';
 import { faMicrophone, faMicrophoneAlt, faMicrophoneSlash, faStop, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState, useRef } from 'react';
 
-const VoiceRecorder = ({ recording, setRecording, sendVN }) => {
+const VoiceRecorder = ({ recording, setRecording, sendVN, user }) => {
   //const [recording, setRecording] = useState(false);
   const audioRef = useRef(null); // Initialize with null
   const [record, setRecord] = useState(null)
@@ -12,6 +13,8 @@ const VoiceRecorder = ({ recording, setRecording, sendVN }) => {
 
 
   const startRecording = async () => {
+    const maxRecordingDuration = isSubscribed(user) ? 120 : 30; // 10 minutes or 2 minutes in milliseconds
+
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     const mediaRecorder = new MediaRecorder(stream);
     const chunks = [];
@@ -20,18 +23,25 @@ const VoiceRecorder = ({ recording, setRecording, sendVN }) => {
       chunks.push(event.data);
     };
 
-    mediaRecorder.onstop = () => { 
+    mediaRecorder.onstop = () => {
       const audioBlob = new Blob(chunks, { type: 'audio/wav' });
       const audioUrl = URL.createObjectURL(audioBlob);
-      setRecord(audioUrl)
-      sendVN(audioBlob)
+      setRecord(audioUrl);
+      sendVN(audioBlob);
     };
 
     mediaRecorder.start();
-    setRecording(true);
+    setRecording(true); 
 
-    timerInterval.current = setInterval(() => {
-      setTimer(prevTimer => prevTimer + 1);
+    timerInterval.current = setInterval(() => { 
+       setTimer(prevTimer => {
+         if (prevTimer >= maxRecordingDuration) {
+          // Automatically stop recording when the maximum duration is reached
+          stopRecording();
+        }
+        return prevTimer + 1
+      });
+
     }, 1000);
 
     // Store the mediaRecorder and stream in the audioRef to access later
@@ -48,7 +58,7 @@ const VoiceRecorder = ({ recording, setRecording, sendVN }) => {
       audioRef.current.stream.getTracks().forEach(track => track.stop());
       clearInterval(audioRef.current.timerInterval); // Clear the timer interval
       setRecording(false);
-      setTimer(0);      
+      setTimer(0);
     }
   };
 

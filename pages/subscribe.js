@@ -13,10 +13,16 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
 const SubscriptionPage = ({ user }) => {
     const premiumFeatures = [ 
-        "Advanced search filters",
-        "Unlimited likes/swipes",
-        "Exclusive messaging privileges", 
-    ];
+        "Unlimited likes and swipes",
+        "Ability to upload up to 10 pictures",
+        "Send videos in direct messages",
+        "Post videos in your bio, with a maximum duration of 30 seconds",
+        "Voice notes with a maximum duration of 2 minutes",
+        "Exclusive premium sticker",
+        "Unlimited daily matches",
+        "Exclusive messaging privileges",
+      ];
+      
 
     const isLoading = useSelector((state) => state.auth.isLoading);
 
