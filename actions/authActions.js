@@ -67,6 +67,7 @@ export const forgotPassword = (email) => async (dispatch) => {
       url: process.env.NEXT_PUBLIC_URLROOT + "auth/login",
       handleCodeInApp: true,
     };
+    console.log(actionCodeSettings)
     await sendPasswordResetEmail(auth, email, actionCodeSettings);
   } catch (error) {
     console.error(error);
