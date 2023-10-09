@@ -108,7 +108,7 @@ export const login = (email, password) => async (dispatch) => {
     );
 
     dispatch(checkUserProfileCompletion());
-    
+
     const userRef = doc(db, "users", auth.currentUser.uid);
       await updateDoc(userRef, {
         active:true,
@@ -304,7 +304,7 @@ export const facebookSignIn = () => async (dispatch) => {
     if (error.code === "auth/account-exists-with-different-credential") {
       const { email } = error.customData;
       const providers = await fetchSignInMethodsForEmail(getAuth(), email);
-
+console.log("Providers",providers,error.customData)
       if (confirm(`You have already registered with ${providers[0]}. Do you want to link your Facebook account?`)) {
         const provider = new FacebookAuthProvider();
         let prov;
