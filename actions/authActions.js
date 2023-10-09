@@ -312,6 +312,8 @@ console.log("Providers",providers,error.customData)
           prov = new GoogleAuthProvider();
         } else if (providers[0] === 'password') {
           prov = new EmailAuthProvider();
+        }else{ 
+          prov = new GoogleAuthProvider();
         }
         const user = await signInWithPopup(getAuth(), prov);
         const auth = getAuth();
