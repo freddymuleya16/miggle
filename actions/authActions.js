@@ -108,6 +108,12 @@ export const login = (email, password) => async (dispatch) => {
     );
 
     dispatch(checkUserProfileCompletion());
+    
+    const userRef = doc(db, "users", auth.currentUser.uid);
+      await updateDoc(userRef, {
+        active:true,
+      });
+
   } catch (error) {
     console.error(error);
     dispatch(setError(error));
@@ -246,6 +252,7 @@ export const uploadFormToFirebase = (
           latitude: location.latitude,
           longitude: location.longitude,
         },
+        active:true,
       });
     } else {
       // Create a new user document in Firestore

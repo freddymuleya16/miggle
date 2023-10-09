@@ -121,6 +121,10 @@ function Messages({ receiverId, matchDate, updateCurrentMatch, user }) {
         fetchData();
 
     }, [receiverId]);
+    
+    
+    
+    
     useEffect(() => {
         getUser(receiverId).then((user) => {
             setReceiver(user)
@@ -166,7 +170,7 @@ function Messages({ receiverId, matchDate, updateCurrentMatch, user }) {
                         groupedChats[dateString].push(chat);
                     });
 
-
+console.log(groupedChats)
                     // Print the grouped chats
                     setGroupedMessages(groupedChats)
                 }

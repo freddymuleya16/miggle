@@ -47,8 +47,9 @@ export default function UserNav({ profileOpen, user, setCurrentMatch, toggle, ac
                         const match = data.matches.find(obj2 => obj1.id === obj2.matchId || obj1.id === obj2.userId);
                         return { ...obj1, ...match };
                     });
+                    const usersWitchMatchdateAndActive = usersWitchMatchdate.filter((u)=>u.active)
 
-                    setMatches([...usersWitchMatchdate])
+                    setMatches([...usersWitchMatchdateAndActive])
                 })
             }
         );

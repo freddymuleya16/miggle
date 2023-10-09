@@ -60,6 +60,11 @@ function MatchCard({ user }) {
 
                 }
 
+                if (!potentialMatch.active) {
+                    console.log(potentialMatch.firstName, "Not Active")
+                    return false;
+                }
+
                 // Check if the potential match is blocked by the current user
                 if (user.blockedUsers && user.blockedUsers.includes(potentialMatch.id)) {
                     console.log(potentialMatch.firstName, ` is blocked by current user`);
