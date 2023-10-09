@@ -7,11 +7,13 @@ import { getAuth } from 'firebase/auth'
 import { addNotification } from '@/actions/notificationActions'
 import { toast } from 'react-toastify'
 import { isToday } from 'date-fns'
+import { useDispatch } from 'react-redux'
 
 function useSwipeLimit(user, dailyLimit) {
     const [remainingSwipes, setRemainingSwipes] = useState(dailyLimit);
     const [canSwipe, setCanSwipe] = useState(true);
     const [potentialMatches, setPotentialMatches] = useState([]);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const resetDailyLimit = () => {

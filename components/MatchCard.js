@@ -21,7 +21,8 @@ function MatchCard({ user }) {
     const [images, setImages] = useState([])
     const [activeIndex, setActiveIndex] = useState(0);
     const [noMatches, setNoMatches] = useState(false);
-    const dailySwipeLimit = 2; // Set your desired limit here
+
+    const dailySwipeLimit = 4; // Set your desired limit here
     const { remainingSwipes, canSwipe, swipe, potentialMatches,setPotentialMatches } = useSwipeLimit(
         user, 
         dailySwipeLimit,
