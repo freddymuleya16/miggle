@@ -16,39 +16,51 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useEffect } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { doc, onSnapshot, serverTimestamp, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, onSnapshot, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { db } from '../utils/firebase';
 
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
-
-    onAuthStateChanged(getAuth(), (user) => {
-      if (user) {
-        const userRef = doc(db, 'users', user.uid);
-
-        // Update user's online status when they log in
-        updateDoc(userRef, { isOnline: true });
-
-        // Detect when the user navigates away from the app and update last seen
-        window.addEventListener('beforeunload', () => {
-          updateDoc(userRef, { isOnline: false, lastSeen: serverTimestamp() });
+    const authUser = getAuth().currentUser;
+  
+    if (authUser) {
+      const userRef = doc(db, 'users', authUser.uid);
+  
+      // Check if the user document exists before setting up listeners
+      getDoc(userRef)
+        .then((docSnapshot) => {
+          if (docSnapshot.exists()) {
+            // Update user's online status when they log in
+            updateDoc(userRef, { isOnline: true });
+  
+            // Detect when the user navigates away from the app and update last seen
+            window.addEventListener('beforeunload', () => {
+              updateDoc(userRef, { isOnline: false, lastSeen: serverTimestamp() });
+            });
+  
+            // Set up a listener for changes in the Firestore document
+            const unsubscribe = onSnapshot(userRef, (doc) => {
+              const data = doc.data();
+              // Update UI with online status and last seen information
+            });
+  
+            // Cleanup the listener when the component unmounts
+            return () => {
+              updateDoc(userRef, { isOnline: false, lastSeen: serverTimestamp() });
+              unsubscribe();
+            };
+          } else {
+            // Handle the case where the document doesn't exist
+            console.log("User document does not exist.");
+          }
+        })
+        .catch((error) => {
+          console.error("Error checking user document:", error);
         });
-
-        // Set up a listener for changes in the Firestore document
-        const unsubscribe = onSnapshot(userRef, (doc) => {
-          const data = doc.data();
-          // Update UI with online status and last seen information
-        });
-
-        // Cleanup the listener when the component unmounts
-        return () => {
-          updateDoc(userRef, { isOnline: false, lastSeen: serverTimestamp() });
-          unsubscribe();
-        };
-      }
-    });
+    }
   }, []);
+  
 
   return (
     <Provider store={store}>

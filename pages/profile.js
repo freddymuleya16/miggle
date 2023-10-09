@@ -520,7 +520,7 @@ const QuestionnaireForm = ({ edit, setProfileOpen }) => {
           isOpen={showConfirmation}
           title="Confirm!"
           message="Are you sure?"
-          onConfirm={() => handleSubmit()}
+          onConfirm={() => {setShowConfirmation(false);handleSubmit()}}
           onCancel={() => setShowConfirmation(false)}
         />
         {!edit &&
