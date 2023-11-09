@@ -40,8 +40,7 @@ const PremiumModal = ({ isOpen, }) => {
             <li>Create 30-second video bio posts.</li>
             <li>Record voice notes with a maximum duration of 2 minutes.</li>
             <li>Access an exclusive premium sticker.</li>
-            <li>Get unlimited daily matches.</li>
-            <li>Customize your UI colors.</li>
+            <li>Get unlimited daily matches.</li> 
             <li>Receive priority customer support.</li>
           </ul>
           <div className="mt-4">

@@ -1,109 +1,107 @@
-# Project Tasks - Deadline: 10/07/2023
+ # Mingle Dating Website
 
-This document outlines the tasks to be completed by 10/07/2023 for the project. Each task has an estimated time scale assigned to it. 
+Welcome to Mingle, your go-to dating platform for connecting with new and exciting people! This README.md file will guide you through the setup and key features of your dating website.
 
-Please note that these are approximate time estimates and may vary based on individual factors. 
+## Table of Contents
+1. [Introduction](#introduction)
+2. [Technologies Used](#technologies-used)
+3. [Getting Started](#getting-started)
+4. [Project Structure](#project-structure)
+5. [Key Features](#key-features)
+6. [Environment Variables](#environment-variables)
+7. [Contributing](#contributing)
+8. [License](#license)
 
-## Task List
+## Introduction
+Mingle is a modern dating website built using Next.js, Tailwind CSS, Redux, and Firestore. It provides a seamless and enjoyable experience for users to connect, chat, and find potential matches.
 
-1. **Reset Matches** - Estimated Time: 1 hour (Completed)
-   - Implement the functionality to reset matches for a user.
+## Technologies Used
+- **Next.js:** The framework for building React applications with server-side rendering and other advanced features.
+- **Tailwind CSS:** A utility-first CSS framework for building stylish and responsive user interfaces.
+- **Redux:** A predictable state container for JavaScript apps, helping manage the application state efficiently.
+- **Firestore:** A flexible, scalable database for mobile, web, and server development from Firebase.
 
-2. **Edit Profile** - Estimated Time: 4 hours (Completed)
-   - Develop the feature to allow users to edit their profile information.
+## Getting Started
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/freddymuleya16/miggle.git
+   cd miggle
+   ```
 
-3. **Settings (Logout, Delete Account, Change Password)** - Estimated Time: 3 hours (InProgress)
-   - Implement the settings functionality, including logout, account deletion, and password change.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-4. **Both Male and Female** - Estimated Time: 1 hour (Completed)
-   - Modify the system to support both male and female users.
+3. Set up Firestore:
+   - Create a Firestore project on the [Firebase Console](https://console.firebase.google.com/).
+   - Obtain the Firebase configuration and update it in your project.
 
-5. **Encrypt Messages** - Estimated Time: 2 hours (Completed)
-   - Implement message encryption to enhance security and privacy.
+4. Set up environment variables:
+   - Create a `.env` file in the root directory.
+   - Add the following variables and replace the values with your Firebase configuration:
+     ```dotenv
+     NEXT_PUBLIC_FIREBASE_API_KEY=your-api-key
+     NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your-auth-domain
+     NEXT_PUBLIC_FIREBASE_PROJECT_ID=your-project-id
+     NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your-storage-bucket
+     NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your-messaging-sender-id
+     NEXT_PUBLIC_FIREBASE_APP_ID=your-app-id
+     ```
 
-6. **Change Primary Color** - Estimated Time: 1 hour (Completed)
-   - Update the primary color theme of the application.
+5. Run the application:
+   ```bash
+   npm run dev
+   ```
 
-7. **Sending Pictures in Chats** - Estimated Time: 3 hours
-   - Develop the ability to send pictures within chat conversations.
+6. Open your browser and navigate to [http://localhost:3000](http://localhost:3000) to see Mingle in action!
 
-8. **Voice Notes** - Estimated Time: 4 hours
-   - Implement the functionality to send and receive voice notes in chats.
+## Project Structure
+- **`pages/`:** Next.js pages for routing.
+- **`components/`:** Reusable React components.
+- **`styles/`:** Stylesheets, including Tailwind CSS.
+- **`redux/`:** Redux store configuration and actions.
+- **`firebase/`:** Firebase configuration and utility functions.
 
-9. **Voice Call / Video Call** - Estimated Time: 5 hours
-   - Develop the feature to initiate voice and video calls between users.
+## Key Features
+- User authentication and authorization.
+- Profile creation and editing.
+- Matching algorithm for potential matches.
+- Real-time chat functionality.
+- Responsive design for a seamless experience on various devices.
 
-10. **Payment Gateway** - Estimated Time: 5 hours
-    - Integrate a payment gateway to enable premium features and subscription plans.
+## Environment Variables
 
-11. **Privacy Policy** - Estimated Time: 2 hours (Completed)
-    - Create a privacy policy page to inform users about data handling and protection.
+Make sure to set up the following environment variables in your `.env` file for proper configuration of Mingle:
 
-12. **Terms and Conditions** - Estimated Time: 2 hours (Completed)
-(Completed)
-    - Draft the terms and conditions page to establish guidelines for app usage.
+```dotenv
+NEXT_PUBLIC_FIREBASE_API_KEY="your-firebase-api-key"
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN="your-firebase-auth-domain"
+NEXT_PUBLIC_FIREBASE_PROJECT_ID="your-firebase-project-id"
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET="your-firebase-storage-bucket"
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID="your-firebase-messaging-sender-id"
+NEXT_PUBLIC_FIREBASE_APP_ID="your-firebase-app-id"
+NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID="your-firebase-measurement-id"
+NEXT_PUBLIC_URLROOT="your-website-url-root"
+NEXT_PUBLIC_ENCRYPTION_KEY="your-encryption-key"
+NEXT_PUBLIC_STRIPE_PUBLIC_KEY="your-stripe-public-key"
+NEXT_PUBLIC_STRIPE_PRIVATE_KEY="your-stripe-private-key"
+NEXT_PUBLIC_STRIPE_PUBLIC_KEYO="your-other-stripe-public-key"
+NEXT_PUBLIC_STRIPE_PRIVATE_KEYO="your-other-stripe-private-key"
+```
 
-13. **About Us** - Estimated Time: 2 hours (Completed)
-    - Create an "About Us" section to provide information about the company or app.
+- `NEXT_PUBLIC_FIREBASE_*`: Firebase configuration for authentication and database.
+- `NEXT_PUBLIC_URLROOT`: The root URL of your website.
+- `NEXT_PUBLIC_ENCRYPTION_KEY`: Encryption key for sensitive data.
+- `NEXT_PUBLIC_STRIPE_*`: Stripe API keys for payment processing.
 
-14. **Contact Us** - Estimated Time: 4 hours (Completed)
-    - Develop a contact page to allow users to get in touch with the app's support team.
+Ensure that these variables are securely stored and never exposed in public repositories.
 
-15. **Sending Videos** - Estimated Time: 3 hours
-    - Implement the functionality to send videos within chat conversations.
+## Contributing
+We welcome contributions! Feel free to open issues or submit pull requests to improve Mingle.
 
+## License
+This project is licensed under the [MIT License](LICENSE).
 
-16. **Dynamic color schemes**
-
-## Note
-Please note that the estimated time scales are provided for guidance and may vary based on individual development factors and complexities. It's important to allocate additional time for testing, bug fixing, and any unforeseen issues that may arise during the development process.
-
-It's recommended to prioritize the tasks based on their dependencies and criticality to ensure the timely completion of the project. Regular progress monitoring and updates will help track the project's development and make any necessary adjustments to the timeline if required.
- 
-
-
-I would switch on first switch and wait a few minutes and then after a few minutes I would switch it off after I would switch on the second switch then enter the room and feel the lights the bulb that is on is the second switch, the bulb that is off and warm is the first switch and the bulb that is off and cool corresponds to the third switch.
-
-1. like dislike
-
-2. Profile set up
-
-3. Notifications
-
-4. Unmatch
-
-5. block
-
-6. report
-
-7. Chats
-
-8. sending images
-
-9. sending videos
-
-10. like message
-
-11. welcome screen
-
-13. Privacy Policy
-
-14. About Us
-
-15. Contact Us
-
-16. google sign in
-
-17. facebook sign in
-
-
-
-
-1. Match Time
-2. online
-3. last seen
-4. rest of settings
-5. **Dynamic color schemes**
-6. voice note bug
-7. vn mobile
-8. 
+Happy Mingling! 🎉
+```
