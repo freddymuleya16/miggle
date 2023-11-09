@@ -1,4 +1,4 @@
- # Mingle Dating Website
+# Mingle Dating Website
 
 Welcome to Mingle, your go-to dating platform for connecting with new and exciting people! This README.md file will guide you through the setup and key features of your dating website.
 
@@ -13,19 +13,19 @@ Welcome to Mingle, your go-to dating platform for connecting with new and exciti
 8. [License](#license)
 
 ## Introduction
-Mingle is a modern dating website built using Next.js, Tailwind CSS, Redux, and Firestore. It provides a seamless and enjoyable experience for users to connect, chat, and find potential matches.
+Mingle is a modern dating website built using Next.js, Tailwind CSS, Redux, and Firebase. It provides a seamless and enjoyable experience for users to connect, chat, and find potential matches.
 
 ## Technologies Used
 - **Next.js:** The framework for building React applications with server-side rendering and other advanced features.
 - **Tailwind CSS:** A utility-first CSS framework for building stylish and responsive user interfaces.
 - **Redux:** A predictable state container for JavaScript apps, helping manage the application state efficiently.
-- **Firestore:** A flexible, scalable database for mobile, web, and server development from Firebase.
+- **Firebase:** A comprehensive platform for building web and mobile applications with real-time database and authentication features.
 
 ## Getting Started
 1. Clone the repository:
    ```bash
-   git clone https://github.com/freddymuleya16/miggle.git
-   cd miggle
+   git clone https://github.com/your-username/mingle.git
+   cd mingle
    ```
 
 2. Install dependencies:
@@ -33,12 +33,12 @@ Mingle is a modern dating website built using Next.js, Tailwind CSS, Redux, and 
    npm install
    ```
 
-3. Set up Firestore:
-   - Create a Firestore project on the [Firebase Console](https://console.firebase.google.com/).
+3. Set up Firebase:
+   - Create a Firebase project on the [Firebase Console](https://console.firebase.google.com/).
    - Obtain the Firebase configuration and update it in your project.
 
 4. Set up environment variables:
-   - Create a `.env` file in the root directory.
+   - Create a `.env.local` file in the root directory.
    - Add the following variables and replace the values with your Firebase configuration:
      ```dotenv
      NEXT_PUBLIC_FIREBASE_API_KEY=your-api-key
@@ -72,7 +72,7 @@ Mingle is a modern dating website built using Next.js, Tailwind CSS, Redux, and 
 
 ## Environment Variables
 
-Make sure to set up the following environment variables in your `.env` file for proper configuration of Mingle:
+Make sure to set up the following environment variables in your `.env.local` file for proper configuration of Mingle:
 
 ```dotenv
 NEXT_PUBLIC_FIREBASE_API_KEY="your-firebase-api-key"
@@ -81,19 +81,7 @@ NEXT_PUBLIC_FIREBASE_PROJECT_ID="your-firebase-project-id"
 NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET="your-firebase-storage-bucket"
 NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID="your-firebase-messaging-sender-id"
 NEXT_PUBLIC_FIREBASE_APP_ID="your-firebase-app-id"
-NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID="your-firebase-measurement-id"
-NEXT_PUBLIC_URLROOT="your-website-url-root"
-NEXT_PUBLIC_ENCRYPTION_KEY="your-encryption-key"
-NEXT_PUBLIC_STRIPE_PUBLIC_KEY="your-stripe-public-key"
-NEXT_PUBLIC_STRIPE_PRIVATE_KEY="your-stripe-private-key"
-NEXT_PUBLIC_STRIPE_PUBLIC_KEYO="your-other-stripe-public-key"
-NEXT_PUBLIC_STRIPE_PRIVATE_KEYO="your-other-stripe-private-key"
 ```
-
-- `NEXT_PUBLIC_FIREBASE_*`: Firebase configuration for authentication and database.
-- `NEXT_PUBLIC_URLROOT`: The root URL of your website.
-- `NEXT_PUBLIC_ENCRYPTION_KEY`: Encryption key for sensitive data.
-- `NEXT_PUBLIC_STRIPE_*`: Stripe API keys for payment processing.
 
 Ensure that these variables are securely stored and never exposed in public repositories.
 
