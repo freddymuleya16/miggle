@@ -52,56 +52,61 @@ const MatchPage = ({ user }) => {
           }))
 
           // Filter the users based on the current user's preferences and swiping history
-          .filter((potentialMatch) => {
+          .filter((potentialMatch) => { 
             // Check if the potential match has a location
             if (!potentialMatch.location) {
-              return false;
+                console.log(potentialMatch.firstName," No Location")
+                return false; 
             }
 
             // Calculate the distance between the potential match and the current user
             const distance = calculateDistance(
-              potentialMatch.location,
-              user.location
+                potentialMatch.location,
+                user.location
             );
 
             // Check if the potential match is within the desired distance
-            if (distance > user.distance) {
-              return false;
+            if (parseFloat(distance) > parseFloat(user.distance)) {
+                console.log(potentialMatch.firstName,` Too far is ${distance} away prefer ${user.distance}`)
+                return false;
             }
 
             // Get the potential match's age
-            const age = potentialMatch.age;
+            const age = parseInt(potentialMatch.age);
 
             // Check if the potential match's age is within the desired range
             const [minAge, maxAge] = user.ageRange
-              .split("-")
-              .map((value) => parseInt(value));
+                .split("-")
+                .map((value) => parseInt(value));
             if (age < minAge || age > maxAge) {
-              return false;
+                console.log(potentialMatch.firstName,`  is ${age} old prefer ${user.ageRange}`) 
+                return false;
             }
 
             // Check if the potential match's gender matches the current user's orientation
             if (user.orientation !== potentialMatch.gender) {
-              console.info(
-                `Current user (${user.gender}) is looking for ${user.orientation}, but potential match (${potentialMatch.gender}) is the same gender.`
-              );
-              return false;
+                console.info(
+                    `Current user (${user.gender}) is looking for ${user.orientation}, but potential match (${potentialMatch.gender}) is the same gender.`
+                );
+                return false;
             }
 
             // Check if the potential match has already been swiped on by the current user
             if (user.swipingHistory && user.swipingHistory[potentialMatch.id]) {
-              return false;
+                console.log(potentialMatch.firstName,`  ${user.swipingHistory[potentialMatch.id]} already`) 
+                return false;
             }
 
             // Check if the potential match is the current user
             let uid = getAuth().currentUser.uid;
             if (uid == potentialMatch.id) {
-              return false;
+                console.log(potentialMatch.firstName,` is me`) 
+                return false;
             }
 
             // If the potential match passes all filters, return true
             return true;
-          });
+        });
 
         // Set the potential matches state variable
         setPotentialMatches(users);
