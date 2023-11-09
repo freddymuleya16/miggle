@@ -24,7 +24,7 @@ Mingle is a modern dating website built using Next.js, Tailwind CSS, Redux, and 
 ## Getting Started
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/mingle.git
+   git clone https://github.com/freddymuleya16/mingle.git
    cd mingle
    ```
 
@@ -88,8 +88,18 @@ Ensure that these variables are securely stored and never exposed in public repo
 ## Contributing
 We welcome contributions! Feel free to open issues or submit pull requests to improve Mingle.
 
+## Hosting
+The project is hosted on Vercel. Visit [Mingle on Vercel](https://mingle-sa.vercel.app/) to explore the live application.
+
+## Test User
+Feel free to use the following test user credentials to explore the live version of Mingle:
+
+- **Email:** meg@vomoto.com
+- **Password:** Test@123
+
+Please note that this is a test account, and its data is for demonstration purposes only.
+
 ## License
 This project is licensed under the [MIT License](LICENSE).
 
 Happy Mingling! 🎉
-```
