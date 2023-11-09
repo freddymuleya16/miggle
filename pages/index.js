@@ -1,44 +1,106 @@
-import { Inter } from "next/font/google";
-import { logout } from "@/actions/authActions";
-import { useDispatch, useSelector } from "react-redux";
-import { withAuth } from "../utils/withAuth";
-import FullscreenLoading from "@/components/FullscreenLoading";
-import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import MainLayout from "@/components/MainLayout";
-import MatchPage from "./matches";
-import MessagingPage from "../components/chat/messaging";
+import React, { useState } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBell, faCog, faHeart, faHome } from '@fortawesome/free-solid-svg-icons';
 
-const inter = Inter({ subsets: ["latin"] });
+import { withAuth } from '@/utils/withAuth';
+import Messages from "@/components/Message/Messages";
+import MatchCard from '@/components/MatchCard';
+import UserNav from '@/components/UserNav';
+import Profile from "./profile";
+import Banner from "@/components/Banner";
+import PremiumModal from "@/components/PremiumModel";
 
-function Home(props) {
-  const dispatch = useDispatch();
-  const isLoading = useSelector((state) => state.auth.isLoading);
-  //const error = useSelector(state => state.auth.error);
-  const [activeTab, setActiveTab] = useState("#");
+function Home({ user }) {
+  const [currentMatch, setCurrentMatch] = useState(null);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [activeBar, setActiveBar] = useState('home');
 
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
+  const handleBarClick = (bar) => {
+    setActiveBar(bar);
   };
 
-  const error = useSelector((state) => state);
+  const handleMatchClick = (match) => {
+    setCurrentMatch(match);
+    setProfileOpen(false);
+  };
 
-  useEffect(() => {
-    if (error) {
-      toast.error(error.message);
+  const handleProfileClick = () => {
+    setProfileOpen((prev) => !prev);
+    setCurrentMatch(null);
+  };
+
+  const renderContent = () => {
+    if (profileOpen) {
+      return <div className={`basis-full sm:basis-3/4 ${!profileOpen && 'sm:flex'}`}>
+        <Profile edit={true} setProfileOpen={setProfileOpen} />
+      </div>;
     }
-  }, [error]);
 
+    if (currentMatch) { 
+      return (
+        <div className={`basis-full sm:basis-3/4 ${!profileOpen && 'sm:flex'}`}>
+          <div className="basis-full sm:flex">
+            <Messages
+              receiverId={currentMatch.id}
+              matchDate={currentMatch.matchDate}
+              updateCurrentMatch={handleMatchClick}
+              user={user}
+            />
+          </div>
+        </div>
+      );
+    }
 
-  if (isLoading) {
-    return <FullscreenLoading />;
-  }
+    return (
+      <div className={`${activeBar != 'match' && 'hidden'} basis-full sm:basis-3/4 ${!profileOpen && 'sm:flex'}`}>
+        <div className={`${activeBar != 'match' ? 'hidden sm:contents' : "basis-full flex "}`}>
+
+          <MatchCard user={user} />
+        </div>
+      </div>
+    );
+  };  
+  
   return (
-    <MainLayout handleTabClick={handleTabClick} user={props.user}>
-      {activeTab == "#" && <MatchPage user={props.user}/>}
-      {activeTab == "notification" && <h1>Notification</h1>}
-      {activeTab == "messages" && <MessagingPage user={props.user}/>}
-    </MainLayout>
+    <div className="min-h-screen bg-white px-0 flex">
+      <Banner user={user}/>
+      <PremiumModal/> 
+      <div className={`${activeBar != 'home' && activeBar != 'notifications' && activeBar != 'settings' || currentMatch || profileOpen ? 'hidden sm:block' : "sm:block"} basis-full sm:basis-1/4`}>
+        <UserNav
+          setProfileOpen={handleProfileClick}
+          user={user}
+          setCurrentMatch={handleMatchClick}
+          handleBarClick={handleBarClick}
+          activeBar={activeBar}
+          profileOpen={profileOpen}
+        />
+      </div>
+
+      {renderContent()}
+
+      {!currentMatch && !profileOpen && (
+        <div className="fixed bottom-0 left-0 right-0 bg-white sm:hidden h-[6vh] sm:h-0  shadow-md hover:shadow-lg transition-shadow">
+          <nav className="flex justify-between px-4 py-2 border-t-2">
+            <a href="#" onClick={() => handleBarClick('home')} className={`flex flex-col items-center w-1/3 ${activeBar === 'home' ? 'text-rose-500 hover:text-rose-600' : 'text-gray-500 hover:text-gray-700'}`}>
+              <FontAwesomeIcon icon={faHome} className="text-xl" />
+              <span className="text-xs">Home</span>
+            </a>
+            <a href="#" onClick={() => handleBarClick('match')} className={`flex flex-col items-center w-1/3 ${activeBar === 'match' ? 'text-rose-500 hover:text-rose-600' : 'text-gray-500 hover:text-gray-700'}`}>
+              <FontAwesomeIcon icon={faHeart} className="text-xl" />
+              <span className="text-xs">Match</span>
+            </a>
+            <a href="#" onClick={() => handleBarClick('notifications')} className={`flex flex-col items-center w-1/3 ${activeBar === 'notifications' ? 'text-rose-500 hover:text-rose-600' : 'text-gray-500 hover:text-gray-700'}`}>
+              <FontAwesomeIcon icon={faBell} className="text-xl" />
+              <span className="text-xs">Notifications</span>
+            </a>
+            <a href="#" onClick={() => handleBarClick('settings')} className={`flex flex-col items-center w-1/3 ${activeBar === 'settings' ? 'text-rose-500 hover:text-rose-600' : 'text-gray-500 hover:text-gray-700'}`}>
+              <FontAwesomeIcon icon={faCog} className="text-xl" />
+              <span className="text-xs">Settings</span>
+            </a>
+          </nav>
+        </div>
+      )}
+    </div>
   );
 }
 

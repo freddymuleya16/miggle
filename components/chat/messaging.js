@@ -1,4 +1,5 @@
 import { db } from "@/utils/firebase";
+import { getChatDocument } from "@/utils/helpers";
 import {
   collection,
   query,
@@ -55,30 +56,6 @@ const MessagingPage = (props) => {
     }
   }, [chatRef]);
 
-  // Get the chat document for two given user IDs
-  const getChatDocument = async (user1Id, user2Id) => {
-    const chatCollection = collection(db, "chats");
-    // Create a query for all chat documents that contain user1Id
-    const q = query(chatCollection, where("users", "array-contains", user1Id));
-    const querySnapshot = await getDocs(q);
-    // Filter the results to find the chat document that contains both user1Id and user2Id
-    const matchingDocs = querySnapshot.docs.filter((doc) => {
-      return doc.data().users.includes(user2Id);
-    });
-    // If there's a match, return the chat document ID
-    if (matchingDocs.length > 0) {
-      return matchingDocs[0].id;
-    } else {
-      // If there's no match, create a new chat document and return its ID
-      const newChatRef = doc(chatCollection);
-      await setDoc(newChatRef, {
-        id: newChatRef.id,
-        users: [user1Id, user2Id],
-        messages: [],
-      });
-      return newChatRef.id;
-    }
-  };
 
   // Get the user documents for a list of user IDs
   async function getUsers(userIds) {
@@ -148,7 +125,7 @@ const MessagingPage = (props) => {
                     let cur = matches.find((x) => x.id == selectedKey);
                     setCurrent(` ${cur.firstName} ${cur.lastName}`);
                     setChatRef(
-                      await getChatDocument(props.user.id, selectedKey)
+                      await getChatDocument(props.user.id, selectedKey,'messagin.js')
                     );
                   }}
                 >
@@ -279,18 +256,13 @@ const MessagingPage = (props) => {
                 {chatRef && (
                   <Form onSubmit={handleSubmit}>
                     <Form.Group controlId="formMessage">
-                      <Row className="d-flex justify-content-center m-0">
-                        <Form.Control
-                          className="d-flex  mr-2 w-75"
-                          type="text"
-                          placeholder="Type your message here..."
-                          value={message}
-                          onChange={(event) => setMessage(event.target.value)}
-                        />
-                        <Button variant="primary" type="submit">
-                          Send
-                        </Button>
-                      </Row>
+                      <Form.Label>Message</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Type your message here..."
+                        value={message}
+                         onChange={(event) => setMessage(event.target.value)}
+                      />
                     </Form.Group>
                   </Form>
                 )}

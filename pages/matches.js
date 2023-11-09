@@ -9,6 +9,7 @@ import {
   getDoc,
   query,
   where,
+  serverTimestamp,
 } from "firebase/firestore";
 import { calculateDistance } from "@/utils/helpers";
 import { FaHeart, FaHeartBroken } from "react-icons/fa";
@@ -134,48 +135,58 @@ const MatchPage = ({ user }) => {
   const handleSwipe = async (matchId, swipe) => {
     // Clear current match
     setMatch(null);
-
+  
     // Get user document and update swiping history
     const usersCollection = collection(db, "users");
     const userId = getAuth().currentUser.uid;
     const userDoc = doc(usersCollection, userId);
+    const userSnapshot = await getDoc(userDoc);
+    const userData = userSnapshot.data();
+  
     const updatedData = {
       swipingHistory: {
         [matchId]: swipe,
-        ...user.swipingHistory,
+        ...(userData.swipingHistory || {}),
       },
     };
-    user.swipingHistory = updatedData.swipingHistory;
+  
     await updateDoc(userDoc, updatedData);
-
+  
     // Check if the user swiped right and the match also swiped right
     if (swipe === "like") {
       const matchDoc = doc(usersCollection, matchId);
-      const matchDocData = (await getDoc(matchDoc)).data();
+      const matchDocSnapshot = await getDoc(matchDoc);
+      const matchDocData = matchDocSnapshot.data();
+  
       if (
         matchDocData.swipingHistory &&
         matchDocData.swipingHistory[userId] === "like"
       ) {
         // Update both users' matches arrays
-        const userMatches = user.matches
-          ? [...user.matches, matchId]
-          : [matchId];
+        const userMatches = userData.matches
+          ? [...userData.matches, { matchId, matchDate: serverTimestamp() }]
+          : [{ matchId, matchDate: serverTimestamp() }];
         const matchMatches = matchDocData.matches
-          ? [...matchDocData.matches, userId]
-          : [userId];
+          ? [...matchDocData.matches, { userId, matchDate: serverTimestamp() }]
+          : [{ userId, matchDate: serverTimestamp() }];
         const updatedUserData = { matches: userMatches };
         const updatedMatchData = { matches: matchMatches };
+  
         await updateDoc(userDoc, updatedUserData);
         await updateDoc(matchDoc, updatedMatchData);
-
+  
         // Display match success message
         const fullName = `${matchDocData.firstName} ${matchDocData.lastName}`;
         toast.success(`Matched with ${fullName}`);
-        dispatch(addNotification(matchId,'New Match',`You matched with ${user.firstName} ${user.lastName}`))
-        dispatch(addNotification(getAuth().currentUser.uid,'New Match',`You matched with ${fullName}`))
+        dispatch(
+          addNotification(matchId, "New Match", `You matched with ${userData.firstName} ${userData.lastName}`)
+        );
+        dispatch(
+          addNotification(userId, "New Match", `You matched with ${fullName}`)
+        );
       }
     }
-
+  
     // Remove match from potential matches and display next match (if available)
     setPotentialMatches((matches) => {
       const remainingMatches = matches.filter((match) => match.id !== matchId);
@@ -188,6 +199,7 @@ const MatchPage = ({ user }) => {
       return remainingMatches;
     });
   };
+  
 
   return (
     <Container className="h-100">
